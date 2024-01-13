@@ -1,0 +1,227 @@
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<!-- Custom CSS -->
+<link rel="stylesheet" type="text/css" href="css/custom.css">
+<!-- Vector icons and social logos | https://fontawesome.com/icons?d=gallery&m=free -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+
+
+<style>
+    div.tooltip {
+        position: absolute;
+        text-align: center;
+        width: 130px;
+        height: 60px;
+        padding: 2px;
+        /*font: 12px;*/
+        font-size: 0.7em;
+        background: #333;
+        color: white;
+        border: 0px;
+        border-radius: 8px;
+        pointer-events: none;
+    }
+    
+    body {
+        background-color: white;
+        color: black;
+    }
+</style>
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz" style="position: relative">
+    <div id="legends" style="position: absolute; top:0; right:0em">
+        <i class="fas fa-circle" style="color: orange"></i>&nbsp;&nbsp;Sydney&nbsp;&nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;&nbsp;Auckland
+        <br/>
+        <i class="fas fa-circle" style="color: #DB4437"></i>&nbsp;&nbsp;Sydney&nbsp;&nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;&nbsp;Zurich
+        <br/>
+        <i class="fas fa-circle" style="color: #795548"></i>&nbsp;&nbsp;Sydney&nbsp;&nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;&nbsp;Vancouver
+        <br/>
+        <i class="fas fa-circle" style="color: #4285F4"></i>&nbsp;&nbsp;Sydney&nbsp;&nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;&nbsp;Nadi
+        <br/>
+        <i class="fas fa-circle" style="color:pink"></i>&nbsp;&nbsp;Sydney&nbsp;&nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;&nbsp;Darwin
+        <br/>
+        <i class="fas fa-circle" style="color:#ccc"></i>&nbsp;&nbsp;Sydney&nbsp;&nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;&nbsp;Apia
+        <br/>
+        <i class="fas fa-circle" style="color:green"></i>&nbsp;&nbsp;Sydney&nbsp;&nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;&nbsp;Port Vila
+        <br/>
+        <i class="fas fa-circle" style="color:#673AB7"></i>&nbsp;&nbsp;Sydney&nbsp;&nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;&nbsp;Adelaide
+
+    </div>
+
+    <!--<svg id="legends" style="position: absolute; top:0; right:0">
+    </svg>-->
+</div>
+
+<script>
+    // select the svg area
+    var svgLegends = d3.select("#legends")
+
+    // Handmade legend
+    /*svgLegends.append('mytext')
+    svgLegends.append("circle").attr("cx", 100).attr("cy", 30).attr("r", 6).style("fill", "orange").style("stroke", "black")
+    svgLegends.append("circle").attr("cx", 100).attr("cy", 60).attr("r", 6).style("fill", "red").style("stroke", "black")
+    svgLegends.append("text").attr("x", 120).attr("y", 30).text("Sydney - Auckland").style("font-size", "15px").attr("alignment-baseline", "middle").style("stroke", "black")
+    svgLegends.append("text").attr("x", 120).attr("y", 60).text("Sydney - Zurich").style("font-size", "15px").attr("alignment-baseline", "middle").style("stroke", "black")*/
+
+
+
+
+    // set the dimensions and margins of the graph
+    var margin = {
+            top: 10,
+            right: 30,
+            bottom: 30,
+            left: 60
+        },
+        width = 1400 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;
+
+
+    // Define the div for the tooltip
+    var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+    //Read the data
+    d3.json("data/airfares.json", function(data) {
+
+        // D3 | finding max value for searched_on in a JSON array of objects
+        var maxSearchedOnTimestamp = d3.max([
+            d3.max(data, function(d) {
+                return d.searched_on;
+            })
+        ]);
+
+        // D3 | finding min value for searched_on on in a JSON array of objects
+        var minSearchedOnTimestamp = d3.min([
+            d3.min(data, function(d) {
+                return d.searched_on;
+            })
+        ]);
+
+        // D3 | finding max value for price in a JSON array of objects
+        var maxPrice = d3.max([
+            d3.max(data, function(d) {
+                return d.price;
+            })
+        ]);
+
+        //alert(maxPrice)
+
+        // D3 | finding min value for price on in a JSON array of objects
+        var minPrice = d3.min([
+            d3.min(data, function(d) {
+                return d.price;
+            })
+        ]);
+
+
+        //alert(maxSearchedOnTimestamp.substr(0, 10))
+
+
+        // Add X axis
+        var x = d3.scaleTime()
+            .domain([new Date(minSearchedOnTimestamp), new Date(maxSearchedOnTimestamp)]) //    new Date(2020, 6, 31)[4, 8]   max(new Date(d.searched_on))
+            .range([0, width]);
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x)
+                //.ticks(25)
+            );
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain([0, maxPrice])
+            .range([height, 0]);
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        // Color scale: give me a specie name, I return a color
+        var color = d3.scaleOrdinal()
+            .domain(["Apia", "Darwin", "Zurich", "Geneva", "Auckland", "Nadi", "Port Vila", "Vancouver", "Adelaide"])
+            .range(["#ccc", "pink", "#DB4437", "red", "orange", "#4285F4", "green", "#795548", "#673AB7"])
+
+
+        // Highlight the specie that is hovered
+        var highlight = function(d) {
+
+            selected_destination = d.destination
+
+            d3.selectAll(".dot")
+                .transition()
+                .duration(200)
+                .style("fill", "lightgrey")
+                .attr("r", 3)
+
+            d3.selectAll("." + selected_destination)
+                .transition()
+                .duration(200)
+                .style("fill", color(selected_destination))
+                .attr("r", 5)
+        }
+
+        // Highlight the specie that is hovered
+        var doNotHighlight = function() {
+            d3.selectAll(".dot")
+                .transition()
+                .duration(200)
+                .style("fill", "lightgrey")
+                .attr("r", 3)
+        }
+
+        // Add dots
+        svg.append('g')
+            .selectAll("dot")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("class", function(d) {
+                return "dot " + d.destination
+            })
+            .attr("cx", function(d) {
+                return x(new Date(d.searched_on));
+            })
+            .attr("cy", function(d) {
+                return y(d.price);
+            })
+            .attr("r", 3)
+            .style("stroke", function(d) {
+                return '#333'
+            })
+            .style("fill", function(d) {
+                return color(d.destination)
+            })
+            .on("mouseover", function(d) {
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html(d.departure + " to " + d.destination + "<br/>" + d.searched_on + " (UTC)<br/>$" + d.price)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            })
+            /*.on("mouseover", highlight)
+            .on("mouseleave", doNotHighlight)*/
+
+    })
+</script>

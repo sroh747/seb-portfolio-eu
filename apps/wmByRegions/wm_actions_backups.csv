@@ -1,0 +1,30 @@
+Asset,Type,Asset2,Asset Value,Debt,Net Value,Change vs 2015,Change text,Probability of success,Probability of success (m-1),Stake,Latitude,Longitude
+Lombard,Net New Assets,Property,35,0,35,-27,Down,1,0,1,39.80949,-71.886246
+Lombard,Gross Revenue,Property,37.5,20,17.5,-5.5,Down,1,0,1,41.170502,-73.700027
+Lombard,Credits,Property,90,0,90,-10,Down,0.5,0,1,40.768277,-100.981455
+Jet,Gross Revenue,Jet,229,125,104,-97,Down,0.5,0.25,1,38.89454,-77.027011
+Lombard,Credits,Lombard,471,100,371,-159,Down,0,-0.25,1,39.129588,-115.172671
+Lombard,Credits,Lombard,2310,950,408,-62,Down,0.5,0.25,0.3,47.6062,-122.3321
+Lombard,Credits,Real Estate,400,10,390,-52,Down,0.25,0.25,1,33.129588,-115.172671
+Lombard,Credits,Lombard,501,156,345,-28,Down,0.75,-0.25,1,29.768277,-100.981455
+Mortgage,Credits,Mortgage,191,14.3,176.7,-27,Down,0.5,-0.5,1,40.768277,-74.981455
+Mortgage,Credits,Mortgage,88,0,88,17,Up,0.5,0.25,1,40.768277,-75.981455
+Mortgage,Credits,Mortgage,38,0,38,21,Up,0.75,-0.25,1,39.129588,-90.981455
+Mortgage,Net New Assets,Property,9,0,9,0.5,Up,0.5,0,1,34.079731,-118.413402
+Real Estate,Net New Assets,New Relation,123,0,123,-229,Down,0.25,-0.25,1,39.80949,-71.886246
+Real Property,Credits,Property,27,0,27,-16,No Change,0.75,0,1,40.768277,-80.981455
+Real Property,Credits,Property,1000,408,23.68,0,No Change,0,0,0.04,41.768277,-73.981455
+Real Property,Credits,Property,27.7,14.7,13,-16,Down,0.75,0.5,1,42.768277,-73.981455
+Real Property,Credits,Property,1645,589,316.8,32,Up,0.25,0.25,0.3,37.792282,-122.403747
+Real Property,Credits,Property,275,106,169,-25,Down,0.75,0.5,1,25.813875,-80.339183
+Real Property,Credits,Property,150,0,150,-50,Down,0.25,0.25,1,26.677316,-80.036959
+Real Property,Credits,Property,225,18.5,206.5,-72,Down,0.25,0.25,1,39.80949,-71.886246
+Real Property,Gross Revenue,DPM,85,0,85,-3,Down,0.75,0.25,1,55.314129,-4.828675
+Real Property,Gross Revenue,Execution Services,169,50,119,-39,Down,0.75,0.25,1,41.888988,-87.625997
+Real Property,Gross Revenue,Property,230,0,230,-97,Down,0.5,0,1,39.80949,-71.886246
+Real Property,Gross Revenue,Advisory Services,30,0,30,0,No Change,1,0,1,37.93909,-78.498251
+Real Property,Net New Assets,Property,14,0,14,-8.75,Down,0.75,-0.25,1,39.80949,-71.886246
+Real Property,Net New Assets,Increase in Assets,14.5,0,14.5,2.85,Up,0.25,-0.25,1,26.714198,-80.054904
+Real Property,Net New Assets,Sale company,3.5,0,3.5,0,No Change,0.75,0,1,32.859908,-79.906982
+Real Property,Net New Assets,Property,300,0,300,0,No Change,0.5,0,2,39.7392,-104.9903
+Yacht,Gross Revenue,Yacht,156,18,69,-27,Down,1,0,0.5,36.129588,-115.172671

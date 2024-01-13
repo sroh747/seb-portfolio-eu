@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="img/favicon.ico">-->
+
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+
+
+    <title>Comandante 7</title>
+
+    <!-- ****************************************************************** -->
+    <!-- ****************************  CSS  ******************************* -->
+    <!-- ****************************************************************** -->
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
+
+
+
+
+    <!-- ********************************************************************************* -->
+    <!-- ****************************  CSS | ICONS, LOGOS  ******************************* -->
+    <!-- ********************************************************************************* -->
+
+    <!-- Flags library -->
+    <!--<link rel="stylesheet" type="text/css" href="https://github.com/downloads/lafeber/world-flags-sprite/flags32.css">-->
+
+    <!-- Vector icons and social logos | https://fontawesome.com/icons?d=gallery&m=free -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+
+    <!-- ****************************************************************** -->
+    <!-- ****************************  JS  ******************************** -->
+    <!-- ****************************************************************** -->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=bWzTDeQ6N8oI70rNuvKMrMIokiguc5punjesiKzcXsn_YO_5tlV0vG5ot_rIbwlQgfsNXDRFgEvkv-I7LhVy0oEqplUY_put2kK4Y0tZZy6_fha-nSOSIFKWsw38bXpl_0bU8ni0qVLeP7pfyox0WbiZG2gScS3gOx0cNRPRIcM6_d6B4N4Cwttrpg0IqSj944iViOfR-7PJ1cLELNY43tlzAmA4QbLbXVJbFrTSCsbKKVpGVPzuF67_u88b1axd0U4x1GLvnCHhGOGlGxhiiiCPDMgLXbqyCyS5wJiQExfnnJmXF7f4bFxFwcJGXTD7mndYZsyyoUuxysHYuUjflXCQBYw_VoWay6RR3Oq5QMZkcRYpzUt1oFVQbo6ViAYDEQAfaMGt0q99AckkTO-NV_8ac-8wns-Us2Q-nMVGsFLlOYIby75SG8qJnfrZKFZz9oh-S9PPD3z3AuWcVF0c3M-3NQ-Wp1oW1oc3FcQhj-6cdckCr6XS3dj4iuj_NdQVhY5CD49MmwU-32o09hOUqOZUGiM96nSMdoBtMnd27wQWdnSMe4S8UmQlsaziwpHGqJpoaVGh42ZCgofZsEH1zQygQbZuYaGNC_fdXTf3X9jHoMgBIl7-_hR7iw_tlzFnmnDdUVjEK_kudkX4wLg-Wcq8XuV7jPk5wv1Cr8pHYETSXEqtZ2f5OBdvVz09BA243raVAF243BhBAinD2y0NEE3BQnps3B-pxG2v2H_PczJA8Wf34dXcYX5YsWn9O-Av1BBLwKeQQIlUHX7prsfxSpH4Kfc74ANmUVCJHLPOAVgFtuE-y-5nNSCOJVv55ajFJHycN8w9y-bJDCcT6youygi4Ty22-fZMz3qTpCgv97vCl3kqpzJ1BdksmfRBHksdMLT_UYRxi8CqBqjjfrkI4qqHBTkwt20AJN87-ym8qkkxGqt6XluUv3egYLz7Fq8F2pnnckdFs8mON8MjyQzS53uvuxUND1x2KfwMQShsrf9NVBXNcfEIKqG67C8A61SvIB8uTvOeuOVLM0N5wl1WxNGtTM5k53CKso81yDTaLu-a5_75qjYQCS0NjqFBVOiKIwwoKoyYPBlx46HoTRrgp_5AFi1ImCeZeMUyYXzTg0I_e1LPvX7QycWvrCyTfTzvUMKq2FeU40KHAq8q2lL9psZ0j4qwtjhOnNjPulnsyG9Ulv4MiQXiPaOZi5EcIof-7rIe1Ehm4zvzwJoeh102QwX7bFvTRIjMg3Yeg-R4eNokeykTN7fDZS3DHD_VdLhPj3AtzVSyqM2rcqTMi9oX57sO8iJWU_tmBVPwMNKx43U7vLsvKL-CvSJamu2OfrLfFk7TD9YeuPAynhfA4CLUCmY6RXa18sFyUWKecFOZ5UzbIhwT4UzpDVJaRliSsimfEwNx8LarhZZTvPw24dGAmnIllmyebPtKJZjkJRn2gRD1ch1utWP6HOppWsTlieXSpcNovh_rTvkKlO34yZOUx54KoD1_rDmaQwoEdhSY2xUKRxg5RmIrQafo5eH1llpS5jAvAbKGoS9zzGAr9x9dtytoKb4e91YBebxlsgMQMiVw4aUNkAvY_2xy9WpwK9Rcv2UvrQY6gKm3V3s9y6157QaDuIW1TeipdW4NZV5XJmV8Nx3oriES1Y62LQ-o_reNkLSTnt5OzQgBzjQDp4wiVu5UGImbG9WW33zalsFb2P-HKyBgb3BkKowJCcOdnPVpkBMm053qakD0oJReYwdH7rNp52ZQU3YdVxx9lYUXee1hr9dKSP028Nn0guX5Rw8J145_awIDAyCLW0AJGTOI12xw9NmMSj41sg66hojiln_j_3zePuqX34_4_KXu87be5Q0VoVM3qqEEZJiv-OFh2tx_Iwpn7lP4CNcjsCUhy0L_lrgyWZH9I9DJFCthbX7urGSVMpOQ-3h2jolfTFIr1G_HbIRdHiHhauLZ8DrT8w3FykH5QxOKLakT-xAsZxAUJGBeBUoziG-VNZ5xbephbynujMjpRyOIl9O4jpLBei8" charset="UTF-8"></script><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=YBYIjfUhQuSSujvhIhVym9W8Nb7DIp6d7Z6Qe3tI3-cvWaXb1r2UGP5sSf7Wp5MaLAd3ghwFfg-jNpx_VhwxMQO-dw8o50B5HWkRrXsCfglESTUNXNFuWY7RlGyxjhP-tLRAtHn3hMh_BTBw-KnNMaJdu91erwng9bc8uDU_9A2Kg20kyld2bUa65Md_A1kbOqOnACOX27V48gzV_QJd6si3dyDkkUgyw4OnQZ3NoHIG3c_l8t9M9zns6M3c0oVAqIoMdoNvh7BvWHh8-Ovxp-cSXEBDGmNkfpljUuf7DM0tmODvSl4Lf5mA7autV5lMEaxaMRbN92BP956vz1LJc-zrFFo6rgwjPpOwBkaijIpgXV1X6bEEP3zvQC7w2cUIUp_xQjY0VXyp7HPWD_RE59yzuwGqgQKL5zxSqltMcIu7ZgzbwNDGDd1hNNn88ozJ-SbKi-dE8Il5dNViTYJDsP9doiuLSyg0yJWffwjHdF_obccUw77ogOSMLMpNKsS8e2Jro2LkOLiC0Gcx5CoEIXCJ1UzzHHSTghUl_Lci4etxeUWj2jcIM1zfws_B6_5je6wSSaU1hapOwLDkeGdfkgfJm4nEab6XlfmuIiEvoAwldas7cn5KU5ElIH9PPqknZinepl0uxhMo2usbE6xgZilv_fVZY1R4gQX8RAw-oiTnYTVMF6vciTr5sfMsBkM5u51jXJZ8RIGLD_IzpRmcqdged9nKNVwvnVug9Y0X7oQMC8_yERcJsyG9G8YKwMz6ATLC08gKUdpRvgMLbz1PdaSSPg3IBy2sjeNP1s3Vy93Hj_eA6Yg8F5kYrwNKjzsABmxT971m4W5MKZGQ4ogTlJHNA9FbibymFzti6BA6NyaXua_EjHUpylt27gNbLj1QPxdWL7-gZuDPLsmThnVIgJcfv98tsb-5u7RSeZUwtrZNcdN77hyV-fKhsjmqE_1g1Q0O0cY5rjxfJ4S073W0M6JqfpSrSmQsyVdyOhsltZKo1rSkuxzfsiJL8qXa_5mow8Bc-v5ELgWErXGQvs9PpC5zNcEy4015pBYbGG0W1C0-mHaXycMo535kaxJUl0eerPcMUlZ4BMm0UPIwMtY174wcQiGCbFwQu2KIpJjOWs_wo4SIuoaAE-ZfYEP9yYWOHToLwFH_TMNhaf4Z0zJ6tjpHcUlcJAWAUxpSh-wXIQUvQiD5C9oyWMZQvbffn_VDxZCgzatIOGt8tDY_MGqIRCp5cFtEmS5ozMl6r55fmmhZaPchFIbhtAcdCZrxrtidfC-f7QoTE4pdBBRMdlLKzRPJ35I2H144g07XdPcq52hm8LDhqDR60PNtcFXE3tA3-RqVIK7FHkauq5_L1qeznf0I-v3yP8m9srPVzTgOjfCsMuMITB-aj8IuJjcYsRkTmwhzu3Cn0Y8VCFORLgAAD4_mO1sRemqHNvkC0WoxpCGpQSzZodhYpe83_AsEVYwWspTB8KMB4ydOuV2NiM89FSJqvCloE9BGPV5qnR0hFfSTU5rgWbA0DLc2XbVuy9tvKOrwbT4aoT0S3khKlZjnWUPBN4kGsC51_j5veVK5YW9_2dWMlwzaWLc66ie3OunnqAxJEznAEWcdiTngHOpNWf_PgjUxfF0i7xFqCRnDpZ3yKIrRu_RVA7a-OBs39uXqzDTMqh530Hv8RluaCLHX7qPGnMaSyAfcAqjCJHLtl742nHsJxK75TOjkKSA0lcN-XvQ3F596fafpZ1glZx_DAsWa7haDCflNgP83K6D3y0c52weRlBK2rRJDnyMsKX7Rf52iqm1Np8jh9zlJ6OVgLgZjiGNzgLDLUMYiU_wAyGAiUiI3_7EWfrljQycCAXuVIAuyODHaJ7qatyyncZQ5FolhCtROYFZbAgsXl4FE6pNL_kWQhHamrz_Km4GJyk0w1ZizWIoCXEIOnlnImUsFw-ZLKaxclAe-3Bcv97NX2rYfwvVuAipxARs3VMYx4OEEox7KDwfyjfXpOOOIGQk2OjKVL_UsLlVSGbfCo3Katac" charset="UTF-8"></script><script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+    <!-- AWS SDK -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+
+    <!-- dataTables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+
+
+    <!-- Script Bootstrap 4.0 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Black pop-ups containing comments and feedbacks when hovering -->
+    <!--<script src="bootstrap-4.0.0/dist/js/bootstrap-select.min.js"></script>
+<script src="js/jquery/jquery-ui.js" type="text/javascript"></script>
+<script src="js/jquery/jquery.tablesorter.js"></script>-->
+
+
+
+    <!-- Required to display buttons (Copy, Excel, PDF) 
+    <script type="text/javascript" src="js/datatables/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="js/jszip.min.js"></script>
+    <script type="text/javascript" src="js/pdfmake.min.js"></script>
+    <script type="text/javascript" src="js/vfs_fonts.js"></script>
+    <script type="text/javascript" src="js/buttons.html5.min.js"></script>-->
+
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <!-- bg-dark -->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div style="position: absolute; z-index:1000; top: 0.5em; left:1em"><img height="60em" src="img/pilot17.png" /></div>
+        <!--<div class="paneHeader">C</div>
+        <div class="paneHeader">o</div>
+        <div class="paneHeader">m</div>
+        <div class="paneHeader">a</div>
+        <div class="paneHeader">n</div>
+        <div class="paneHeader">d</div>
+        <div class="paneHeader">a</div>
+        <div class="paneHeader">n</div>
+        <div class="paneHeader">t</div>
+        <div class="paneHeader">e</div>
+        <div class="paneHeader">7</div>
+        <div class="paneHeader">&nbsp;</div>
+        <div class="paneHeader">|</div>-->
+        <div class="paneHeader">&nbsp;</div>
+        <div class="paneHeader">A</div>
+        <div class="paneHeader">i</div>
+        <div class="paneHeader">r</div>
+        <div class="paneHeader">f</div>
+        <div class="paneHeader">a</div>
+        <div class="paneHeader">r</div>
+        <div class="paneHeader">e</div>
+        <div class="paneHeader">s</div>
+        <div class="paneHeader">&nbsp;</div>
+        <div class="paneHeader">t</div>
+        <div class="paneHeader">r</div>
+        <div class="paneHeader">a</div>
+        <div class="paneHeader">c</div>
+        <div class="paneHeader">k</div>
+        <div class="paneHeader">e</div>
+        <div class="paneHeader">r</div>
+        <div class="paneHeader">&nbsp;</div>&nbsp;&nbsp;
+        <!--<div class="paneHeader">&#9992</div>-->
+
+
+        <!--<a class="navbar-brand" href="#">Risk Mngmt.</a>-->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <!--<li class="nav-item">
+                    <a class="nav-link" href="d3_line_chart_json_sydney_adelaide.html">Line chart | Trends</a>
+                </li>
+                &nbsp;&nbsp;
+                <li class="nav-item">
+                    <a class="nav-link" href="d3_line_chart_json_min_airfares_only.html">Line chart (min airfares only)</a>
+                </li>-->
+            </ul>
+
+
+        </div>
+    </nav>
+
+
+    <br/><br/><br/>
+
+    <!-- table-hover table-sm table-dark-->
+    <div style="width:99%; padding-left:1em;">
+        <table id="example" class="display table table-striped table-borderless" width="100%"></table>
+    </div>
+
+    <!-- ****************************************************************** -->
+    <!-- **************** LOAD EXTERNAL JSON FILE ************************* -->
+    <!-- ****************************************************************** -->
+    <!-- <script type="text/javascript" src="C:\Users\Seb\Desktop\data_tables_no_server_required\data\json_data.js"></script> -->
+
+    <!--<script type="text/javascript" src="data/json_data_objects_alteryx_format_2.js"></script>-->
+
+    <script>
+        /* Formatting function for row details - modify as you need */
+        function format(d) {
+            var rowsSubArray = '';
+            // Number of sub-rows to display
+            for (var k in d.milestones) {
+                //console.log(k, result[k]);
+                rowsSubArray += '<tr>' +
+                    '<td class="">' + d.milestones[k].id_milestone + '</td>' +
+                    '<td class="">' + d.milestones[k].milestone + '</td>' +
+                    '<td class="">' + d.milestones[k].business_impact + '</td>' +
+                    '<td class="">' + d.milestones[k].start_date + '</td>' +
+                    '<td class="">' + d.milestones[k].due_date + '</td>' +
+                    '<td class="">' + d.milestones[k].owner + '</td>' +
+                    '<td class="">' + d.milestones[k].celebration_point + '</td>' +
+                    '</tr>';
+            }
+
+            // `d` is the original data object for the row
+            return '<table class="table-sm table-borderless table-striped-sub-array subarray" cellpadding="3" cellspacing="0" border="0" style="padding-left:10em;">' +
+                '<tr>' +
+                '<thead class="subarray"><th class="">ID</th><th class="">Name</th><th class="">Impact</th><th class="">Start date</th><th class="">Due date</th><th class="">Owner</th><th class="">Comments</th></thead>' +
+                rowsSubArray +
+                '</table>';
+            //'<iframe src = "insert_gantt_chart.html" width = "1200px" height = "550px" seamless frameBorder = "0" scrolling = "no" > < /iframe>';
+
+
+            ;
+        }
+
+
+        // ************************************************************
+        // show popup to add Manager comment (Comment after Review)
+        // ************************************************************
+        function addCommentManager(comment) {
+            $("#AddCommentManager").modal({
+                show: true
+            });
+
+
+
+            //Encoding for Bootstrap modal pop-up --> HTML to JS			
+            /*var comment = comment.replace(/<br\s*\/?>/mg, "\n");
+            var comment = comment.replace(/&#039;/mg, "'");
+            var comment = comment.replace(/&amp;/mg, "&");
+            var comment = comment.replace(/&lt;/mg, "<");
+            var comment = comment.replace(/&gt;/mg, ">");
+            var comment = comment.replace(/&quot;/mg, '"');*/
+
+            //Assign value to field			
+            //$(".modal-body #commentManager").val(comment);
+
+            // Focus on textarea inside a modal on click
+            /*$('#AddCommentManager').on('shown.bs.modal', function() {
+                $('#commentManager').focus();
+            })*/
+        }
+
+
+
+
+        // table initialisation (for Objects)
+        $(document).ready(function() {
+            $('#example').DataTable({
+                //"dom": '<lf<t>ip>',            // "dom": 'lrtip'
+                "dom": "<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'>>" +
+                    "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                buttons: [
+                    //'copyHtml5',
+                    //'excelHtml5',
+                    //'csvHtml5',
+                    //'pdfHtml5'
+                ],
+                "order": [
+                    [4, "desc"],
+                    [2, "asc"],
+                ],
+                paging: true,
+                //scrollY: 400,
+                "pageLength": 25, // Amount of rows displayed per page
+                //select: "os", // select using CTRL or SHIFT
+                "ajax": {
+                    "url": "data/airfaresSydneyAdelaide.json",
+                    "dataSrc": ""
+                },
+                "pagingType": "full_numbers",
+                deferRender: true,
+                columnDefs: [{
+                    targets: -1,
+                    className: 'dt-body-center',
+                }, {
+                    "width": "5%",
+                    "targets": 3 // width of 4th column
+                }],
+                columns: [{
+                        title: '#',
+                        "className": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": '',
+                        render: function() {
+                            return '<i class="fa fa-plus-square" style="color:rgba(var(--main-color-1), 1);"></i>'
+                        }
+                    }, {
+                        title: 'Provider',
+                        data: 'provider',
+                        render: function(data, type, full) {
+                            //return '<i class="fas fa-tasks" style="color:#E91E63;"></i>'
+                            //https://getbootstrap.com/docs/4.0/components/progress/
+                            var backgroundColorProvider = '#01579B';
+                            if (data.toLowerCase().includes("jetstar")) {
+                                backgroundColorProvider = '#f74f1a';
+                            } else if (data.toLowerCase().includes("qantas")) {
+                                backgroundColorProvider = '#d92121';
+                            } else if (data.toLowerCase().includes("gotogate")) {
+                                backgroundColorProvider = '#165885';
+                            } else if (data.toLowerCase().includes("tripmonster")) {
+                                backgroundColorProvider = '#7e2a8a';
+                            } else if (data.toLowerCase().includes("edreams")) {
+                                backgroundColorProvider = '#003497';
+                            } else if (data.toLowerCase().includes("aunt betty")) {
+                                backgroundColorProvider = '#e25938';
+                            } else if (data.toLowerCase().includes("kiwi")) {
+                                backgroundColorProvider = '#33a991';
+                            } else if (data.toLowerCase().includes("hacker fare")) {
+                                backgroundColorProvider = '#000';
+                            } else if (data.toLowerCase().includes("kayak")) {
+                                backgroundColorProvider = '#f2501a';
+                            } else {
+                                backgroundColorProvider = '#01579B';
+                            }
+                            return '<div class="progress"><div class="progress-bar" role="progressbar" style="width: 100%; background-color:' + backgroundColorProvider + '" data-toggle="tooltip" title="Provider name">' + data + '</div></div>';
+                        }
+                    }, {
+                        title: 'Airfare',
+                        data: 'price',
+                        "orderable": true,
+                        "className": 'dt-body-center',
+                        render: function(data) {
+                            //Encoding for tooltip pop-up --> JS to HTML
+                            var data = data.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up	
+                            data = data.replace(/(?:')/g, "&#039;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up			
+                            data = data.replace(/(?:&)/g, "&amp;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                            data = data.replace(/(?:<)/g, "&lt;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                            data = data.replace(/(?:>)/g, "&gt;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                            data = data.replace(/(?:")/g, "&quot;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up															
+
+                            //return '<button data-toggle="tooltip" style="background: transparent !important; border:none !important;" data-html="true" title="' + data + '" onclick="addTagging(\'' + data + '\')"><small class="text-muted"><span class="fas fa-comment fa-lg" style="color: rgba(var(--main-color-1),1)"></span></small></button>';
+                            //return data.substr(0, 50) + "...";
+                            if (data.length > 45) {
+                                return data.substr(0, 45) + '...' + '' + '<button data-toggle="tooltip" style="background: transparent !important; border:none !important;" data-html="true" title="' + data + '" onclick="addTagging(\'' + data + '\')"><small class="text-muted"><span class="fas fa-plus-circle fa-lg" style="color: rgba(var(--main-color-1),1)"></span></small></button>';
+                            } else {
+                                return data;
+                            }
+
+
+
+
+                            //return data.substr(0, 10) + "...";
+                        }
+                    }, {
+                        title: 'Query',
+                        data: 'searched_on',
+                        render: function(data, type, row, meta) {
+                            var dayOfTheWeek = 'N/A';
+                            var time = 'N/A';
+                            if (typeof data != "undefined") {
+                                var date = new Date(data);
+                                var n = date.getDay();
+
+                                time = date.getHours() + ':' + date.getMinutes();
+
+                                var day = new Array();
+                                day[0] = "Sun.";
+                                day[1] = "Mon.";
+                                day[2] = "Tue.";
+                                day[3] = "Wed.";
+                                day[4] = "Thu.";
+                                day[5] = "Fri.";
+                                day[6] = "Sat.";
+                                //dayOfTheWeek = day[n] + ' @ ' + time;
+                                dayOfTheWeek = day[n];
+
+                            } else {
+                                dayOfTheWeek = '-';
+                                time = '-';
+                            }
+                            //var date = new Date(data);
+                            //var n = date.getDay();
+
+
+                            return dayOfTheWeek;
+                        }
+                    }, {
+                        title: 'Query (UTC)',
+                        data: 'searched_on',
+                        render: function(data) {
+
+                            var searchedOn = '';
+                            if (typeof data != "undefined") {
+
+                                var date = new Date(data); // M-D-YYYY
+
+                                var d = date.getDate();
+                                var m = date.getMonth();
+                                var y = date.getFullYear();
+
+                                //var d = new Date();
+                                var month = new Array();
+                                month[0] = "Jan";
+                                month[1] = "Feb";
+                                month[2] = "Mar";
+                                month[3] = "Apr";
+                                month[4] = "May";
+                                month[5] = "Jun";
+                                month[6] = "Jul";
+                                month[7] = "Aug";
+                                month[8] = "Sep";
+                                month[9] = "Oct";
+                                month[10] = "Nov";
+                                month[11] = "Dec";
+                                var n = month[m];
+                                //searchedOn = n + ' ' + d + ', ' + y;
+                                searchedOn = data;
+                            } else {
+                                searchedOn = '-';
+                            }
+
+
+                            return searchedOn;
+                            //return start_date;
+                        }
+                    }, {
+                        title: 'Departure',
+                        data: 'departure',
+                        render: function(data, type, full) {
+
+                            var div = '';
+                            var s = data;
+                            for (var i = 0; i < s.length; i++) {
+                                //console.log(s.charAt(i));
+                                div += '<div class="pane">' + s.charAt(i) + '</div>';
+                            }
+                            //return '<i class="fas fa-tasks" style="color:#E91E63;"></i>'
+                            //https://getbootstrap.com/docs/4.0/components/progress/
+                            //return '<div class="pane">S</div><div class="pane">y</div><div class="pane">d</div><div class="pane">n</div><div class="pane">e</div><div class="pane">y</div>';
+                            //return '<div class="">' + data + '</div>';
+                            return div;
+                        }
+                    }, {
+                        title: 'Destination',
+                        data: 'destination',
+                        render: function(data, type, full) {
+                            var div = '';
+                            var s = data;
+                            for (var i = 0; i < s.length; i++) {
+                                //console.log(s.charAt(i));
+                                div += '<div class="pane">' + s.charAt(i) + '</div>';
+                            }
+
+                            //return '<i class="fas fa-tasks" style="color:#E91E63;"></i>'
+                            //https://getbootstrap.com/docs/4.0/components/progress/
+                            //return '<div class="pane">S</div><div class="pane">i</div><div class="pane">o</div><div class="pane">n</div>';
+                            //return '<div class="">' + data + '</div>';
+                            return div;
+
+                        }
+                    }, {
+                        title: 'Departure',
+                        data: 'departure_date',
+                        render: function(data) {
+
+
+                            var date = new Date(data); // M-D-YYYY
+
+                            var d = date.getDate();
+                            var m = date.getMonth();
+                            var y = date.getFullYear();
+
+                            //var d = new Date();
+                            var month = new Array();
+                            month[0] = "Jan";
+                            month[1] = "Feb";
+                            month[2] = "Mar";
+                            month[3] = "Apr";
+                            month[4] = "May";
+                            month[5] = "Jun";
+                            month[6] = "Jul";
+                            month[7] = "Aug";
+                            month[8] = "Sep";
+                            month[9] = "Oct";
+                            month[10] = "Nov";
+                            month[11] = "Dec";
+                            var n = month[m];
+
+                            //return n + ' ' + d + ', ' + y;
+                            return data;
+                        }
+                    }
+                    /*, {
+                                            title: 'Stopovers',
+                                            data: 'price',
+                                            render: function(data, type, full) {
+                                                //return '<i class="fas fa-tasks" style="color:#E91E63;"></i>'
+                                                //https://getbootstrap.com/docs/4.0/components/progress/
+                                                //return '<span class="fa-stack"><span class="fas fa-circle fa-stack-1x" style="color: #607D8B"></span><strong class="fa-stack-1x" style="color: rgba(var(--main-color-white),1)">TBD</strong></span>';
+                                                return 'tbd';
+                                            }
+                                        }*/
+                    , {
+                        title: 'Arrival',
+                        data: 'arrival_date',
+                        render: function(data) {
+
+
+
+                            var date = new Date(data); // M-D-YYYY
+
+                            var d = date.getDate();
+                            var m = date.getMonth() + 1;
+                            var y = date.getFullYear();
+
+                            //var d = new Date();
+                            var month = new Array();
+                            month[0] = "Jan";
+                            month[1] = "Feb";
+                            month[2] = "Mar";
+                            month[3] = "Apr";
+                            month[4] = "May";
+                            month[5] = "Jun";
+                            month[6] = "Jul";
+                            month[7] = "Aug";
+                            month[8] = "Sep";
+                            month[9] = "Oct";
+                            month[10] = "Nov";
+                            month[11] = "Dec";
+                            var n = month[m];
+
+                            //return n + ' ' + d + ', ' + y;
+                            return data;
+                        }
+                    }, {
+                        title: 'Days to departure',
+                        data: 'departure_date',
+                        render: function(data) {
+
+                            var daysToDeparture = 0;
+                            //var start_date = '';
+                            var departure_date = data;
+
+                            today = new Date();
+                            // To calculate Today's date
+                            var todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // today
+
+
+                            // To set two dates to two variables 
+                            var date1 = new Date(todayDate); // today
+                            var date2 = new Date(departure_date); // delivery date     
+                            // To calculate the time difference of two dates 
+                            var project_length_difference_in_time = date1.getTime() - date2.getTime();
+                            // To calculate the no. of days between two dates 
+                            var project_length_difference_in_days = project_length_difference_in_time / (1000 * 3600 * 24);
+
+
+
+                            //var progress = 0;
+                            //var project_progression_difference_in_days = 0;
+                            if (date2 <= date1) {
+                                percentage_already_completed = 100;
+                                daysToDeparture = 0;
+                            } else {
+                                daysToDeparture = project_length_difference_in_days;
+                                // To calculate the time difference between today and the end of the project 
+                                //var project_progression_difference_in_time = todayDate.getTime() - date2.getTime();
+                                // To calculate the no. of days between today and the end of the project 
+                                //var project_progression_difference_in_days = project_progression_difference_in_time / (1000 * 3600 * 24);
+
+                                //percentage_until_completion = project_progression_difference_in_days / project_length_difference_in_days; // e.g. 0.74
+                                //percentage_already_completed = 1 - percentage_until_completion;
+                            }
+
+                            //return '<progress style="background-color:#CDDC39" value="' + percentage_already_completed * 100 + '" max="100">' + (percentage_already_completed * 100) + '</progress>';
+                            //return '<div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="' + Math.round(percentage_already_completed * 100) + '" aria-valuemin="0" aria-valuemax="100" style="width:' + Math.round(percentage_already_completed * 100) + '%">' + Math.round(percentage_already_completed * 100) + '% completed</div></div>';
+                            return Math.abs(Math.round(daysToDeparture, 0));
+                            /*return type === 'display' ?
+                                '<progress value="50" max="100"></progress>' :
+                                data;*/
+                        }
+                    }, {
+                        title: 'Buy or wait',
+                        data: 'delivery_date',
+                        render: function(data, type, row, meta) {
+                            return '<span  data-toggle="tooltip" title="on time" class="fas fa-circle fa-lg" style="color: rgba(var(--main-color-green),1)"></span><span  data-toggle="tooltip" title="on time" class="fas fa-circle fa-lg" style="color: rgba(var(--main-color-red-light),1)"></span>';
+                        }
+                    }
+                    /*, {
+                                            title: 'Objective',
+                                            data: 'objective',
+                                            "orderable": false,
+                                            //"className": 'justifyContent',
+                                            render: function(data) {
+                                                //Encoding for tooltip pop-up --> JS to HTML
+                                                var data = data.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up	
+                                                data = data.replace(/(?:')/g, "&#039;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up			
+                                                data = data.replace(/(?:&)/g, "&amp;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                                                data = data.replace(/(?:<)/g, "&lt;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                                                data = data.replace(/(?:>)/g, "&gt;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                                                data = data.replace(/(?:")/g, "&quot;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up															
+
+                                                return '<button data-toggle="tooltip" style="background: transparent !important; border:none !important;" data-html="true" title="' + data + '" onclick="addTagging(\'' + data + '\')"><small class="text-muted"><span class="fas fa-comment fa-lg" style="color: rgba(var(--main-color-1),1)"></span></small></button>';
+                                                //return data.substr(0, 10) + "...";
+                                            }
+                                        }, {
+                                            title: 'Success',
+                                            data: 'success_measures',
+                                            "orderable": false,
+                                            //"className": 'justifyContent',
+                                            render: function(data) {
+                                                //Encoding for tooltip pop-up --> JS to HTML
+                                                var data = data.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up	
+                                                data = data.replace(/(?:')/g, "&#039;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up			
+                                                data = data.replace(/(?:&)/g, "&amp;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                                                data = data.replace(/(?:<)/g, "&lt;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                                                data = data.replace(/(?:>)/g, "&gt;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                                                data = data.replace(/(?:")/g, "&quot;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up															
+
+                                                return '<button data-toggle="tooltip" style="background: transparent !important; border:none !important;" data-html="true" title="' + data + '" onclick="addTagging(\'' + data + '\')"><small class="text-muted"><span class="fas fa-comment fa-lg" style="color: rgba(var(--main-color-1),1)"></span></small></button>';
+                                                //return data.substr(0, 10) + "...";
+                                            }
+                                        }, {
+                                            title: 'Deliverable',
+                                            data: 'deliverables',
+                                            "orderable": false,
+                                            //"className": 'justifyContent',
+                                            render: function(data) {
+
+                                                //Encoding for tooltip pop-up --> JS to HTML
+                                                var data = data.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up	
+                                                data = data.replace(/(?:')/g, "&#039;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up			
+                                                data = data.replace(/(?:&)/g, "&amp;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                                                data = data.replace(/(?:<)/g, "&lt;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                                                data = data.replace(/(?:>)/g, "&gt;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up								
+                                                data = data.replace(/(?:")/g, "&quot;"); // replace return carriages/new line by HTML tag <br/>	for tooltip pop-up															
+
+                                                return '<button data-toggle="tooltip" style="background: transparent !important; border:none !important;" data-html="true" title="' + data + '" onclick="addTagging(\'' + data + '\')"><small class="text-muted"><span class="fas fa-comment fa-lg" style="color: rgba(var(--main-color-1),1)"></span></small></button>';
+                                                //return data.substr(0, 10) + "...";
+                                            }
+                                        }*/
+                    , {
+                        title: 'Predictions',
+                        data: 'milestones',
+                        className: 'dt-body-center',
+                        render: function(data) {
+
+                            var mil = '<div>';
+                            // Milestone #
+                            var count = 1;
+
+                            // Loop through all the milestones belonging to an project
+                            for (var k in data) {
+                                mil += '<div style="float:left; position: relative">';
+
+                                // Add celebration star when necessary
+                                var celebrationSpan = '';
+                                if (data[k].celebration_point.toLowerCase() == 'yes' || data[k].celebration_point.toLowerCase() == 'y') {
+                                    celebrationSpan = '<div style="position: absolute; top:-0.4em; right:0"><i data-toggle="tooltip" title="Celebrate!" class="fas fa-star fa-xs" style="color:rgba(var(--main-color-star),1)"></i></div>';
+                                } else {
+                                    celebrationSpan = '';
+                                }
+
+                                // Pick colour (whether the milestone impacts the business or not)
+                                var colorCircle = '';
+                                var tooltipBusinessImpact = '';
+                                if (data[k].business_impact.toLowerCase() == 'y' || data[k].business_impact.toLowerCase() == 'yes') {
+                                    colorCircle = 'rgba(var(--main-color-2),1)';
+                                    tooltipBusinessImpact = 'data-toggle="tooltip" title="Business impact!"';
+                                } else {
+                                    colorCircle = 'rgba(var(--main-color-1),1)';
+                                }
+
+                                // Cercles containing milestone #, cercle's colour and star (when applicable)
+                                mil += '<span ' + tooltipBusinessImpact + ' class="fa-stack"><span class="fas fa-circle fa-stack-2x" style="color: ' + colorCircle + '"></span><strong class="fa-stack-1x" style="color: rgba(var(--main-color-white),1)">' + count + '</strong></span>' + celebrationSpan;
+
+                                mil += '</div>';
+
+                                // Increment the milestone #
+                                count += 1;
+                            }
+                            mil += '</div>';
+
+
+                            return '<img src="img/10377-woman-pilot-light-skin-tone-icon.png"/> Deal!';
+                        }
+                    }
+                ]
+
+
+            });
+
+            // *************************************************************
+            // Add event listener for opening and closing details
+            // *************************************************************	
+            $('#example tbody').on('click', 'td.details-control', function() {
+                var table = $("#example").DataTable();
+
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+                var tdi = tr.find("i.fa");
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                    tdi.first().removeClass('fa-minus-square');
+                    tdi.first().addClass('fa-plus-square');
+                } else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                    tr.addClass('shown');
+                    tdi.first().removeClass('fa-plus-square');
+                    tdi.first().addClass('fa-minus-square');
+                }
+            });
+
+
+
+            // ************************************************************
+            // Add toggle /tooltip | doesn't work so far
+            // ************************************************************
+            /*$("#example tbody").on("draw.dt", function() {
+                $("[data-toggle='tooltip']").tooltip({
+                    placement: 'left',
+                    trigger: "hover"
+                }); // tooltip to the left (blinking phenomenon otherwise) and displayed when hover only
+            });*/
+
+
+
+
+        });
+
+
+
+
+
+        // ************************************************************
+        // show popup to add tagging 
+        // ************************************************************
+        function addTagging(comment) {
+            $("#AddTagging").modal({
+                show: true
+            }); // {backdrop: 'static', keyboard: false, show: true} Cannot escape the windows unless the user clicks on cancel
+
+            //Encoding for Bootstrap modal pop-up --> HTML to JS			
+            var comment = comment.replace(/<br\s*\/?>/mg, "\n");
+            var comment = comment.replace(/&#039;/mg, "'");
+            var comment = comment.replace(/&amp;/mg, "&");
+            var comment = comment.replace(/&lt;/mg, "<");
+            var comment = comment.replace(/&gt;/mg, ">");
+            var comment = comment.replace(/&quot;/mg, '"');
+
+            //Assign value to field			
+            $(".modal-body #tagging").val(comment);
+
+            // Focus on textarea inside a modal on click
+            $('#AddTagging').on('shown.bs.modal', function() {
+                $('#tagging').focus();
+            })
+        }
+    </script>
+
+
+    <script>
+        // Black tooltip when hovering
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'left',
+                trigger: "hover"
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
+
+
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!-- ************* << POP-UP >> Comment Manager // After review --**************** -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<div class="modal fade bd-example-modal-lg" id="AddCommentManager" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-row">
+                    <label for="">Gantt chart&nbsp;&nbsp;<i class="fas fa-project-diagram"></i></label>
+                    <!--<textarea class="md-textarea form-control" placeholder="" name="commentManager" title="commentManager" id="commentManager" rows="10"></textarea>-->
+                    <iframe src="insert_gantt_chart.html" width="1200px" height="550px" seamless frameBorder="0" scrolling="no"></iframe>
+
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-success" data-dismiss="modal" onclick="updateCommentAfterReview()" data-toggle="tooltip" align="left" style="float:left !important">Add</button>-->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!-- ************* << POP-UP >> Tagging *************** -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<div class="modal fade" id="AddTagging" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="updateActions.php" method="post" id="form-tagging" target="hidden-frame">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="validationDefault01">Content&nbsp;&nbsp;<span class="fas fa-comment fa-lg" style="color: rgba(var(--main-color-1),1)"></span></label>
+                            <textarea class="md-textarea form-control" placeholder="" name="tagging" title="tagging" id="tagging" rows="14"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-success" data-dismiss="modal" onclick="updateTagging()" data-toggle="tooltip" align="left" style="float:left !important">Add</button>-->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,398 @@
+/* Useful colours --> WM
+
+#8A7E70 --> dark-pastel-brown --> 138,126,112
+#ECE6DE --> light-pastel-brown --> 236,230,222
+
+#00925B --> dark-green (official one) --> 0,146,91
+#7F9C90 --> light-pastel-green --> 127,156,144
+
+#F6F6F6 --> light-pastel-grey --> 246,246,246
+#EAEAED --> light-pastel-grey --> 234,234,237
+#DCDCDC --> light-pastel-grey --> 220,220,220
+
+#1A171B --> text colour --> 26,23,27
+
+ralewayLight --> Best font
+
+*/
+
+:root {
+    --main-font: 'Roboto Bold';
+    /* Bloomberg   Roboto Bold    Roboto   */
+    --main-font-bold: 'Roboto Bold';
+    --main-color-topbar: 255, 214, 0;
+    --main-color-background: 255, 214, 0;
+    /*255, 196, 0;*/
+    /* 24, 44, 72 */
+    --main-color-table: 33, 33, 33;
+    /*33, 33, 33;*/
+    /* 255, 196, 0; */
+    --main-color-2: 33, 33, 33;
+    /* 215, 29, 13 */
+    --main-color-white: 255, 255, 255;
+    --main-color-red: 215, 29, 13;
+    --main-color-star: 255, 255, 0;
+    /* 255, 234, 0 */
+    --main-color-blue: 25, 118, 210;
+    --main-color-green: 139, 195, 74;
+    --main-color-green-flashing: 139, 195, 74;
+    --main-color-green-light: 232, 245, 233;
+    --main-color-orange: 253, 216, 53;
+    --main-color-red: 244, 67, 54;
+    --main-color-red-flashing: 244, 67, 54;
+    --main-color-red-light: 255, 235, 238;
+    /* 255,152,0; */
+}
+
+body {
+    font-family: var(--main-font);
+    background-color: rgba(var(--main-color-background), 1);
+    /* #90A4AE; */
+    color: #fff;
+    /*#CFD8DC;*/
+    /* #CFD8DC */
+}
+
+
+/************** PAGINATION ************************************/
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: rgba(var(--main-color-table), 1);
+    /*#007bff;*/
+    border-color: rgba(var(--main-color-table), 1);
+    /*#007bff;*/
+}
+
+.page-link {
+    color: rgba(var(--main-color-table), 1);
+}
+
+.page-link:hover {
+    color: rgba(var(--main-color-table), 1);
+}
+
+.page-item.active .page-link {
+    background-color: rgba(var(--main-color-table), 1);
+    border-color: rgba(var(--main-color-table), 1);
+}
+
+
+/********** Aligning/Centering titles and content in TH and TD **********************/
+
+th {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+td {
+    text-align: center;
+    font-size: 0.9em;
+    color: #fff;
+}
+
+thead {
+    background-color: rgba(var(--main-color-table), 1);
+    /*#212121;*/
+    color: white;
+    border: 0px;
+}
+
+th.sorting::before {
+    color: white;
+    border: 0px;
+    border-color: black;
+}
+
+th.sorting::after {
+    color: white;
+    border: 0px;
+    border-color: black;
+}
+
+th.sorting {
+    color: white;
+    border: 0px;
+    border-color: black;
+}
+
+th.sorting {
+    color: white;
+    border: 0px;
+    border-color: black;
+}
+
+th.sorting_desc {
+    color: white;
+    border: 0px;
+    border-color: black;
+}
+
+th.sorting_asc {
+    color: white;
+    border: 0px;
+    border-color: black;
+}
+
+
+/***************************************/
+
+
+/************** Justify content ******************/
+
+
+/***************************************/
+
+.justifyContent {
+    text-align: justify;
+}
+
+.contentAlignLeftSmall {
+    text-align: justify;
+}
+
+
+/* ************************************* */
+
+
+/* ******   HTML Tables | ARRAY   ****** */
+
+
+/* ************************************* */
+
+#example.table {
+    background-color: #fff;
+}
+
+#example.table.dataTable tbody th,
+#example.table.dataTable tbody td {
+    padding: 0.5em 0.3em;
+    /* e.g. change 8x to 4px here */
+}
+
+.table-striped>tbody>tr:nth-child(2n+1)>td,
+.table-striped>tbody>tr:nth-child(2n+1)>th {
+    background-color: rgba(var(--main-color-table), 0.9);
+    /*rgba(95, 163, 188, 0.4);*/
+    /*#90CAF9;*/
+    /* #E8EAF6 */
+}
+
+.table-striped>tbody>tr:nth-child(2n)>td,
+.table-striped>tbody>tr:nth-child(1n)>th {
+    background-color: rgba(var(--main-color-table), 0.8);
+    /*rgba(95, 163, 188, 0.2);*/
+    /*#90CAF9;*/
+    /* #E8EAF6 */
+}
+
+table.dataTable.no-footer {
+    border-bottom: 2px solid #1A171B;
+}
+
+
+/********** Sub-Table **********************/
+
+table.subarray {
+    background-color: #fff;
+}
+
+thead.subarray {
+    background-color: rgba(var(--main-color-2), 1);
+    /*#212121;*/
+    color: white;
+    border: 0px;
+}
+
+.table-striped-sub-array>tbody>tr:nth-child(2n+1)>td,
+.table-striped-sub-array>tbody>tr:nth-child(2n+1)>th {
+    background-color: rgba(var(--main-color-2), 0.3);
+}
+
+.table-striped-sub-array>tbody>tr:nth-child(2n)>td,
+.table-striped-sub-array>tbody>tr:nth-child(1n)>th {
+    background-color: rgba(var(--main-color-2), 0.1);
+    /*#90CAF9;*/
+    /* #E8EAF6 */
+}
+
+
+/*thead.subarray {
+    background-color: #4CAF50;
+    color: white;
+    border: 0px;
+}*/
+
+th.subarray {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+td.subarray {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+
+/********* FLAGS *************/
+
+.f32 .flag {
+    vertical-align: middle;
+    margin: -8px 0;
+}
+
+progress {
+    width: 100%;
+}
+
+.progress-bar {
+    background-color: #2a95bf;
+}
+
+.progress {
+    background-color: #EEEEEE;
+}
+
+
+/********* +/- | Child rows (show extra / detailed information *************/
+
+
+/*td.details-control {
+    background: url('../resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+}*/
+
+
+/*tr.shown td.details-control {
+    background: url('../resources/details_close.png') no-repeat center center;
+}*/
+
+
+/********************************/
+
+@font-face {
+    font-family: "Roboto";
+    src: url("fonts/roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Roboto Bold";
+    src: url("fonts/roboto/Roboto-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Bloomberg";
+    src: url("fonts/Bloomberg Logotypes-Medium-4f4134c199.woff");
+}
+
+.badge1 {
+    color: #FFF;
+    font-family: var(--main-font);
+    font-weight: 100;
+    font-size: 0.9em;
+    background-color: #FF4081;
+}
+
+.badge2 {
+    color: #FFF;
+    font-family: var(--main-font);
+    font-weight: 100;
+    font-size: 0.9em;
+    background-color: #66BB6A
+}
+
+.badge3 {
+    color: #FFF;
+    font-family: var(--main-font);
+    font-weight: 100;
+    font-size: 0.9em;
+    background-color: #2a95bf
+}
+
+.badge4 {
+    color: #FFF;
+    font-family: var(--main-font);
+    font-weight: 100;
+    font-size: 0.9em;
+    background-color: #FF6F00
+}
+
+.navbar {
+    background-color: rgba(var(--main-color-topbar), 1);
+    /* 24, 44, 72 */
+    color: white;
+}
+
+nav .navbar-nav li a {
+    color: rgba(var(--main-color-background), 1) !important;
+    background-color: rgba(var(--main-color-table), 1) !important;
+}
+
+.pane {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    margin: 0 auto;
+    border-radius: .05em;
+    border: .01em solid #333;
+    position: relative;
+    background: #000;
+    text-align: center;
+    line-height: 1;
+    font-size: 1.3em;
+    color: rgba(var(--main-color-background), 1);
+    /*font-family: monospace;*/
+    font-family: var(--main-font);
+    box-shadow: 0px .02em 0 #ccc, 0px .05em 0 #000;
+    text-shadow: -1px -2px 2px rgba(0, 0, 0, 1);
+    z-index: 50;
+}
+
+.pane:after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    content: "";
+    border-top: 2px solid #000;
+    border-bottom: 2px solid rgba(255, 255, 255, .3);
+    width: 100%;
+    height: 0px;
+    opacity: .8;
+    z-index: 10;
+    margin-top: -1px
+}
+
+.paneHeader {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    margin: 0 auto;
+    border-radius: .05em;
+    border: .01em solid #333;
+    position: relative;
+    background: #000;
+    text-align: center;
+    line-height: 1;
+    font-size: 2em;
+    color: rgba(var(--main-color-background), 1);
+    /*font-family: monospace;*/
+    font-family: var(--main-font);
+    box-shadow: 0px .02em 0 #ccc, 0px .05em 0 #000;
+    text-shadow: -1px -2px 2px rgba(0, 0, 0, 1);
+    z-index: 50;
+}
+
+.paneHeader:after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    content: "";
+    border-top: 2px solid #000;
+    border-bottom: 2px solid rgba(255, 255, 255, .3);
+    width: 100%;
+    height: 0px;
+    opacity: .8;
+    z-index: 10;
+    margin-top: -1px
+}

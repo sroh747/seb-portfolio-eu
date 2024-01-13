@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="RAS">
+    <meta name="generator" content="RAS">
+    <title>RAS | template</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/jumbotron/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Fontawesome core CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/custom.css">
+
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="js/RadarChart.js"></script>
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        
+        .jumbotron {
+            background-color: #FFCC00;
+            height: 15em;
+        }
+        
+        .bg-yellow {
+            background-color: #FFCC00;
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="jumbotron.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <!-- bg-dark -->
+        <a class="navbar-brand" href="#">RAS dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Strategic/Business</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Credit, Market and Liquidity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Operational</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Compliance</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Reputational <span class="sr-only">(current)</span></a>
+                </li>
+
+                <!--<li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown01">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>-->
+            </ul>
+
+
+
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search / Chatbot" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+            <!--<form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>-->
+        </div>
+    </nav>
+
+    <main role="main">
+
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-3">5 | Reputational risk</h1>
+                <p>% Retention of High-Potential Key Managers&nbsp;&nbsp; ///&nbsp;&nbsp;% Employee Satisfaction and Engagement&nbsp;&nbsp; ///&nbsp;&nbsp;Regulatory Ratings (CAMEL)&nbsp;&nbsp; ///&nbsp;&nbsp;% Customer Satisfaction&nbsp;&nbsp; ///&nbsp;&nbsp;#
+                    of Significant Legal, Ethical, and Reputational Events&nbsp;&nbsp; ///&nbsp;&nbsp;Cumulative Five-Year Stock Return vs. Comparable Index</p>
+
+
+                <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>-->
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Example row of columns -->
+
+
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>Sentiment analysis | # of online complaints</h2>
+
+                    <iframe src="indexNodes.html" width="100%" height="450" seamless frameBorder="0" scrolling="no"></iframe>
+
+                    <!--<p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-success" target="_blank" href="" role="button">View details &raquo;</a></p>-->
+
+
+                </div>
+
+                <!--<div class="col-md-3">
+          <h2>Comments</h2>
+          <p contenteditable="true">Red: negative feedbacks<br />Green: positive feedbacks</p>
+        </div>-->
+
+                <div class="col-md-4">
+                    <div class="card bg-yellow mb-3">
+                        <!--<div class="card-header">Editable comments</div>-->
+                        <div class="card-body">
+                            <h5 class="card-title">Editable comments</h5>
+                            <p class="card-text" contenteditable="true">Red: negative feedbacks<br />Green: positive feedbacks</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+            <hr>
+
+            <!-- Example row of columns -->
+            <!--<div class="row">
+        <div class="col-md-3">
+          <h2>Profils</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-success" target="_blank" href="" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-3">
+          <h2>Objectifs</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-success" target="_blank" href="" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-3">
+          <h2>Evaluations</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-success" target="_blank" href="" role="button">View details &raquo;</a></p>
+        </div>
+      </div>-->
+
+
+        </div>
+        <!-- /container -->
+
+    </main>
+
+    <footer class="container">
+        <p>&copy; SR 2020</p>
+    </footer>
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>-->
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="js/script.js"></script>
+
+</body>
+
+</html>

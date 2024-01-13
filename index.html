@@ -1,0 +1,676 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>My profile</title>
+    <meta name="description" content="E-portfolio">
+    <meta name="author"
+        content="Sebastien Roh | Entrepreneur | Servant leader | Digital transformation | Business improvement | Agile | Turning data into insights | Business Intelligence | Digital marketing | Web savvy | Global mindset | Machine Learning | Cloud/AWS">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta property="og:title" content="E-portfolio | Sebastien Roh">
+    <meta property="og:description"
+        content="Digital transformation | turning data into insights | Business Intelligence | digital marketing | web savvy | global mindset">
+    <meta property="og:image" content="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/thumbnail.jpg">
+    <meta property="og:url" content="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com">
+
+    <link rel="icon" href="img/favicon.ico">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/blood.min.css"
+        id="theme">
+    <!-- moon.css -->
+    <!--<link rel="stylesheet" href="custom2.css">-->
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+
+    <!--<script src="reveal/lib/js/html5shiv.js"></script>
+    <script type="text/javascript"
+        src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=aUm67MzBy5ItRz4-_Va-1_FHMumZktjRcSCAWVVd8dxRHT5glzRv0pRGJLrlMn44g6fz3yYwDqkGHVlp1-pdNeqTRZry-Exccf3Xrbrg8WcNmg0iG_4G7vZcRX1-BDVYYTRaDEtVoLs_f1folAFTsINjL76grBjzUM-ntUFK7fH-2WibbkFmcWn_FHi06SZJCGqHPp4mVjQ-izysPnttPOkQ1RX0V1TThN_Sutk3QwmGAIq4DbCMQ7-9tNufPTDyXorPmo2LXBHYn4VoY7IERYy0zQZDFNyYbRcivK5dBmuWfGs8M55ESfNXZCoaG1nl43mB2cMGip2XUgVo4aUQVK0ohKJmChKkmk74PrtZk1TR2ygOI-n463-Stuhbj7WLY2UePCi5Hn3Tq6WaAKxUyUHe9Dzby-EHabOibA5KobnavCEYQj4I2ww1dpi2ZXHigfIO8tsn8DRX7py0H6e-cBXlGCB-erBmUp6QAvsKCZLYbNfAr3qKoIZ3prsXXiSf9qRhSen3nWJzw944KxHkOxjizV2nALS341P9qWg1g0aEJReRl-HPnov8Yj2w41rNWyPojHrWs78Zr9sRklM8twP0ZnBfy9eQg9lQRGWy__0ItoFy_NuShxwHj8m-Yj2KV25-k5KDM8jKxYjm31F6cbVDCW-fHxrxqoKcSGQlEM30hP78Jh5fNk2om6SP3feEiB9CX_IaavKc7JNh9-dgfBGOBSk19I-mDwmVShkqQKr6jCXhTnU8HafETrY9Y-bUE3daHBa2oVhWHtRKWkYDIIKsIoSyYtn9DHqIuksXplGyt7ldnwAZiWuy-2oEmUkd4hf2Olay8KiQal8lgsvvsKXTT8boohFWUpjN1XwBBnY-A6a2W4e3pW3-HaarUEIhyO1ntlDgd5na5hddHZRn2cgmRsUNIqyW4mHtdPM4D10HGjYRpQT3dS0JSwNGSvg4o-a0WRWPr443XRI8iM0bajDFOVqoPlVYrt9ZOeJIj6FrZzkDHFKOciq7lo_vg3_96D9JhOvnEnhogIHJWyhk4Rno47cy-H04LWlpaBD3j5pbOwDrM3NCizw3-CahRVsveDVli9a1nxW9TcVFzJ9eZ7yLN6DzcA-2CMRRoSX2VF-Wb-Cf3FFDwncPqn6qY3eICmkqZr2R67erRXxxb8TlkwuHMQSaAJpSb2UDrD_kWseI22o8d2gny2f1K9Mkzt-Hw5Wqe7T7JliuejmD0taN5HQHgUZLnlFmWKVh3SUs5QbBc4acouvIoeBsMz_uEIa3rXV6xwkqnHcy1ON1M0VeO3J4c0OqyFRpJT0qRxFItwkFwyf5FuUODZXvEXgVKB_PzpxC6wA1BdIqmXoJWL6yTwAgrbmuM0wU_g_MFTiN4GNCrg8knu4S9E1rSbjtexBy0bvfSV4oBknzXp5DAbvBE96oxU8JBkKXCY4Zi9mbKxbB1zF9HSsUWlJiPRqoMNCA5wV5gBrRHwiVOKMgjbNwKOCfEUzQ4HOve8J1GidyJMSR4iALIIBrpwLj9aGyWaYr-vIAcvLLRhrZ8JhtKQ9G30aoJ4eb75fsril_de6eJVJCdJ5tZZAOvr6mvmBKYfKsu0kVVmszkM1DxCT4QNflD76jsR-3ZtIK-5X5fZYYd2FCRbjfBm-ruTmQnnJrLlhWzg99OBwSNGa1CSkomn4SneFoQDZ41qkDgufqeVOb210IE4tT1MrYF6JJ3_IzyItAqMKn8cvxhhdeJe1cW7rd-1aqKF32_yGOnKydq8uVo358jXPeG4NTuBkRwl8k36MjDhPMiMQOmmrIlEIXc18a6AMWhYDrzO7IzIeOMRYIx_xIQ1orm-YpHZSqB0pE-Ke_cBL9fefZiNonM178xv_FjKbetYY8j792VqABn_m8BsWKRuYQ6IDR9J9RI9_NS4nvPhSRnef2q5QGcPsgufiobi5XbrLES-kUH30gvbfadv-jXnOqjFtdGWqeDUVeEuc-DTzX6HKWa9U53h8-irmOpX6cbKeKlk4sxBkjDsSsItc"
+        charset="UTF-8"></script>
+    <script type="text/javascript"
+        src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=IoxAuGARPRu7OHwyv7r4vTvCf87A5Ofee1vIbyySs9w0csLaZMP9VxRrOu5_noUw4sA042FG7RBeNSaCMzQbg606Sb4AIj-Dcoi3b4fLPPFGZm2rIy_F7qXkzstz9zoDUfzuPatnTmI9VbDJAwG-japaJsfp3zSstg0xkaZgSamir4FmPQYmDv1Hwu4QukCgA524_OU6978q1lbxbFSDbThf8xUsuneDn_RYZ3CfpiBtBNDp6esJe0JoLk0I-UAmG5xLsPs9BqiX-KyZPfnXKb_EBDLljTszag66yoC0Y-oBxWnaKErRoVC4rbQGk7JB_q8MSr3IvNKW3CPLe1Q9U4TUUiO5QvcQvgqT4wNQt4UCP8Bv3tPN7EFTRGeUYBmJ2irZB-qn-X4wi71TurU1MXYxp_ynY1sTDOu9s73e4Rh_So6WaUz1CTjPXWpaZXQ5Rk1uHkITRhlg5h4nEBo6S-beR2ihY-sNgIfaQrFxcZWVYGSIJKPgfagBYFXYJEQgHVNe7P74DyG0CFLBFrTXQmAkavFwk2yixqbIynm8CFmFqNY_qWOvRbh2NCc-bz_dMbXyHSdxsk4Y26spBhrSx4OXrIWMq8BrP9I8tm2R4jyj3iQFUMjCbvp6n6KMfQTP-P54daZtmIV6nqLWXAH_FV70IxKoxqmT5yMkPIwbxaDeTyIe67w0VNJhWWYmJKIuUvcfVrRcjKrKndRskc-xOUyKHOAI1uSAga4zeXz4jpOX3q4-_50CwoBhBo_iF6JhoyQJ63lJkUl2NFsTyyyamOvSEHnaio_MudCDCaWW0BBrEmU6OJhM_M8lOqcTHIanKXtkJFCKGHdTPbbGbbuWa2CiKjK3ortxOSNdY1e-mbG4aXCm8TvABKs2tJHEWppqrANePFtKd-IvV8pkDvW6CNbjBJwHBvpRRQE6Ll6YIKtMSHaUf9_4HHn6iws9xCgDr83weg6CbpNKzEY6rgZwIL0O3b7HpgJPkaq-s7kEcl-4GHOIWgdv5o_PZRoWIG3_SNkkjbSQSs2CbctG6QxyU-uZ1ug-E7gv78dHwyeujP0HDaBuy7Th8LHcaMoVe9GqP373cOwLxQ4ynfH-lVLtAiYZGYbkLO49hsKd3aWNjvEFeOKAfK_mva9M67n_cGMXiAW_Y_DDNC3IPyvJVvaZVP9o3S__L-hqcsJwPZQgxl55pOyAH8xhqK3sERQGC2EIyWrGX4-NkFBxvj3Hv3tak7iWTrCUOZh-hbvCPZg0tW2dLFTLElMNL0GmrYqAcqqp2H_Fo0zZhzBgA8V6ZJC7WYArel1qALnMEcr98Eddgu1MSouma2Wvf4OPhsuABJVO70FliHIUWty0v1CKJnu4aMC_iWwBsg-LbJ20I89mqpFsOd_BlbuA-dKyxqGNrr9R9t6W6tkUAUeNIeAWTNDjBxRv7zFtsxWp2I7NIoJFtYdBJLEX5DTNEwCN_uHjOQO-iguA2Upz7csyFwmoQEjg0U5cdZoU5DYJthj7XX2OM7ojU6_VRsYbiWfTYM_MLMmuHkqLlFqCbfME8ko_z8Fm2C9HtDa1l7UekreL57bi50cQH6ggkeKhtTun-xA4p0araSDphTTb_zKlY2CfUQN_Z8lf9YIk-itQs76fxjOO3YdXrApQUxcc0XgHd4sWa5WcqLKYF5exQvynsAlOKbO_IyudzZIDvGchmu_WEo8tTV2eC78E8b1T8G4cgjxiLgz22_x_ykJXVI7CNVW3CjenvEUoYJsl3cnHgwbO3aJiqPMJrG9dzmXBbzRH2CeUq6qeF0EaVsyKBAJSNvxAOxTq_Wl9lsKTThSaR4AmlGeXWWG22drj_3jmveQeZoqT3Tyhn_8ZPUlHb-Yx_JDOJGdTlE2ovRCQgtjQjdgsehKvxlvi_SuAK64ttMtv-IklIkuWgPr119vqCoSdrCcwBsBZFqAtsaxfGBajs_NFWf1iu7trmv3E8PQFqleLQqpUnLoM6KOW85_vgT3FbPoYwIEtwHiwV4K8hj4vU5qFf9Aty1o"
+        charset="UTF-8"></script>
+    <script type="text/javascript"
+        src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=7Lv8YlCTlhZbYbF4a6iZwfKazMKRMENZGhf74uQQY7lntb9WcccG01IiBHZr8aJZPcnxdRRw-_iFj6CD8qwWBwNThwPaL0RM6Jh-FBhpDoOruMtFDWehfx-FVqSttq5HpMsvH0KK2DrQEHeURXGPZcDtpP8ML1xxJeXHgM-jetw7ticot9w_-oTp5XdFknyTh2w90rrrpeIFUYMgio9dpvKSv9_sc2J926W1aJ58Y3JXzgI72xpZWPC6824TtI4-vvnnZBSuO0fmoq1294jb5MAGcr7hjdQQKVw914rTYROBEj_F2UngigzpBzk38ji4d1jECLH_1R_8kMB44PYiE5OqjnwXUSvyS2573rNIrmuQ2JIK3duKiYbQUcQ9WwnQ5Bv2IeRgEfgG1VugyXEjlZLBj87VpVMqv4SpJWhw9qr4MDumdaGcu0fGaWIWI8MyKbyzrA4p6whRi5d47n1Oo5cGiSKqoMGnruzTK5GJqBK_t4NsWrxOkEnFduudsWcXLz6P3kVRxmptx0hMzftHSf3R_NjRO5gxxLrBl7HCcBBYBsX-FT0zxwi0v5WPkCk3vcxNLQbG4nvYiTpX4-vJHJadmmkh1iSrrr-BYYbQP7x_cO4FQPTLF4wgL7UQzdfbDijjFe9WesySWe5rO2MVJmPW0IaJYSVWTF35yZOfTBzG9DlsaWYdwH2Poad7tBr-xItKlAzqbUUDWKJD5NfHOEsUBaguZXGIppjhB08C2_FbS9cs0qW33Ki1QYwueBewP2l9O4MfXSJ81hXa2hp9go3v_8OEnE7G5e_junTOdeWoRt5wO_uicPM1Gyioqg_7ipM2N3KAAE1rphxfj18sOkgtV_u0-HrS5qbk9398LjZH7OsZsyZvm9BCLSjdFVIE09QX0sC-un1-LBV3mUEPgqRFX7TB2fTc92xHsW92o4xLaQ9FFM0P_NURbprYtWlt5AWPRQcFshWpdY-8cKtXINgWZIRns7eUHfyLxN-6jkdl2hrkVSz9W1hr-ra40hBqKOGe9m-Dz9GLMVGGHg5X2_rdu2IKkCtq6l4xWFbtqVbWzh3vFcCkb8Tkri9WH1jrQPATRwT7CbfQ2Jj6xtLlcWlgxggT8FnOMfjFWX7cu26Nrlzf5lurVJhYKeQ7ZOiy8zDuUXP3dx8Y9IAHPXyvgq9rxuD3MVHqZiXwhDeeI_hmMnFbnmQ00_yDw6l9vVg5KklfJO2kYK_UhRX2APensAahd5X6AX4EKhBa1qhcjnmTVhnMljSWlKw5BFifGU22FU7kx1KK_2kdb_VuDPa6EgOea1ede4NhOFRSaGmasTUcsbhFNYSZSR2iQ5zw2HTNilVTdPPW3IkGNo13ORbZlZURD-JwErCOknaGYEFZ8R4w3YDiteJ1Qfg70H4Q23jhogOzRYdkuVUmoLDFL_Fo8o0hGSG7ed5CKTycfwm1-bEfaapwdHY3S5l3ip1w1q3tZpZIi1Tlb0uJxbepmifoFnEY7ZE8e4osv9HqbapGMx6i4yxFffPHGsbzlmETWE8djAArGC6UYg_qg8HLsmPjoFdjlc3GwJw-QAgmFNNlu_mrJiynISfbhtnUzEpW2smf494pSjR0G4H8FvzIntZOhohN7m3qsaHNJoEhI4MbikLdxz81qgertMsBbdeGTJyRW47P2YXnxcTL29gxAE3YEJRp65RlwObVGoH01SmEjm5Q7sfku1RVm0sXc2fWREVEVWpZNBOk_TEeE884YVmOD1SjbjMU5kmUzPXeoOn_p40VaGUBi9Nk0kCg9lEeRUNIZaHzXlBQUPu5X-_hdl1m6zs42r7LpWnt0dzjVFsDyq_4b-qgxrosP0hXPR7OVwkbk-MhFC9n3BDATNenQYooSY1UCtS7WTWsCPB96jLICn_BEq6kYO_IEELuIT_Y65HQqAdeeR9th5PP-TrPfhFyFsfF96dDEtIan2wWUwVG6-T9ui6bKvBjWUKwdCZ0fYO6qVBpTtGWnAX0KIExMC9cG8RUmLKnrfNjG_0B6DS9s56z0Biz-JgpFu8dsyDP6-fo2NzaYn3KdwDTZ0gWXSZeArBvUV3HG4OusiIviKc8xDQ"
+        charset="UTF-8"></script>
+    <script type="text/javascript"
+        src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=q8HRWDSTc5W-sKJHL0qYZiJjv_SNBhP46WKjqk2JGOT900QPHpDMY5cQYPjZzaMxGZYkluQKwais4OecvEHj8bG3zzeoKhzij24V64qkMYZlLQ0-ovPDavRlZPjWZk8KBt71RxO-054fO1sv5qmUBazvGuvO_1-Ka8BJDTHAsAZGC0Jt-moUGi3ccMH0LQyZwVn9kcxQv2vEGRZX64ommJSkLjrViYBwXh1Ad9zSp0I8M5njAtj0BaJ6oUZ8GUbbR4a1cdliVvI3K4QKl50lJY6Eg2nNV_83Z8_EN2_an2ruOtMoCYE3cSWalt-5FX6Y1kL0bJrNcp4sOb_WXO8zROkqISzhi9TwKLgPKZS7WJDnee2NupiW0yA_ZN_vO33CA5Zjl8gfaTcc5BEttvCMqJASoDLc2a7c7osJ5CPE6yGqS8IZRchzGpgPzGNagEzHtGofZ7hYmRDvgN1Pouk2FVuehFk4z7AjHVDxlJDZcnaNMSXewJWlzzJ4rDikjKMor1umkDAOBOGAmqtY4sMe9kv_sLoxrpR3J32vDyA3n4rk_yCGi43shflVYkBiJ9y9ANwp62Xqy1YtetXl8BuHjY8TrUq-vKOQYX8WubRyLQEoRCXBgenijt2ssK80HpUk6f2-Sxf5kuT4JItAiTAYX8DEsDpb4vNIaHXMRCl-1TQkLvyuA4_Crs6ZnYljrUDmdCJRuQem46WYgNpbM_-qFFF8lgD-W2HUg47o4qvyxoZjj-X-SQ0Ak9tlC2AHwlPOjtNHYPEkc5tKJusiPoZuRluEMtGsXhayRICE4xtsEMpKikgQeqrkhahqZ9YWhCvypOfRgO9O0_JrtdiF_G_Tv7s0Sbz5WAne1J806ytVJbtuX331WLBlPLrMQ6owA23E5VEv2U82R9CdtZZcYp5Pq35mcLyrcRfzRxZRerSmSUJytDHIbH837VqccvD2exfg77cncq_F__ZLvhXv-Kg52QiZW9Ug6rf1Rrl-cdiwcq0biiU2qL_qsE4qUrigF-NvjuUQBAGEjZ5JcEJcftUjxyrkv-e-LAUG_ntDwt26Pl6MN34RdaJU5K5xspKPH69Zk8OQ_W-qEZV9_l8sgR4VnsnN6FevRHQDludtI6Ukym3yh0rTwf3d2UYEKPbeg3JrjQWDN-kZsYUCQCAcDuQ4-ZJMDxavG8xfsqsU8UpIg6AdMTFS9q2WdSLv1I5Z_K50WBsTFv4Ioq2WpAeyo2rWBhujapOvQjB9feF_2A38ygr9DD_6iT2UAkix8_cweUHuKvCiEiRp3PZej6WTp3YZ16oVCk7EVFGavXZMU4tKdqHfJD78kCmROjXu_6TXukLmgyalhdz-bg6BeYmZbruhE_hWITeg6GX4hVndEhi7dk_Oqq0tdNSmRj3j6ELBsaKFOgS9kgUc3yj6Rg-6dHlEqgIuNtExTv--7BdkmlU4jXKymqjdOwp6eg0HFtxjA0XQzwPuwgUsSbovLShCHXUJWrvw3xNdDDZGC6A2RFCvWFLaTdYsDmEXbV9SQYCGp1I6ErBvC8Ug14-paJt2d1fqGC2sJKSjgxzLFeNL7Rj_g-pC0zOZ3QZzKOAQEUk2NcaP6ldwHs8guR3A53RDWqVyjxf55uH5fFtTeE-S9QYgpdmcKcmyzzJtIKrm9BvzgZyBhEIYzvrkYoUbb94mpsfmw_sTJsRJ6TThaowwtC9irXTz_ZMntytYBv4h8TrpstaKf36DodUPLeJynR83qA7jQkiyRP1wPtesGycygRaOjXNAoSRtlgcFMs850LVtGAV_amtP8jAobsKzoTv2Gg8geXGqZyDG4KPsISox8-j7HGOXW_5vtfKBwmctXV3ERa3iqQ_kUknbSgNjtUoMlhXt7OrdaFil-pvoWIx5d8D3eU0rShMGBYwHQXLOLw0vBhLn4yyBgSvQ0WeSuYM7y6aTLU-nK9mlNDyCRZ-vgBhx8aR_2OePqIEmiWxSbXcE0Brmf-KmoR4NJ233g5LFZmwmAWXzkN-GpIo8MB1HmNMXko2JOzWZRO4qV15GcjBVTBIQ4BtPZ0ayx-wK8GNjZJ0H2tyf0phzETy0NN76u14H-Z8MG7UgTWZvs2HiXQn8D_LOz69D5LEr8gI_4wnwobDChM4VqgUODqFwsqDLXwsKB8k"
+        charset="UTF-8"></script>-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" type="text/javascript"></script>
+
+
+    <style type="text/css">
+        .reveal .commentsMade {
+            font-size: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .reveal .commentsMadeCenter {
+            font-size: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .reveal .media-body {
+            background-color: #F6F6F6;
+            /* #00925B;
+			-->< !--width: 250px;
+			*/
+            height: 300px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: center;
+            padding: 30px;
+            margin: 10px;
+        }
+
+        /* Airport departure board style */
+
+        .pane {
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            margin: 0 auto;
+            border-radius: .05em;
+            border: .01em solid #444;
+            position: relative;
+            background: #222;
+            text-align: center;
+            line-height: 1;
+            font-size: 5em;
+            color: #fff;
+            font-family: monospace;
+            box-shadow: 0px .02em 0 #ccc, 0px .05em 0 #000;
+            text-shadow: -1px -2px 2px rgba(0, 0, 0, 1);
+            z-index: 50;
+        }
+
+        .pane:before {
+            display: block;
+            width: 100%;
+            height: 0px;
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            margin: 0 auto;
+            margin-left: -.05em;
+            border: .05em solid black;
+            z-index: -10;
+        }
+
+        .pane:after {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            content: "";
+            border-top: 2px solid #000;
+            border-bottom: 2px solid rgba(255, 255, 255, .3);
+            width: 100%;
+            height: 0px;
+            opacity: .8;
+            z-index: 10;
+            margin-top: -1px
+        }
+    </style>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-41369487-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-41369487-3');
+    </script>
+
+
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+
+            <section id="title1"
+                data-background-video="videos/coverr-bali-sunset-1563873075061/coverr-bali-sunset-1563873075061.mp4"
+                data-background-color="#01579B" type="video/webm" data-background-video-loop data-background-video-muted
+                data-background-opacity="0.5">
+                <!--<div style="float:top;height:80%;text-align: left;">
+                <small><i class="fas fa-envelope"></i>&nbsp;<a style="color:#fff"
+							href="mailto:sebastien.ch@gmail.com">sebastien.ch@gmail.com</a></small>&nbsp;&nbsp;&nbsp;
+                <small><i class="fas fa-phone-square-alt"></i>&nbsp;+61 415 067 042</small>&nbsp;&nbsp;&nbsp;
+                <small><i class="fas fa-id-card"></i>&nbsp;Swiss & Australian permanent residency</small>
+        </div>-->
+                <br clear="all">
+                <div
+                    style="float:bottom;height:20%;padding-bottom:0px;text-align: left; border-style:solid; padding:1em; border-color:#212121; border-width: 0.2em; background-color:#01579B; opacity: 1;">
+
+
+                    <h4>Sebastien Roh</h4>
+                    <!--<p>
+                        <code>Sebastien Roh</code>
+                    </p>-->
+                    <p style="font-size:0.8em">
+                        Innovative <span style="color: #212121">|</span> Entrepreneur <span
+                            style="color: #212121">|</span> Servant Leader <span style="color: #212121">|</span> Change
+                        Manager
+                        <br />Data Operations <span style="color: #212121">|</span> Data Product Management <span
+                            style="color: #212121">|</span> Data Strategy
+                        <br />BI, Market Intelligence & Analytics <span style="color: #212121">|</span> Data-Driven
+                        Insights
+                        <br />Agile <span style="color: #212121">|</span> Problem Solver <span
+                            style="color: #212121">|</span> ML/AI <span style="color: #212121">|</span> Automation
+                    </p>
+                    <small style="font-size:0.5em;">
+                        <i class="fas fa-phone-square-alt"></i>&nbsp;+41 77 479 3825&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <i class="fas fa-envelope"></i>&nbsp;<a style="color:#fff"
+                            href="mailto:sebastien.ch@gmail.com">sebastien.ch@gmail.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <i class="fab fa-linkedin"></i>&nbsp;<a target="_blank" style="color:#fff"
+                            href="https://linkedin.com/in/sebastienroh">linkedin.com/in/sebastienroh</a>
+                    </small>
+
+                    <small style="font-size:0.5em;"><i class="fas fa-id-card"></i>&nbsp;Swiss & Australian permanent residency</small><br/>
+
+
+                </div>
+
+            </section>
+
+
+            <!--<section data-background="#01579B" data-background-transition="fade-in convex-out">
+
+                <div style="white-space: nowrap;">
+                    <div class="pane" style="font-size: 100">A</div>
+                    <div class="pane" style="font-size: 100">W</div>
+                    <div class="pane" style="font-size: 100">S</div><br/>
+                    <div class="pane" style="font-size: 100">&nbsp;</div>
+                    <div class="pane" style="font-size: 100">c</div>
+                    <div class="pane" style="font-size: 100">a</div>
+                    <div class="pane" style="font-size: 100">s</div>
+                    <div class="pane" style="font-size: 100">e</div>
+                    <div class="pane" style="font-size: 100">&nbsp;</div>
+                    <div class="pane" style="font-size: 100">s</div>
+                    <div class="pane" style="font-size: 100">t</div>
+                    <div class="pane" style="font-size: 100">u</div>
+                    <div class="pane" style="font-size: 100">d</div>
+                    <div class="pane" style="font-size: 100">y</div>
+                </div>
+            </section>-->
+
+            <!--<section data-background="#01579B" data-background-transition="fade-in convex-out" class="has-light-background present" style="top: 38.5px; display: block;">
+                <h2>My portfolio</h2>
+            <p>
+                Please allow me to walk you through some of my recent realisations and achievements...
+            </p>
+            </section>-->
+
+
+
+
+
+
+
+            <!--<section data-background="#4d7e65" class="has-light-background present" style="top: 38.5px; display: block;">
+					<h2>Slide Backgrounds greenish</h2>
+					<p>
+						Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color formats are supported.
+					</p>
+				</section>		-->
+
+
+            <!--<section data-background="#b5533c" class="has-light-background present" style="top: 38.5px; display: block;">
+					<h2>Slide Backgrounds reddish</h2>
+					<p>
+						Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color formats are supported.
+					</p>
+				</section>	-->
+
+
+            <section data-background-interactive data-background="#FFD600"
+                data-background-image="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/demos/img/pilot17.png"
+                data-background-repeat="no-repeat" data-background-position="left" data-background-size="6em"
+                data-background-opacity="0.1">
+                <br clear="all">
+
+                <!--<h2>Cloud Computing & Machine Learning</h2>-->
+
+                <h2>
+                    <div style="font-size: 0;">
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">M</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">a</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">r</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">k</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">e</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">t</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">&nbsp;</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">I</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">n</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">t</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">e</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">l</div>
+                    </div>
+                    <br />
+                    <div style="font-size: 0;">
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">S</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">e</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">r</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">v</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">e</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">r</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">l</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">e</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">s</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">s</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">&nbsp;</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">A</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">p</div>
+                        <div class="pane" style="font-size: 50; margin-right:0.05em">p</div>
+
+                    </div>
+                </h2>
+
+                <!--<div style="background-color: rgba(0, 0, 0, 1); color: #fff; padding: 20px;">
+                            AWS case study
+                        </div>-->
+            </section>
+
+            <section data-background-iframe="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/demos/index.html"
+                data-background-interactive data-background="#fff">
+                <div
+                    style="position: absolute; width: 30%; right: -50; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Dynamic and responsive!</h3>
+                    <p>It's live! Interact with me!</p>
+                </div>
+            </section>
+
+            <section
+                data-background-iframe="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/demos/d3_line_chart_json_sydney_adelaide.html"
+                data-background-interactive data-background="#fff">
+                <div
+                    style="position: absolute; width: 30%; right: -190; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Airfares tracker</h3>
+                </div>
+            </section>
+
+
+            <section data-background-interactive data-background="#01579B" data-background-opacity="0.4">
+                <br clear="all">
+
+                <h2>Marketing & CX</h2>
+                <div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+                    Keeping track of commercial action plans
+                </div>
+            </section>
+
+            <!--<section data-background-iframe="http://env-3492183.jcloud.ik-server.com/commercialActionPlanLight/pipe_actions_commerciales.php" data-background-interactive data-background="#fff">
+                <div style="position: absolute; width: 30%; right: -50; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Click on the filters!</h3>
+                    <p>It's live! Interact with me!</p>
+                </div>
+            </section>
+
+            <section data-background-iframe="http://env-3492183.jcloud.ik-server.com/commercialActionPlanLight/analyseActions.php?year=2020" data-background-interactive data-background="#fff">
+                <div style="position: absolute; width: 30%; right: -50; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Click on the filters!</h3>
+                    <p>It's live! Interact with me!</p>
+                </div>
+            </section>-->
+
+            <section data-background-video="videos/WM - Pulse! - launch video.mp4" data-background-transition="convex"
+                data-background-color="#000000" class="has-dark-background present"
+                style="top: 231.5px; display: block;">
+                <!--<div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+						<h2>Pipe Management</h2>
+					</div>-->
+                <div
+                    style="position: absolute; width: 30%; left: -250; top: -300; box-shadow: 0 1px 4px rgba(1,87,155, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(1,87,155, 0.7); color: #fff; padding: 20px; font-size: 20px; text-align: left;">
+                    <p>Teaser video...</p>
+                </div>
+            </section>
+
+
+            <section data-background-interactive data-background="#01579B" data-background-opacity="0.4">
+                <br clear="all">
+
+                <h2>Data visualisation</h2>
+                <div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+                    Storytelling abilities
+                </div>
+            </section>
+
+            <section
+                data-background-iframe="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/apps/wmByRegions/index.html"
+                data-background-interactive data-background="#fff">
+                <div
+                    style="position: absolute; width: 30%; right: -50; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Click on the tabs!</h3>
+                    <p>It's live! Interact with me!</p>
+                </div>
+            </section>
+
+
+
+
+            <!--<section data-background-iframe="http://localhost/WM-pipe-public/pipe_actions_commerciales.php" data-background-interactive data-background="#fff">
+					<div style="position: absolute; width: 40%; right: 0; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(1, 87, 155, 0.9); color: #fff; padding: 20px; font-size: 20px; text-align: left;">
+						<h2>Editing actions</h2>
+						<p>Try interacting with the page in the background.</p>
+					</div>
+				</section>				
+				
+				<section data-background-iframe="http://localhost/WM-pipe-public/analyseActions.php?year=2019" data-background-interactive data-background="#fff">
+					<div style="position: absolute; width: 40%; right: 0; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.9); color: #fff; padding: 20px; font-size: 20px; text-align: left;">
+						<h2>Tracking actions</h2>
+						<p>Storytelling, Empowering Relationship Managers through the use of self-analytics capabilities</p>
+					</div>
+				</section>		-->
+
+
+
+
+
+            <section id="title4"
+                data-background-video="videos/coverr-pool-is-life-1560977298458/coverr-pool-is-life-1560977298458.mp4"
+                type="video/webm" data-background-video-loop data-background-video-muted data-background-opacity="0.9">
+                <br clear="all">
+                <!--<div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">-->
+                <h2>Statistical Modelling</h2>
+                <!--</div>-->
+                <div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+                    Regression analysis | Examining the relationship between GDP and room rates
+                </div>
+            </section>
+
+
+            <section
+                data-background-iframe="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/apps/strategyOfPricing/index.html"
+                data-background-interactive data-background="#fff">
+                <div
+                    style="position: absolute; width: 30%; right: -50; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Scroll down!</h3>
+                    <p>It's live! Interact with me!</p>
+                </div>
+            </section>
+
+
+
+
+            <section id="title4" data-background-video="videos/Air-shuttle/Air-shuttle.mp4" type="video/webm"
+                data-background-video-loop data-background-video-muted data-background-opacity="0.9">
+                <br clear="all">
+                <!--<div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">-->
+                <h2>Quantitative Methods and Models in Marketing</h2>
+                <!--</div>-->
+                <div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+                    Trade-off Analysis
+                </div>
+            </section>
+
+            <section
+                data-background-iframe="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/apps/choiceBasedConjointAnalysis/index.html"
+                data-background-interactive data-background="#fff">
+                <div
+                    style="position: absolute; width: 30%; right: -50; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Click on the tabs!</h3>
+                    <p>It's live! Interact with me!</p>
+                </div>
+            </section>
+
+
+
+
+            <section data-background-interactive data-background="#01579B" data-background-opacity="0.4">
+                <br clear="all">
+
+                <h2>Exploring large multivariate datasets</h2>
+                <div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+                    Airlines on-time performance at Geneva airport
+                </div>
+            </section>
+
+            <section
+                data-background-iframe="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/apps/exploringLargeMultivariateDatasets/index.html"
+                data-background-interactive data-background="#fff">
+                <div
+                    style="position: absolute; width: 30%; right: -50; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Click on the filters!</h3>
+                    <p>It's live! Interact with me!</p>
+                </div>
+            </section>
+
+
+
+            <section data-background-interactive data-background="#01579B" data-background-opacity="0.4">
+                <br clear="all">
+
+                <h2>Automation</h2>
+                <div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+                    Financial services | Commodity Trading
+                </div>
+            </section>
+
+            <section
+                data-background-iframe="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/apps/financialStatementBasel3/index.html"
+                data-background-interactive data-background="#fff">
+                <div
+                    style="position: absolute; width: 30%; right: -50; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Automation & Visualisation</h3>
+                    <p>Data aggregation</p>
+                </div>
+            </section>
+
+            <section
+                data-background-iframe="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/apps/riskAppetiteStatement/index2.html"
+                data-background-interactive data-background="#fff">
+                <div
+                    style="position: absolute; width: 30%; right: -50; top:-250; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.7); color: #fff; padding: 1em; font-size: 20px; text-align: left;">
+                    <h3>Risk Appetite Statement (RAS)</h3>
+                    <!--<p>It's live! Interact with me!</p>-->
+                </div>
+            </section>
+
+
+
+
+            <!--
+				<section id="title4" data-background-video="videos/Hotel Room/Hotel Room.mp4" type="video/webm" data-background-video-loop data-background-video-muted data-background-opacity="0.9">
+					<br clear="all">
+							<h2>Data Visualisation</h2>
+						<div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+							BNP
+						</div>
+				</section>						
+
+				<section data-background-iframe="http://localhost/d3_dashboards/bubbles_d3_donald/#" data-background-interactive data-background="#fff">
+					<div style="position: absolute; width: 40%; right: 0; box-shadow: 0 1px 4px rgba(241, 204, 204, 0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(183, 28, 28, 0.9); color: #fff; padding: 20px; font-size: 20px; text-align: left;">
+						<h2>Bubble charts</h2>
+						<p>To be completed...</p>
+					</div>
+				</section>				
+
+				
+
+				<section id="title4" data-background-video="videos/Hotel Room/Hotel Room.mp4" type="video/webm" data-background-video-loop data-background-video-muted data-background-opacity="0.9">
+					<br clear="all">
+							<h2>Content Management</h2>
+						<div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+							IOC
+						</div>
+				</section>			
+
+
+
+				<section id="title4" data-background-video="videos/Hotel Room/Hotel Room.mp4" type="video/webm" data-background-video-loop data-background-video-muted data-background-opacity="0.9">
+					<br clear="all">
+						<div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+							<h2>Marketing campaigns</h2>
+						</div>
+						<div style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px;">
+							IOC & O-I
+						</div>
+				</section>			-->
+
+
+
+            <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+				<script type="text/javascript" src="js/correlation.js"></script>
+	
+				<section id="make_your_data_valuable" data-background="#01579B" data-background-opacity="0.8">
+						<h3>Room rates vs GDP per capita | Ibis and Four Seasons hotels</h3>
+						<h3>Ibis hotels</h3>
+						<div id="chartLinearIbisHotels" style="height: 350px; width: 50%"></div>
+						<h3>Four Seasons hotels</h3>
+						<div id="chartLinearFourSeasonsHotels" style="height: 350px; width: 50%"></div>
+					</section>		-->
+
+
+            <section id="make_your_data_valuable" data-background="#01579B" data-background-opacity="0.8">
+                <h3>Creating Business Value Through...</h3>
+                <ul class="fa-ul">
+                    <li style="color:white; list-style: none"><span class="fa-li"><i
+                                class="fas fa-chart-bar fa-xs"></i></span>automation | storytelling | dataviz | UX/UI
+                    </li>
+                    <li style="color:white; list-style: none"><span class="fa-li"><i
+                                class="fas fa-fist-raised fa-xs"></i></span>BI | self-service analytics |
+                        self-empowerment
+                    </li>
+                    <li style="color:white; list-style: none"><span class="fa-li"><i
+                                class="fas fa-magic fa-xs"></i></span>innovative solutions | rapid prototyping | DevOps
+                    </li>
+                    <li style="color:white; list-style: none"><span class="fa-li"><i
+                                class="fas fa-mobile-alt fa-xs"></i></span>cross-platforms | mobile first design</li>
+                    <li style="color:white; list-style: none"><span class="fa-li"><i
+                                class="fas fa-shipping-fast fa-xs"></i></span>reduced time to market</li>
+                    <li style="color:white; list-style: none"><span class="fa-li"><i
+                                class="fas fa-spinner fa-pulse fa-xs"></i></span>lean and agile practices</li>
+                </ul>
+            </section>
+
+
+
+            <!-- ******************************-->
+            <!-- ********** SLIDE *************-->
+            <!-- ******************************-->
+            <!--<section id="more_than_a_web_app" data-background="#01579B" data-background-transition="zoom" data-background-opacity="0.8">
+                <h2>My portfolio&nbsp;&nbsp;&nbsp;<a href="docs/Portfolio.pdf" target="_blank"><i
+							class="fas fa-file-pdf fa-sm"></i></a></h2>
+                <br />
+                <h2>My resume&nbsp;&nbsp;&nbsp;<a href="docs/Resume.pdf" target="_blank"><i
+							class="fas fa-file-pdf fa-sm"></i></a></h2>
+
+            </section>-->
+
+
+
+
+
+
+
+            <!--<section id="title3" data-background-video="videos/WM - Pulse! - launch video.mp4" type="video/webm" data-background-video-loop data-background-opacity="0.9">
+					</section>	-->
+
+
+
+
+
+
+            <!-- ******************************-->
+            <!-- ********** SLIDE THANK YOU **********-->
+            <!-- ******************************-->
+            <section id="the-end" data-background="#01579B" data-background-transition="zoom"
+                data-background-opacity="0.8">
+                <br clear="all">
+                <div style="float:bottom;height:20%;padding-bottom:0px;text-align: left;">
+                    <h2>Thank you for your time.</h2>
+                    <br />
+
+
+                    <h4><a target="_blank" style="color: #90CAF9"
+                            href="https://www.linkedin.com/in/sebastienroh/">linkedin.com/in/sebastienroh</a></h4>
+                    <!--<blockquote class="blockquote text-center">
+							<p class="mb-0">"To be completed"</p>
+						</blockquote>-->
+                </div>
+            </section>
+
+
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/lib/js/head.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            history: false,
+            progress: true,
+            loop: false,
+            mouseWheel: false,
+            rollingLinks: false,
+            center: true,
+            transition: 'convex', // none/fade/slide/convex/concave/zoom
+            hideAddressBar: true,
+            leap: {
+                naturalSwipe: false, // Invert swipe gestures
+                pointerOpacity: 0.5, // Set pointer opacity to 0.5
+                pointerColor: '#d80000' // Red pointer
+            },
+            dependencies: [
+                /*{
+                                    src: 'lib/js/classList.js',
+                                    condition: function() {
+                                        return !document.body.classList;
+                                    }
+                                }
+                                , {
+                                                src: 'reveal/plugin/markdown/marked.js',
+                                                condition: function() {
+                                                    return !!document.querySelector('[data-markdown]');
+                                                }
+                                            }
+                                , */
+                {
+                    src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/markdown/markdown.min.js',
+                    condition: function () {
+                        return !!document.querySelector('[data-markdown]');
+                    }
+                }, {
+                    src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/highlight/highlight.min.js',
+                    async: true,
+                    callback: function () {
+                        hljs.initHighlightingOnLoad();
+                    }
+                }, {
+                    src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/zoom-js/zoom.min.js',
+                    async: true,
+                    condition: function () {
+                        return !!document.body.classList;
+                    }
+                }, {
+                    src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/notes/notes.min.js',
+                    async: true,
+                    condition: function () {
+                        return !!document.body.classList;
+                    }
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>

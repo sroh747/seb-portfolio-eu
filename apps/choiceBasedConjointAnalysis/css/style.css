@@ -1,0 +1,194 @@
+:root {
+  --main-font: "Roboto";
+  --main-font-bold: "Roboto Bold";
+
+  --main-color-1: 227,242,253;/* 236, 230, 222;  18,79,145   0,0,0   30,136,229 */
+  --main-color-background: 255, 255, 255;
+
+	--main-color-2: 227,242,253;
+	/*--main-color-3: 244, 67, 54;
+	--main-color-4: 234, 234, 237;*/
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("fonts/roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Roboto Bold";
+  src: url("fonts/roboto/Roboto-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Bloomberg";
+  src: url("fonts/Bloomberg Logotypes-Medium-4f4134c199.woff");
+}
+
+@font-face {
+  font-family: "Bloomberg2";
+  src: url("fonts/BWHaasGrotesk-55Roman-Web-5cf5733cd9.woff2");
+}
+
+@font-face {
+  font-family: "Raleway";
+  src: url("fonts/raleway/Raleway-Bold.ttf");
+}
+
+.jumbotron {
+  background-color: rgb(var(--main-color-1), 0.7); /* #ECE6DE */
+  border: 0.1em solid rgb(var(--main-color-1), 1);
+  padding: 1em;
+}
+
+.themed-grid-col {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  background-color: rgb(
+    var(--main-color-1),
+    0.15
+  ); /* rgba(236, 230, 222, .15);*/
+  border: 1px solid rgb(var(--main-color-1), 0.2);
+}
+
+.themed-grid-col-black {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  background-color: rgb(
+    var(--main-color-background),
+    0.15
+  ); /* rgba(236, 230, 222, .15);*/
+  border: 1px solid rgb(var(--main-color-background), 0.2);
+}
+
+body {
+  font-family: var(--main-font);
+}
+
+
+.sticker {
+	float: left;
+	margin-right: 0em;
+}
+
+.gall_box_2_a {
+  text-align: center;
+  float: left;
+  padding-left: 0em;
+  padding-right: 0em;
+  margin: 0em;
+  border: #000 thin solid;
+}
+
+.gall_box_send {
+  width: 100%;
+  display: block;
+  float: left;
+  text-align: center;
+}
+
+
+.ticketLabel {
+  padding: 0.3em;
+  font: 1em var(--main-font), Helvetica, sans-serif; /* The Quick*/
+  background-color: #000;
+  font-style: normal;
+  color: #fff;
+  text-align: center;
+}
+
+.logoAirline {
+  font: var(--main-font), Helvetica, sans-serif; /* The Quick*/
+  background-color: transparent;
+  text-align: center;
+  height: 4em;
+}
+
+.aircraftLabel {
+  padding: 0.3em;
+  font: 0.8em var(--main-font), Helvetica, sans-serif; /* The Quick*/
+  border-bottom: solid thin #000;
+  color: #333333;
+  text-align: center;
+}
+
+
+.airfareLabel {
+  padding: 0.2em;
+  margin-right: 1em;
+  margin-left: 1em;
+  margin-top: -0.05em;
+  font: 1em var(--main-font), Helvetica, sans-serif; /* The Quick*/
+  color: #666666;
+  border: #999999 thin dashed;
+}
+
+.airportLabel {
+  padding: 0.2em;
+  margin-right: 1em;
+  margin-left: 1em;
+  margin-top: -0.05em;
+  font: 1em var(--main-font), Helvetica, sans-serif; /* The Quick*/
+  color: #666666;
+  border: #999999 thin dashed;
+}
+
+.stopoverLabel {
+  padding: 0.2em;
+  margin-right: 1em;
+  margin-left: 1em;
+  margin-top: -0.05em;
+  font: 1em var(--main-font), Helvetica, sans-serif; /* The Quick*/
+  color: #666666;
+  border: #999999 thin dashed;
+}
+
+.nomEnEvidence {
+  font: bold 1em var(--main-font), Helvetica, sans-serif; /* The Quick*/
+  color: #000000;
+  background-color: yellow;
+}
+
+.espaceDiv {
+  font: 1em var(--main-font), Helvetica, sans-serif; /* The Quick*/
+  color: #333333;
+  text-align: center;
+  height: 0.3em;
+}
+
+.boutonRadio {
+  padding: 0.2em;
+  font: 1em var(--main-font), Helvetica, sans-serif; /* The Quick*/
+  color: #333333;
+  text-align: center;
+}
+
+
+
+.badge-airport {
+  color: #FFF;
+  background-color: #3266c9;
+  padding: 0.1em;
+  border-radius: 0.2em;
+}
+
+.badge-airfare {
+  color: #FFF;
+  background-color: #dc3a12;
+  padding: 0.1em;
+  border-radius: 0.2em;
+}
+
+.badge-airline {
+  color: #FFF;
+  background-color: #f1980f;
+  padding: 0.1em;
+  border-radius: 0.2em;
+}
+
+.badge-stopover {
+  color: #FFF;
+  background-color: #31961a;
+  padding: 0.1em;
+  border-radius: 0.2em;
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+
+<body>
+    <div id="chart" style="width:auto; height:30em;"></div>
+</body>
+
+<script>
+    // Visualization API with the 'corechart' package.
+    google.charts.load('visualization', {
+        packages: ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        $.ajax({
+            url: "data/airfares.json", // dataJsonFile.txt
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function(data) {
+                // Define an array and assign columns for the chart.
+                var arrAirfares = [
+                    /*['Searched on', 'Airfares', 'Other fares']*/
+                    ['Searched on', 'Airfares (SYD-ADL)']
+                ];
+
+                // Loop through each data and populate the array.
+                $.each(data, function(index, value) {
+                    var price = parseInt(value.price.replace('$', '').replace(',', ''))
+
+                    if (value.departure == 'Sydney' && value.destination == 'Adelaide' && price < 550) {
+
+
+                        arrAirfares.push([{
+                            v: new Date(value.searched_on) // v: new Date((value.searched_on).substr(0, 10))
+                        }, parseInt(value.price.replace('$', '').replace(',', ''))]);
+                    }
+
+                    /*if (value.departure == 'Sydney' && value.destination == 'Zurich') {
+                        arrAirfares.push([{
+                            v: new Date((value.searched_on).substr(0, 10))
+                        }, 0, parseInt(value.price.replace('$', '').replace(',', ''))]);
+                    }*/
+                });
+
+                // Define the chart to be drawn.
+                /*var data = new google.visualization.DataTable();
+                data.addColumn('number', 'Age');
+                data.addColumn('number', 'Weight');
+                data.addRows([
+                    [8, 12],
+                    [4, 5.5],
+                    [11, 14],
+                    [4, 5],
+                    [3, 3.5],
+                    [6.5, 7]
+                ]);*/
+
+
+                // Set chart Options.
+                var options = {
+                    title: 'Airfares (AUD)',
+                    curveType: 'function',
+                    legend: {
+                        position: 'bottom',
+                        textStyle: {
+                            color: '#555',
+                            fontSize: 14
+                        }
+                    } // You can position the legend on 'top' or at the 'bottom'.
+                };
+
+                // Create DataTable and add the array to it.
+                var figures = google.visualization.arrayToDataTable(arrAirfares)
+
+                // Define the chart type (LineChart) and the container (a DIV in our case).
+                var chart = new google.visualization.ScatterChart(document.getElementById('chart')); // .LineChart  .ScatterChart
+
+                chart.draw(figures, options); // Draw the chart with Options.
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('Got an Error');
+            }
+        });
+    }
+</script>
+
+</html>

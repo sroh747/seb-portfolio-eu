@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Choice-Based Conjoint analysis">
+    <meta name="author" content="Sebastien Roh">
+    <meta name="generator" content="">
+    <title>Choice-Based Conjoint analysis</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+    <!-- Script appliquant des filtres sur les profils -->
+    <script type="text/javascript">
+        function selectRadioButton(noButton) {
+            document.getElementById("radio" + noButton).checked = true;
+            if (noButton == 1) {
+                document.getElementById("radio" + noButton + "" + noButton).style.background = '#E8F5E9'; //'url(images/brownStickerLightReduced.png)';
+                document.getElementById("radio" + noButton + "" + noButton).style.border = "thick solid #000";
+
+                document.getElementById("radio22").style.background = '#FCE4EC'; //'url(images/brownSticker.png)';
+                document.getElementById("radio22").style.border = 'thin solid #000'; //'url(images/brownSticker.png)';   
+
+                document.getElementById("radio33").style.background = '#FCE4EC'; //'url(images/brownSticker.png)';
+                document.getElementById("radio33").style.border = 'thin solid #000'; //'url(images/brownSticker.png)';                        
+            } else if (noButton == 2) {
+                document.getElementById("radio" + noButton + "" + noButton).style.background = '#E8F5E9'; //'url(images/brownStickerLightReduced.png)';
+                document.getElementById("radio" + noButton + "" + noButton).style.border = 'thick solid #000'; //'url(images/brownStickerLightReduced.png)';
+
+                document.getElementById("radio11").style.background = '#FCE4EC'; //'url(images/brownSticker.png)';
+                document.getElementById("radio11").style.border = 'thin solid #000'; //'url(images/brownSticker.png)';                        
+
+                document.getElementById("radio33").style.background = '#FCE4EC'; //'url(images/brownSticker.png)';
+                document.getElementById("radio33").style.border = 'thin solid #000'; //'url(images/brownSticker.png)';                        
+            } else {
+                document.getElementById("radio" + noButton + "" + noButton).style.background = '#E8F5E9'; //'url(images/brownStickerLightReduced.png)';
+                document.getElementById("radio" + noButton + "" + noButton).style.border = 'thick solid #000'; //'url(images/brownStickerLightReduced.png)';
+
+                document.getElementById("radio11").style.background = '#FCE4EC'; //'url(images/brownSticker.png)';
+                document.getElementById("radio11").style.border = 'thin solid #000'; //'url(images/brownSticker.png)';                        
+
+                document.getElementById("radio22").style.background = '#FCE4EC'; //'url(images/brownSticker.png)';
+                document.getElementById("radio22").style.border = 'thin solid #000'; //'url(images/brownSticker.png)';                        
+            }
+        }
+
+        function mouseOver(id) {
+            document.getElementById(id).style.opacity = 0.85;
+        }
+
+        function mouseOut(id) {
+            document.getElementById(id).style.opacity = 1;
+        }
+    </script>
+
+
+    <!-- CBC libraries -->
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <script type="text/javascript" src="js/validateAfficherProfiles.js"></script>
+    <script type="text/javascript" src="js/validateChampsFormulaire.js"></script>
+    <script type="text/javascript" src="js/validateAfficherRemerciements.js"></script>
+
+</head>
+
+<body class="py-4">
+
+    <!--<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <a class="navbar-brand" href="#">Fixed navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline mt-2 mt-md-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>-->
+    <!--
+    <?php
+    /*********************************************************************
+Code permettant de retourner le bon set de profiles en fonction
+des donn�es re�ues.
+     **********************************************************************/
+    include('connection.inc.php');
+
+    $response = '';  // What will be retained and displayed
+    $comparaison = '';
+    $nbreComparaisons = '';
+    $userNo = '';
+    $logo1 = '';
+    $logo2 = '';
+    $logo3 = '';
+    $profile1 = '';
+    $profile2 = '';
+    $profile3 = '';
+    $level1Name1 = '';
+    $level2Name1 = '';
+    $level3Name1 = '';
+    $level4Name1 = '';
+    $level1Name2 = '';
+    $level2Name2 = '';
+    $level3Name2 = '';
+    $level4Name2 = '';
+    $level1Name3 = '';
+    $level2Name3 = '';
+    $level3Name3 = '';
+    $level4Name3 = '';
+
+
+    if (!isset($_POST['comparaison']))  // Generating the first set of profiles
+    { // II
+        $queryNumberOfComparison = "SELECT * FROM comparaison";
+        if ($stmt = mysqli_prepare($mysqli, $queryNumberOfComparison)) {
+            /* execute query */
+            mysqli_stmt_execute($stmt);
+
+            /* store result */
+            mysqli_stmt_store_result($stmt);
+
+            // Retourne le nombre de lignes dans la table COMPARAISON
+            $nbreComparaisons = mysqli_stmt_num_rows($stmt);                     //$comparison number generated
+
+            /* close statement */
+            mysqli_stmt_close($stmt);
+        }
+
+        /** Create a new user **/
+        include('addUser.inc.php');                                             //$userNo generated
+
+        /** Display profiles **/
+        $comparaison = 1;                                                                //$comparison generated
+        $sql = "select * from comparaison where no='$comparaison'";
+        if ($result = $mysqli->query($sql)) {
+            $obj = $result->fetch_object();
+            $no = $obj->no;
+            $profile1 = $obj->profile1;
+            $profile2 = $obj->profile2;
+            $profile3 = $obj->profile3;
+        }
+        /** Profile #1 **/
+        $sql2 = "select * from profile where no='$profile1'";
+        if ($result = $mysqli->query($sql2)) {
+            $obj = $result->fetch_object();
+            $level1Name1 = $obj->level1Name;
+            $level2Name1 = $obj->level2Name;
+            $level3Name1 = $obj->level3Name;
+            $level4Name1 = $obj->level4Name;
+
+            $sql3 = "select logo, aircraft from level where name='$level1Name1'";
+            if ($result = $mysqli->query($sql3)) {
+                $obj = $result->fetch_object();
+                $logo1 = $obj->logo;
+                $aircraft1 = $obj->aircraft;
+            }
+        }
+        /** Profile #2 **/
+        $sql4 = "select * from profile where no='$profile2'";
+        if ($result = $mysqli->query($sql4)) {
+            $obj = $result->fetch_object();
+            $level1Name2 = $obj->level1Name;
+            $level2Name2 = $obj->level2Name;
+            $level3Name2 = $obj->level3Name;
+            $level4Name2 = $obj->level4Name;
+
+            $sql5 = "select logo, aircraft from level where name='$level1Name2'";
+            if ($result = $mysqli->query($sql5)) {
+                $obj = $result->fetch_object();
+                $logo2 = $obj->logo;
+                $aircraft2 = $obj->aircraft;
+            }
+        }
+        /** Profile #3 **/
+        $sql6 = "select * from profile where no='$profile3'";
+        if ($result = $mysqli->query($sql6)) {
+            $obj = $result->fetch_object();
+            $level1Name3 = $obj->level1Name;
+            $level2Name3 = $obj->level2Name;
+            $level3Name3 = $obj->level3Name;
+            $level4Name3 = $obj->level4Name;
+
+            $sql7 = "select logo, aircraft from level where name='$level1Name3'";
+            if ($result = $mysqli->query($sql7)) {
+                $obj = $result->fetch_object();
+                $logo3 = $obj->logo;
+                $aircraft3 = $obj->aircraft;
+            }
+        }
+    } // II
+    ?>
+-->
+
+
+    <main role="main" class="container">
+        <div class="jumbotron">
+            <h1>Choice-Based Conjoint analysis&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span class="text-muted">Flight tickets&nbsp;&nbsp;&nbsp;<i class="fas fa-plane"></i></span></h1>
+        </div>
+
+
+        <div class="container">
+
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link" id="nav-intro-tab" data-toggle="tab" href="#nav-intro" role="tab" aria-controls="nav-intro" aria-selected="true">Introduction</a>
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Survey</a>
+                    <a class="nav-item nav-link" id="nav-results-tab" data-toggle="tab" href="#nav-results" role="tab" aria-controls="nav-results" aria-selected="false">Results</a>
+                </div>
+            </nav>
+
+            <div class="tab-content" id="nav-tabContent">
+
+
+
+
+                <div class="tab-pane fade" id="nav-intro" role="tabpanel" aria-labelledby="nav-intro-tab">
+
+                    <div class="row">
+
+
+                        <div class="col-8 col-sm-8 themed-grid-col">
+
+                            <h1>Introduction</h1>
+                            <p style="text-align: justify">The goal of this Choice-Based Conjoint analysis is to get a better grasp of the regional market and travellers’ buying decisions when it comes to booking flight tickets.
+                                <br/>
+                                <div style="text-align:center"><img width="40%" src="images/flight-tickets2.png" alt="Card image cap"></div>
+
+                            </p>
+
+                            <br />
+                            <h1>Attributes and levels</h1>
+                            <p style="text-align: justify">In this specific analysis, I have retained 4 principal attributes with respectively 4, 3, 3 and 2 levels, which are depicted in the table below.
+                                <br /><br />
+                                <img class="card-img-top" src="images/attributes_levels.png" alt="Card image cap">
+                                <br /><br /> Here is how it works:
+                                <ul>
+                                    <li>A set of 3 different profiles is shown to the respondents, who will have to pick one of the three options displayed (click on the Survey tab above to see how it looks).</li>
+                                    <li>The same process is repeated 12 times with different profiles in order to detect the buyer’s preferences.</li>
+                                </ul>
+                                Keep in mind that if the analysis is too long, the respondents will get bored and hurry, which could potentially have a negative effect on the quality and accuracy of the data gathered. That is why I have chosen 12 iterations, which proved to be a good
+                                balance.
+                            </p>
+
+                            <br />
+                            <h1>Creating profiles</h1>
+                            <p style="text-align: justify">
+                                According to the book “Multivariate Data Analysis, 7th edition” in the chapter Conjoint Analysis, no more than 6 attributes should be used for a Choice-Based Conjoint Analysis and a minimum number of profiles is also required. As a matter of fact, 72
+                                profiles are possible in this example if I were to use a full factorial design. That is 4*3*3*2 levels. As we cannot require respondents to go through all of them, a solution exists which consists in selecting only a subset
+                                of profiles. The method is called <b>“fractional factorial design”</b> and has to respect 2 important aspects:
+                                <ul>
+                                    <li>Orthogonality: avoiding correlations between levels of an attribute</li>
+                                    <li>balanced design : the attribute’s levels appear the same number of time</li>
+                                </ul>
+                            </p>
+
+                            <p style="text-align: justify">
+                                Here is the formula with regard to the minimum number of profiles that have to be defined taken from the book aforementioned:
+                                <ul>
+                                    <li><b>Minimum # of profiles = Total # of levels across all factors - # of factors + 1</b></li>
+                                </ul>
+                                In this case, it means that I need at least 9 profiles. In order to generate them and the 12 iterations of 3 profiles, I have used an add-in for Microsoft Excel called XLSTAT (some other alternatives such as Sawtooth Software can do the job as well).
+                            </p>
+
+
+                        </div>
+
+                        <div class="col-4 col-sm-4 themed-grid-col-black">
+
+                            <div class="card" style="width: 100%; background-color: rgb(var(--main-color-2), 0.7)">
+
+                                <img class="card-img-top" src="images/beverage1.png" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title"><small>Choice-Based Conjoint analysis (CBC)</small></h5>
+                                    <p class="card-text" style="text-align: justify"><small>"Choice-Based Conjoint analysis (CBC), also known as Discrete Choice Modeling (DCM), looks at choices instead of ratings or rankings (CVA and ACA), which is considered to be more life like. It requires research participants to make a series of trade-offs by indicating their preferences within a controlled set of potential products or services. Analysis of these trade-offs will reveal the implicit valuation of individual elements making up the product or service – e.g. brand, package, price.
+
+                                            ."</small></p>
+                                    <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                                    <footer class="blockquote-footer"><cite title="Source Title">SKIM group. decision behavior experts [<a target="_blank" href="https://skimgroup.com/methodologies/conjoint-analysis/choice-based-conjoint-cbc/">Online</a>]
+                                        </cite></footer>
+
+                                    <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="row">
+
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-8 themed-grid-col">
+                            <h2>Pick your preferred flight option to Singapore</h2>
+                            <br />
+
+
+
+                            <div id="afficherListeProfils">
+
+
+                                <form id="preferedProfile" action="index.php" method="post" name="preferedProfile">
+                                    <input type="hidden" name="comparaison" value="">
+                                    <input type="hidden" name="userNo" value="">
+                                    <input type="hidden" name="nbreComparaisons" value="">
+
+
+                                    <!-- BLOC DE COMPARAISON AVEC LES 3 PROFILS -->
+                                    <!-- 1st STICKER -->
+                                    <div class="sticker col-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="gall_box_2_a" id="radio11" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onclick="selectRadioButton(1)">
+
+                                            <div align="center" class="ticketLabel">Flight option #1
+                                            </div>
+
+                                            <div align="center" class="logoAirline"><img src="logos/airlines/png/emirates.png" width="75%" id="<?php echo $profile1; ?>" />
+                                            </div>
+
+                                            <div align="center" class="aircraftLabel">
+                                                <?php echo $aircraft1; ?>
+                                            </div>
+
+
+                                            <div align="center" class="espaceDiv">
+                                                &nbsp;
+                                            </div>
+                                            <div align="center" class="espaceDiv">
+                                                &nbsp;
+                                            </div>
+
+
+                                            <div align="center" class="airfareLabel">Airfare<br />
+                                                <div class="nomEnEvidence">
+                                                    $700
+                                                </div>
+                                            </div>
+
+
+                                            <div align="center" class="airportLabel">From<br />
+                                                <div class="nomEnEvidence">
+                                                    Milan
+                                                </div>
+                                            </div>
+
+
+                                            <div align="center" class="stopoverLabel">Number of stopovers<br />
+                                                <div class="nomEnEvidence">
+                                                    1 stop
+                                                </div>
+                                            </div>
+
+                                            <div align="center" class="espaceDiv">
+                                                &nbsp;
+                                            </div>
+
+                                            <div align="center"><input id="radio1" type="radio" name="radio" value="<?php echo $profile1; ?>">
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- 2nd STICKER -->
+                                    <div class="sticker col-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="gall_box_2_a" id="radio22" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onclick="selectRadioButton(2)">
+
+                                            <div align="center" class="ticketLabel">Flight option #2
+                                            </div>
+
+
+                                            <div align="center" class="logoAirline"><img src="logos/airlines/png/singapore.png" width="75%" id="<?php echo $profile2; ?>" />
+                                            </div>
+
+
+                                            <div align="center" class="aircraftLabel">
+                                                <?php echo $aircraft2; ?>
+                                            </div>
+
+
+                                            <div align="center" class="espaceDiv">
+                                                &nbsp;
+                                            </div>
+
+                                            <div align="center" class="espaceDiv">
+                                                &nbsp;
+                                            </div>
+
+                                            <div align="center" class="airfareLabel">Airfare<br />
+                                                <div class="nomEnEvidence">
+                                                    $789
+                                                </div>
+                                            </div>
+
+
+                                            <div align="center" class="airportLabel">From<br />
+                                                <div class="nomEnEvidence">
+                                                    Zurich
+                                                </div>
+                                            </div>
+
+
+                                            <div align="center" class="stopoverLabel">Number of stopovers<br />
+                                                <div class="nomEnEvidence">
+                                                    Direct flight
+                                                </div>
+                                            </div>
+
+
+                                            <div align="center" class="espaceDiv">
+                                                &nbsp;
+                                            </div>
+
+                                            <div align="center"><input id="radio2" type="radio" name="radio" value="<?php echo $profile2; ?>">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- 3rd STICKER -->
+                                    <div class="sticker col-4 col-sm-4 col-md-4 col-lg-4">
+
+                                        <div class="gall_box_2_a" id="radio33" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onclick="selectRadioButton(3)">
+
+                                            <div align="center" class="ticketLabel">Flight option #3
+                                            </div>
+
+
+                                            <div align="center" class="logoAirline"><img src="logos/airlines/png/swiss.png" width="75%" id="<?php echo $profile3; ?>" />
+                                            </div>
+
+
+                                            <div align="center" class="aircraftLabel">
+                                                <?php echo $aircraft3; ?>
+                                            </div>
+
+
+                                            <div align="center" class="espaceDiv">
+                                                &nbsp;
+                                            </div>
+                                            <div align="center" class="espaceDiv">
+                                                &nbsp;
+                                            </div>
+
+
+                                            <div align="center" class="airfareLabel">Airfare<br />
+                                                <div class="nomEnEvidence">
+                                                    $850
+                                                </div>
+                                            </div>
+
+
+                                            <div align="center" class="airportLabel">From<br />
+                                                <div class="nomEnEvidence">
+                                                    Geneva
+                                                </div>
+                                            </div>
+
+
+                                            <div align="center" class="stopoverLabel">Number of stopovers<br />
+                                                <div class="nomEnEvidence">
+                                                    2 stops
+                                                </div>
+                                            </div>
+
+                                            <div align="center" class="espaceDiv">
+                                                &nbsp;
+                                            </div>
+
+                                            <div align="center"><input id="radio3" type="radio" name="radio" value="<?php echo $profile3; ?>">
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="gall_box_send">
+                                        <br />
+                                        <button type="button" class="btn btn-secondary" onclick="#">
+                                            Validate choice #1 (deactivated)
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-4 themed-grid-col-black">
+
+                            <div class="card" style="width: 100%; background-color: rgb(var(--main-color-2), 0.7)">
+                                <div class="card-body">
+                                    <h5 class="card-title">Instructions</h5>
+                                    <p class="card-text" style="text-align: justify">To take part in the survey, please do the following:
+                                        <ul>
+                                            <li>A set of 3 different profiles will be shown to you 12 times</li>
+                                            <li>For each of the 12 iterations, please pick the flight option that fits you best</li>
+                                            <li>At the end of survey, you will be asked to type in your age, gender, etc.</li>
+                                            <li>Survey length: 3 minutes</li>
+                                        </ul>
+                                    </p>
+                                    <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                                    <!--<footer class="blockquote-footer"><cite title="Source Title">SKIM group. decision behavior experts [<a target="_blank" href="https://skimgroup.com/methodologies/conjoint-analysis/choice-based-conjoint-cbc/">Online</a>]
+                                        </cite></footer>-->
+
+                                    <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- End row -->
+
+                </div>
+
+
+                <div class="tab-pane fade" id="nav-results" role="tabpanel" aria-labelledby="nav-results-tab">
+
+                    <div class="row">
+                        <div class="col-12 col-sm-12 themed-grid-col">
+                            <h1>Sample of ~100 people</h1>
+                            <p style="text-align: justify">After having collected the data from a sample of ~100 people, I ran various analysis to understand which attributes were the most relevant for the overall sample and subgroups based on demographic variables (age, activity,
+                                etc.). .
+                            </p>
+                        </div>
+
+
+
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-6 col-sm-6 themed-grid-col">
+                            <h1>Results & Conclusions</h1>
+                            <p style="text-align: justify">As we can see in those charts, the most important attribute is the <span class="badge-airport">airport</span> of departure whereas the number of <span class="badge-stopover">stopover</span> (0 or 1 in this case) is the less
+                                considered here.<br /><br /> That said, we can see that for the subgroup of people above 30 years old, the <span class="badge-airline">airline</span> is the less important factor.
+                                <br /><br /> Surprisingly, the most important attribute for the subgroup “students” is the <span class="badge-airport">airport</span> of departure and not the <span class="badge-airfare">airfare</span> as I thought it would
+                                be.
+                                <br /><br /> The extremely low popularity of Turkish <span class="badge-airline">airline</span> against Swiss, Singapore and Emirates also came as a surprise. The company recently spent huge amount of money in various advertising
+                                campaigns to market the <span class="badge-airline">airline</span> as one of best in the world. Nonetheless, it seems that Swiss people are still reluctant about flying with this fast-growing <span class="badge-airline">airline</span>.
+                            </p>
+                        </div>
+
+                        <div class="col-6 col-sm-6 themed-grid-col">
+
+                            <div class="card" style="width: 100%">
+
+                                <script type="text/javascript">
+                                    google.charts.load('current', {
+                                        'packages': ['corechart']
+                                    });
+                                    google.charts.setOnLoadCallback(drawChart);
+
+                                    function drawChart() {
+
+                                        var data = google.visualization.arrayToDataTable([
+                                            ['Attribute', 'Percentage'],
+                                            ['Airport', 0.46],
+                                            ['Airfare', 0.25],
+                                            ['Airline', 0.22],
+                                            ['Stopovers', 0.07]
+                                        ]);
+
+                                        var options = {
+                                            /*title: 'Attribute importance',*/
+                                            is3D: true,
+                                            pieSliceText: 'percentage',
+                                            tooltip: {
+                                                text: 'percentage'
+                                            },
+                                            /*height: "100",*/
+                                            width: "520",
+                                            chartArea: {
+                                                height: "94%",
+                                                width: "94%"
+                                            }
+                                        };
+
+                                        var chart = new google.visualization.PieChart(document.getElementById('piechartWholeSample'));
+
+                                        chart.draw(data, options);
+                                    }
+                                </script>
+
+
+                                <h5 class="card-title"><small>Attribute importance (whole sample)</small></h5>
+
+                                <div id="piechartWholeSample" style=""></div>
+
+
+                                <div class="card-body">
+                                    <!--<p class="card-text" style="text-align: justify"><small>~100 people living in the French part of Switzerland.</small></p>-->
+                                    <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                                    <!--<footer class="blockquote-footer"><cite title="Source Title">The Economist. The Big Mac
+                                            index. economist.com. [<a target="_blank" href="http://www.economist.com/blogs/dailychart/2011/07/big-mac-index">Online</a>]
+                                        </cite></footer>-->
+
+                                    <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                                </div>
+
+
+
+                            </div>
+
+
+
+                            <div class="card" style="">
+
+                                <script type="text/javascript">
+                                    google.charts.load("current", {
+                                        packages: ['corechart']
+                                    });
+                                    google.charts.setOnLoadCallback(drawChart);
+
+                                    function drawChart() {
+                                        /*var data = google.visualization.arrayToDataTable([
+                                            ['Sample', 'Airport', 'Airfare', 'Airline', 'Stopovers', {
+                                                role: 'annotation'
+                                            }],
+                                            ['Whole sample', 0.46, 0.25, 0.22, 0.07, ''],
+                                            ['18-30 y.o.', 0.48, 0.24, 0.19, 0.09, ''],
+                                            ['30+', 0.29, 0.26, 0.2, 0.25, '']
+                                        ]);
+
+
+                                        var options_fullStacked = {
+                                            isStacked: 'percent',
+                                            width: "520",
+                                            height: "350",
+                                            legend: {
+                                                position: 'right',
+                                                maxLines: 6
+                                            },
+                                            vAxis: {
+                                                minValue: 0,
+                                                ticks: [0, .3, .6, .9, 1]
+                                            },
+                                            chartArea: {
+                                                height: "84%",
+                                                width: "84%"
+                                            },
+
+                                        };*/
+
+
+
+                                        var data = google.visualization.arrayToDataTable([
+                                            ['Sample', 'Airport', 'Airfare', 'Airline', 'Stopover'],
+                                            ['Whole sample', 0.46, 0.25, 0.22, 0.07],
+                                            ['18-30 y.o.', 0.48, 0.24, 0.19, 0.09],
+                                            ['30+', 0.29, 0.26, 0.2, 0.25]
+                                        ]);
+
+                                        var options_fullStacked = {
+                                            width: "520",
+                                            vAxis: {
+                                                minValue: 0,
+                                                ticks: [0, .25, .5, .75, 1]
+                                            },
+                                            chartArea: {
+                                                height: "64%",
+                                                width: "64%"
+                                            },
+
+
+
+                                        };
+
+
+
+
+                                        var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+                                        chart.draw(data, options_fullStacked);
+                                    }
+                                </script>
+
+                                <h5 class="card-title"><small>Attribute importance (by subgroups)</small></h5>
+
+                                <div id="columnchart_values" style=""></div>
+
+                                <div class="card-body">
+                                    <!--<p class="card-text" style="text-align: justify"><small>~100 people living in the French part of Switzerland.</small></p>-->
+                                    <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                                    <!--<footer class="blockquote-footer"><cite title="Source Title">The Economist. The Big Mac
+                                            index. economist.com. [<a target="_blank" href="http://www.economist.com/blogs/dailychart/2011/07/big-mac-index">Online</a>]
+                                        </cite></footer>-->
+
+                                    <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                                </div>
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="row">
+
+                        <div class="col-12 col-sm-12 themed-grid-col">
+
+                            <div class="card" style="width: 100%">
+
+                                <script type="text/javascript">
+                                    google.charts.load("current", {
+                                        packages: ['corechart']
+                                    });
+                                    google.charts.setOnLoadCallback(drawChart);
+
+                                    function drawChart() {
+                                        var data = google.visualization.arrayToDataTable([
+                                            ["Attribute", "Utility", {
+                                                role: "style"
+                                            }],
+                                            ["GVA", 1.111, "#3266c9"],
+                                            ["ZRH", 0.260, "#3266c9"],
+                                            ["MIL or LYS", -1.371, "#3266c9"],
+                                            ["", , "color: #000"],
+                                            ["CHF 810", 0.907, "#dc3a12"],
+                                            ["CHF 950", -0.429, "#dc3a12"],
+                                            ["CHF 1020", -0.478, "color: #dc3a12"],
+                                            ["", , "color: #000"],
+                                            ["Swiss", 0.457, "color: #f1980f"],
+                                            ["Singapore", 0.221, "#f1980f"],
+                                            ["Emirates", 0.033, "#f1980f"],
+                                            ["Turkish", -0.712, "color: #f1980f"],
+                                            ["", , "color: #000"],
+                                            ["Direct", 0.192, "color: #31961a"],
+                                            ["Stopover", -0.192, "#31961a"],
+
+
+                                        ]);
+
+                                        var view = new google.visualization.DataView(data);
+                                        view.setColumns([0, 1, {
+                                                calc: "stringify",
+                                                sourceColumn: 1,
+                                                type: "string",
+                                                role: "annotation"
+                                            },
+                                            2
+                                        ]);
+
+                                        var options = {
+                                            /*title: "Density of Precious Metals, in g/cm^3",*/
+                                            width: 1000,
+                                            height: 400,
+                                            bar: {
+                                                groupWidth: "75%"
+                                            },
+                                            legend: {
+                                                position: "none"
+                                            },
+                                            chartArea: {
+                                                height: "84%", // Do not use 100%, otherwise you won't be able to see legends
+                                                width: "100%"
+                                            },
+
+
+                                        };
+                                        var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_whole_sample"));
+                                        chart.draw(view, options);
+                                    }
+                                </script>
+
+
+                                <h5 class="card-title"><small>Individual-level utilities | whole sample</small></h5>
+
+                                <div id="columnchart_whole_sample" style=""></div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="col-12 col-sm-12 themed-grid-col">
+
+                            <div class="card" style="width: 100%">
+
+                                <script type="text/javascript">
+                                    google.charts.load("current", {
+                                        packages: ['corechart']
+                                    });
+                                    google.charts.setOnLoadCallback(drawChart);
+
+                                    function drawChart() {
+                                        var data = google.visualization.arrayToDataTable([
+                                            ["Attribute", "Utility", {
+                                                role: "style"
+                                            }],
+                                            ["GVA", 1.143, "#3266c9"],
+                                            ["ZRH", 0.202, "#3266c9"],
+                                            ["MIL or LYS", -1.345, "#3266c9"],
+                                            ["", , "color: #000"],
+                                            ["CHF 810", 0.706, "#dc3a12"],
+                                            ["CHF 950", -0.516, "#dc3a12"],
+                                            ["CHF 1020", -0.190, "color: #dc3a12"],
+                                            ["", , "color: #000"],
+                                            ["Swiss", 0.264, "color: #f1980f"],
+                                            ["Singapore", 0.346, "#f1980f"],
+                                            ["Emirates", 0.008, "#f1980f"],
+                                            ["Turkish", -0.618, "color: #f1980f"],
+                                            ["", , "color: #000"],
+                                            ["Direct", -0.242, "color: #31961a"],
+                                            ["Stopover", 0.242, "#31961a"],
+
+
+                                        ]);
+
+                                        var view = new google.visualization.DataView(data);
+                                        view.setColumns([0, 1, {
+                                                calc: "stringify",
+                                                sourceColumn: 1,
+                                                type: "string",
+                                                role: "annotation"
+                                            },
+                                            2
+                                        ]);
+
+                                        var options = {
+                                            /*title: "Density of Precious Metals, in g/cm^3",*/
+                                            width: 1000,
+                                            height: 400,
+                                            bar: {
+                                                groupWidth: "75%"
+                                            },
+                                            legend: {
+                                                position: "none"
+                                            },
+                                            chartArea: {
+                                                height: "84%", // Do not use 100%, otherwise you won't be able to see legends
+                                                width: "100%"
+                                            },
+
+
+                                        };
+                                        var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_18_30_years_old"));
+                                        chart.draw(view, options);
+                                    }
+                                </script>
+
+
+                                <h5 class="card-title"><small>Individual-level utilities | 18-30 years old</small></h5>
+
+                                <div id="columnchart_18_30_years_old" style=""></div>
+
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 col-sm-12 themed-grid-col">
+
+                            <div class="card" style="width: 100%">
+
+                                <script type="text/javascript">
+                                    google.charts.load("current", {
+                                        packages: ['corechart']
+                                    });
+                                    google.charts.setOnLoadCallback(drawChart);
+
+                                    function drawChart() {
+                                        var data = google.visualization.arrayToDataTable([
+                                            ["Attribute", "Utility", {
+                                                role: "style"
+                                            }],
+                                            ["GVA", 1.447, "#3266c9"],
+                                            ["ZRH", 0.446, "#3266c9"],
+                                            ["MIL or LYS", -1.893, "#3266c9"],
+                                            ["", , "color: #000"],
+                                            ["CHF 810", 1.659, "#dc3a12"],
+                                            ["CHF 950", -0.340, "#dc3a12"],
+                                            ["CHF 1020", -1.319, "color: #dc3a12"],
+                                            ["", , "color: #000"],
+                                            ["Swiss", 1.050, "color: #f1980f"],
+                                            ["Singapore", 0.116, "#f1980f"],
+                                            ["Emirates", 0.013, "#f1980f"],
+                                            ["Turkish", -1.179, "color: #f1980f"],
+                                            ["", , "color: #000"],
+                                            ["Direct", 1.433, "color: #31961a"],
+                                            ["Stopover", -1.433, "#31961a"],
+
+
+                                        ]);
+
+                                        var view = new google.visualization.DataView(data);
+                                        view.setColumns([0, 1, {
+                                                calc: "stringify",
+                                                sourceColumn: 1,
+                                                type: "string",
+                                                role: "annotation"
+                                            },
+                                            2
+                                        ]);
+
+                                        var options = {
+                                            /*title: "Density of Precious Metals, in g/cm^3",*/
+                                            width: 1000,
+                                            height: 400,
+                                            bar: {
+                                                groupWidth: "75%"
+                                            },
+                                            legend: {
+                                                position: "none"
+                                            },
+                                            chartArea: {
+                                                height: "84%", // Do not use 100%, otherwise you won't be able to see legends
+                                                width: "100%"
+                                            },
+
+
+                                        };
+                                        var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_30_plus_years_old"));
+                                        chart.draw(view, options);
+                                    }
+                                </script>
+
+
+                                <h5 class="card-title"><small>Individual-level utilities | 30+ years old</small></h5>
+
+                                <div id="columnchart_30_plus_years_old" style=""></div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        </div>
+        <!-- End container -->
+
+        <hr class="my-4">
+
+
+        <footer class="container">
+            <p class="float-right"><a href="#">Back to top</a></p>
+            <p>Sebastien Roh · <a target="_blank" href="https://www.linkedin.com/in/sebastienroh/">LinkedIn</a></p>
+        </footer>
+
+
+
+
+    </main>
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>      
+<script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>-->
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>-->
+
+</body>
+
+</html>

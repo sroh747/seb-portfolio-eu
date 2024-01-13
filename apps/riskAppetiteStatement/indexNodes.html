@@ -1,0 +1,348 @@
+<style>
+    .link {
+        fill: none;
+        stroke: #666;
+        stroke-width: 2px;
+    }
+    
+    .link.neutral {
+        stroke: #B0BEC5;
+        /*#00a1d9*/
+        stroke-width: 1px;
+    }
+    
+    .link.positive {
+        /*stroke-dasharray: 0,2 1;*/
+        stroke: #43A047;
+        /* focus on*/
+    }
+    
+    .link.negative {
+        stroke: #E53935;
+        /*#00a1d9*/
+    }
+    
+    circle {
+        fill: #E3F2FD;
+        stroke: #333;
+        stroke-width: 1.2px;
+    }
+    
+    text {
+        font: 10px sans-serif;
+        pointer-events: none;
+        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    }
+</style>
+
+<body>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+
+
+    <script>
+        // http://blog.thomsonreuters.com/index.php/mobile-patent-suits-graphic-of-the-day/
+        var links = [{
+                source: "C1",
+                target: "productreview.com.au",
+                type: "neutral"
+            }, {
+                source: "C2",
+                target: "productreview.com.au",
+                type: "neutral"
+            }, {
+                source: "C3",
+                target: "productreview.com.au",
+                type: "neutral"
+            }, {
+                source: "C4",
+                target: "productreview.com.au",
+                type: "neutral"
+            }, {
+                source: "C5",
+                target: "productreview.com.au",
+                type: "neutral"
+            }, {
+                source: "C6",
+                target: "productreview.com.au",
+                type: "positive"
+            }, {
+                source: "C7",
+                target: "productreview.com.au",
+                type: "positive"
+            }, {
+                source: "C8",
+                target: "productreview.com.au",
+                type: "positive"
+            }, {
+                source: "C9",
+                target: "productreview.com.au",
+                type: "positive"
+            }, {
+                source: "C10",
+                target: "productreview.com.au",
+                type: "positive"
+            }, {
+                source: "C11",
+                target: "productreview.com.au",
+                type: "positive"
+            }, {
+                source: "C12",
+                target: "productreview.com.au",
+                type: "positive"
+            }, {
+                source: "C13",
+                target: "productreview.com.au",
+                type: "positive"
+            }, {
+                source: "C14",
+                target: "productreview.com.au",
+                type: "positive"
+            }, {
+                source: "C15",
+                target: "productreview.com.au",
+                type: "neutral"
+            }, {
+                source: "C16",
+                target: "productreview.com.au",
+                type: "neutral"
+            }, {
+                source: "C17",
+                target: "productreview.com.au",
+                type: "negative"
+            }, {
+                source: "C18",
+                target: "productreview.com.au",
+                type: "negative"
+            }, {
+                source: "C19",
+                target: "productreview.com.au",
+                type: "negative"
+            }, {
+                source: "C20",
+                target: "productreview.com.au",
+                type: "negative"
+            },
+
+            {
+                source: "P1",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P2",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P3",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P4",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P5",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P6",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P7",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P8",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P9",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P11",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P12",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P13",
+                target: "Facebook",
+                type: "positive"
+            }, {
+                source: "P14",
+                target: "Facebook",
+                type: "negative"
+            }, {
+                source: "P15",
+                target: "Facebook",
+                type: "negative"
+            }, {
+                source: "P16",
+                target: "Facebook",
+                type: "negative"
+            }, {
+                source: "P17",
+                target: "Facebook",
+                type: "negative"
+            }, {
+                source: "P18",
+                target: "Facebook",
+                type: "negative"
+            }, {
+                source: "P19",
+                target: "Facebook",
+                type: "negative"
+            }, {
+                source: "P20",
+                target: "Facebook",
+                type: "negative"
+            }, {
+                source: "P21",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P22",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P23",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P24",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P25",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P26",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P27",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P28",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P29",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P30",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P31",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P32",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P33",
+                target: "Facebook",
+                type: "neutral"
+            }, {
+                source: "P34",
+                target: "Facebook",
+                type: "neutral"
+            },
+
+        ];
+
+        var nodes = {};
+
+        // Compute the distinct nodes from the links.
+        links.forEach(function(link) {
+            link.source = nodes[link.source] || (nodes[link.source] = {
+                name: link.source
+            });
+            link.target = nodes[link.target] || (nodes[link.target] = {
+                name: link.target
+            });
+        });
+
+        var width = 600,
+            height = 450;
+
+        var force = d3.layout.force()
+            .nodes(d3.values(nodes))
+            .links(links)
+            .size([width, height])
+            .linkDistance(70)
+            .charge(-100)
+            .on("tick", tick)
+            .start();
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        // Per-type markers, as they don't inherit styles.
+        svg.append("defs").selectAll("marker")
+            .data(["suit", "negative", "positive", "neutral"])
+            .enter().append("marker")
+            .attr("id", function(d) {
+                return d;
+            })
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", -1.5)
+            .attr("markerWidth", 0)
+            .attr("markerHeight", 0)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5");
+
+        var path = svg.append("g").selectAll("path")
+            .data(force.links())
+            .enter().append("path")
+            .attr("class", function(d) {
+                return "link " + d.type;
+            })
+            .attr("marker-end", function(d) {
+                return "url(#" + d.type + ")";
+            });
+
+        var circle = svg.append("g").selectAll("circle")
+            .data(force.nodes())
+            .enter().append("circle")
+            .attr("r", 5)
+            .call(force.drag);
+
+        var text = svg.append("g").selectAll("text")
+            .data(force.nodes())
+            .enter().append("text")
+            .attr("x", 8)
+            .attr("y", ".31em")
+            .text(function(d) {
+                return d.name;
+            });
+
+        // Use elliptical arc path segments to doubly-encode directionality.
+        function tick() {
+            path.attr("d", linkArc);
+            circle.attr("transform", transform);
+            text.attr("transform", transform);
+        }
+
+        function linkArc(d) {
+            var dx = d.target.x - d.source.x,
+                dy = d.target.y - d.source.y,
+                dr = Math.sqrt(dx * dx + dy * dy);
+            return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+        }
+
+        function transform(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        }
+    </script>
