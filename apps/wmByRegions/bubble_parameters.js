@@ -4,7 +4,7 @@ var BUBBLE_PARAMETERS = {
     "report_title": "Wealth Management | ongoing commercial actions",
     "footer_text": "Commercial actions in the pipe",
     "width": 1000,
-    "height": 650,
+    "height": 850,
     "force_strength": 0.03,
     "force_type": "charge",
     "radius_field": "Asset Value",
