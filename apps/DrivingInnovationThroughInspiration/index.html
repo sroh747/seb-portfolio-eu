@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Sebastien Roh">
+    <meta name="generator" content="Sebastien Roh">
+    <title>Room rates VS GDP</title>
+
+    <!--<link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/navbar-fixed/">-->
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="js/correlation.js"></script>
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        @font-face {
+            font-family: "Bloomberg";
+            src: url("css/fonts/Bloomberg Logotypes-Medium-4f4134c199.woff");
+        }
+
+        .badge-four-seasons {
+            color: #FFF;
+            background-color: #1565C0;
+            padding: 0.1em;
+            border-radius: 0.2em;
+        }
+
+        .badge-ibis {
+            color: #FFF;
+            background-color: #c62828;
+            padding: 0.1em;
+            border-radius: 0.2em;
+        }
+
+        .ibis-header {
+            background-color: #343a40;
+        }
+
+        .ibis-body {
+            background-color: rgba(198, 40, 40, 0.8);
+            /* #c62828;  */
+        }
+
+        .four-seasons-header {
+            background-color: #343a40;
+        }
+
+        .four-seasons-body {
+            background-color: rgba(21, 101, 192, 0.8);
+            /* #1565C0;  */
+        }
+
+        .themed-grid-col {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            background-color: rgba(236, 230, 222, .15);
+            border: 1px solid rgba(236, 230, 222, .2);
+        }
+    </style>
+    <!-- Custom styles for this template -->
+</head>
+
+<body class="py-4" style="font-family: Bloomberg;">
+
+    <!--<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <a class="navbar-brand" href="#">Fixed navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline mt-2 mt-md-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>-->
+
+    <main role="main" class="container">
+
+        <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm"
+            style="background-color: #ECE6DE">
+            <div class="lh-1">
+                <h1 class="h1 mb-0 text-dark lh-1">Driving innovation through inspiration</h1>
+                <h2 class="h5 mb-0 text-dark lh-1"><a href="https://d3js.org/" target="_blank">d3.js</a> examples, nytimes case studies, etc.</h2>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-6 col-sm-6 themed-grid-col">
+                    <div class="card" style="width: 100%">
+                        <img class="card-img-top" src="img/nytimes1.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><small>For Yankees, Little Bang for Their Buck</small></h5>
+                            <p class="card-text" style="text-align: justify"><small>Comparing the salary and the number of hits for the 10 highest-paid hitters.</small></p>
+                            <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                            <footer class="blockquote-footer"><cite title="Source Title">New York Times. For Yankees,
+                                    Little Bang for Their Buck. nytimes.com. [<a target="_blank"
+                                        href="https://archive.nytimes.com/www.nytimes.com/interactive/2013/08/02/sports/baseball/bang-for-your-buck.html">Online</a>]
+                                </cite></footer>
+                            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-sm-6 themed-grid-col">
+                    <div class="card" style="width: 100%">
+                        <img class="card-img-top" src="img/slice_obama_budget_proposal.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><small>Four Ways to Slice Obama’s 2013 Budget Proposal</small></h5>
+                            <p class="card-text" style="text-align: justify"><small>Explore every nook and cranny of President Obama's federal budget proposal.</small></p>
+                            <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                            <footer class="blockquote-footer"><cite title="Source Title">New York Times. Four Ways to Slice Obama’s 2013 Budget Proposal. nytimes.com. [<a target="_blank"
+                                        href="https://archive.nytimes.com/www.nytimes.com/interactive/2012/02/13/us/politics/2013-budget-proposal-graphic.html">Online</a>]
+                                </cite></footer>
+                            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-sm-6 themed-grid-col">
+                    <div class="card" style="width: 100%">
+                        <img class="card-img-top" src="img/counties_blue_red.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><small>Counties Blue and Red, Moving Right and Left</small></h5>
+                            <p class="card-text" style="text-align: justify"><small>Explore every nook and cranny of President Obama's federal budget proposal.</small></p>
+                            <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                            <footer class="blockquote-footer"><cite title="Source Title">New York Times. Counties Blue and Red, Moving Right and Left. nytimes.com. [<a target="_blank"
+                                        href="https://archive.nytimes.com/www.nytimes.com/interactive/2012/11/11/sunday-review/counties-moving.html">Online</a>]
+                                </cite></footer>
+                            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-sm-6 themed-grid-col">
+                    <div class="card" style="width: 100%">
+                        <img class="card-img-top" src="img/nytimes1s.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><small>Is It Better to Rent or Buy?</small></h5>
+                            <p class="card-text" style="text-align: justify"><small>To help you answer this question, the calculator takes the most important costs associated with buying a house and computes the equivalent monthly rent.</small></p>
+                            <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                            <footer class="blockquote-footer"><cite title="Source Title">New York Times. Is It Better to Rent or Buy? nytimes.com. [<a target="_blank"
+                                        href="https://www.nytimes.com/interactive/2014/upshot/buy-rent-calculator.html">Online</a>]
+                                </cite></footer>
+                            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-sm-6 themed-grid-col">
+                    <div class="card" style="width: 100%">
+                        <img class="card-img-top" src="img/yield_curve.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><small>A 3-D View of a Chart That Predicts The Economic Future: The Yield Curve</small></h5>
+                            <p class="card-text" style="text-align: justify"><small>The yield curve shows how much it costs the federal government to borrow money for a given amount of time, revealing the relationship between long- and short-term interest rates.</small></p>
+                            <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                            <footer class="blockquote-footer"><cite title="Source Title">New York Times. A 3-D View of a Chart That Predicts The Economic Future: The Yield Curve? nytimes.com. [<a target="_blank"
+                                        href="https://www.nytimes.com/interactive/2015/03/19/upshot/3d-yield-curve-economic-growth.html">Online</a>]
+                                </cite></footer>
+                            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!--<hr class="my-4">-->
+            <br />
+
+
+        </div>
+
+        <hr class="my-4">
+
+
+        <footer class="container">
+            <p class="float-right"><a href="#">Back to top</a></p>
+            <p>Sebastien Roh · <a target="_blank" href="https://www.linkedin.com/in/sebastienroh/">LinkedIn</a></p>
+        </footer>
+
+
+
+
+    </main>
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>      
+<script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

@@ -12,7 +12,8 @@
     <!--<link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/navbar-fixed/">-->
 
     <!-- Bootstrap core CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
 
 
 
@@ -29,50 +30,50 @@
             -ms-user-select: none;
             user-select: none;
         }
-        
+
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
             }
         }
-        
+
         @font-face {
             font-family: "Bloomberg";
             src: url("css/fonts/Bloomberg Logotypes-Medium-4f4134c199.woff");
         }
-        
+
         .badge-four-seasons {
             color: #FFF;
             background-color: #1565C0;
             padding: 0.1em;
             border-radius: 0.2em;
         }
-        
+
         .badge-ibis {
             color: #FFF;
             background-color: #c62828;
             padding: 0.1em;
             border-radius: 0.2em;
         }
-        
+
         .ibis-header {
             background-color: #343a40;
         }
-        
+
         .ibis-body {
             background-color: rgba(198, 40, 40, 0.8);
             /* #c62828;  */
         }
-        
+
         .four-seasons-header {
             background-color: #343a40;
         }
-        
+
         .four-seasons-body {
             background-color: rgba(21, 101, 192, 0.8);
             /* #1565C0;  */
         }
-        
+
         .themed-grid-col {
             padding-top: 15px;
             padding-bottom: 15px;
@@ -110,29 +111,27 @@
 </nav>-->
 
     <main role="main" class="container">
-        <!--<main role="main" class="container">-->
-        <div class="jumbotron" style="background-color: #ECE6DE">
-            <h1>Strategy of pricing&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span class="text-muted">Room rates
-                    vs GDP</span></h1>
-            <h3></h3>
-            <p class="lead">
 
-            </p>
-            <!--<a class="btn btn-lg btn-primary" href="#" role="button">View navbar docs &raquo;</a>-->
+        <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm" style="background-color: #ECE6DE">
+            <div class="lh-1">
+                <h1 class="h1 mb-0 text-dark lh-1">Statistical modelling&nbsp;&nbsp;&#x2022;&nbsp;&nbsp;regression analysis for prediction</h1>
+                <h2 class="h5 mb-0 text-dark lh-1">Pricing strategy: relationship between GDP and room rates</h2>
+            </div>
         </div>
 
-
         <div class="container">
-
-
 
             <div class="row">
                 <div class="col-8 col-sm-8 themed-grid-col">
                     <h1>Introduction</h1>
-                    <p style="text-align: justify">As demonstrated in the attached picture, there is a correlation between the price of a Big Mac and the GDP per person. The more you earn the more expensive your Big Mac should be.
-                        <br /><br />Based on this, I wanted to create my own index to see whether <span class="badge-four-seasons">the Four Seasons</span> and <span class="badge-ibis">the
+                    <p style="text-align: justify">As demonstrated in the attached picture, there is a correlation
+                        between the price of a Big Mac and the GDP per person. The more you earn the more expensive your
+                        Big Mac should be.
+                        <br /><br />Based on this, I wanted to create my own index to see whether <span
+                            class="badge-four-seasons">the Four Seasons</span> and <span class="badge-ibis">the
                             Ibis</span> hotels' room rates could be explained by the GDP per person.
-                        <br /><br />To get a better understanding of their pricing policy, I gathered their rates (1 night for 2 people in a standard room) and then converted them into USD to make comparisons.
+                        <br /><br />To get a better understanding of their pricing policy, I gathered their rates (1
+                        night for 2 people in a standard room) and then converted them into USD to make comparisons.
                     </p>
                 </div>
 
@@ -142,7 +141,8 @@
                         <img class="card-img-top" src="img/Big-Mac-Index-Economist.gif" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title"><small>The Big Mac Index</small></h5>
-                            <p class="card-text" style="text-align: justify"><small>The Big Mac Index is used as a world price index, to see the
+                            <p class="card-text" style="text-align: justify"><small>The Big Mac Index is used as a world
+                                    price index, to see the
                                     variation
                                     of prices between countries and measures the inflation worldwide.</small></p>
                             <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
@@ -226,8 +226,10 @@
                         <div class="card-header four-seasons-header">Four Seasons</div>
                         <div class="card-body four-seasons-body">
                             <h5 class="card-title">No correlation.</h5>
-                            <p class="card-text">We found out that the GDP per capita only explains 10% of the room rates.
-                                <br /><br />Statistically speaking, it is extremely weak.</p>
+                            <p class="card-text">We found out that the GDP per capita only explains 10% of the room
+                                rates.
+                                <br /><br />Statistically speaking, it is extremely weak.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -238,7 +240,8 @@
                         <div class="card-body ibis-body">
                             <h5 class="card-title">Positive correlation.</h5>
                             <p class="card-text">We found out that the GDP per capita explains 53% of the room rates.
-                                <br /><br />Statistically speaking, it is quite significant!</p>
+                                <br /><br />Statistically speaking, it is quite significant!
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -246,7 +249,7 @@
                 <div class="col-6 col-sm-6">
                     <h2 class="mt-4"><span class="badge-four-seasons">Four Seasons</span>' data</h2>
                     <div id="chartLinearFourSeasonsHotels" style="height: 20em; width: 98%"></div>
-                    <br/>
+                    <br />
                     <div id="table_div_four_seasons_hotels" style="height: 15em; width:98%"></div>
 
                 </div>
@@ -254,7 +257,7 @@
 
                     <h2 class="mt-4"><span class="badge-ibis">Ibis</span>' data</h2>
                     <div id="chartLinearIbisHotels" style="height: 20em; width: 98%"></div>
-                    <br/>
+                    <br />
                     <div id="table_div_ibis_hotels" style="height: 15em; width:98%"></div>
 
 
@@ -274,15 +277,25 @@
             <div class="row">
                 <div class="col-12 col-sm-12 themed-grid-col justify-content">
                     <h1>conclusion</h1>
-                    <p style="text-align: justify">On the one hand, we have <span class="badge-four-seasons">The Four Seasons</span> that clearly targets wealthy customers who do not choose a room based on its price. They are looking for a certain level of quality and service and will
-                        pay a premium for that, wherever it is. The correlation between the GDP per capita and the room rate being extremely weak, we can conclude that <span class="badge-four-seasons">Four Seasons</span> does not set its prices based
+                    <p style="text-align: justify">On the one hand, we have <span class="badge-four-seasons">The Four
+                            Seasons</span> that clearly targets wealthy customers who do not choose a room based on its
+                        price. They are looking for a certain level of quality and service and will
+                        pay a premium for that, wherever it is. The correlation between the GDP per capita and the room
+                        rate being extremely weak, we can conclude that <span class="badge-four-seasons">Four
+                            Seasons</span> does not set its prices based
                         on the GDP per capita.
 
 
-                        <br /><br /> On the other hand, <span class="badge-ibis">the Ibis</span> is targeting a wider client base. Their customers tend to be more price sensitive. Therefore, they expect a price in accordance with the local purchasing
+                        <br /><br /> On the other hand, <span class="badge-ibis">the Ibis</span> is targeting a wider
+                        client base. Their customers tend to be more price sensitive. Therefore, they expect a price in
+                        accordance with the local purchasing
                         power.
-                        <br /><br /> By not adjusting their price to the country of operation, <span class="badge-four-seasons">Four Seasons</span> clearly positions itself as a top end resort. There is also an interesting question that we have not been
-                        able to answer. Do <span class="badge-four-seasons">Four Seasons</span> hotels located in developing countries generate more revenues than the one in Europe or North America and can they help or subsidy the one where the labour
+                        <br /><br /> By not adjusting their price to the country of operation, <span
+                            class="badge-four-seasons">Four Seasons</span> clearly positions itself as a top end resort.
+                        There is also an interesting question that we have not been
+                        able to answer. Do <span class="badge-four-seasons">Four Seasons</span> hotels located in
+                        developing countries generate more revenues than the one in Europe or North America and can they
+                        help or subsidy the one where the labour
                         costs are higher?
                     </p>
                 </div>
@@ -305,8 +318,12 @@
     </main>
     <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>      
 <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
 
 </body>
 

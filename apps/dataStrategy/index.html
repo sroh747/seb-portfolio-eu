@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Sebastien Roh">
+    <meta name="generator" content="Sebastien Roh">
+    <title>Data strategy</title>
+
+    <!--<link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/navbar-fixed/">-->
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="js/correlation.js"></script>
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        @font-face {
+            font-family: "Bloomberg";
+            src: url("css/fonts/Bloomberg Logotypes-Medium-4f4134c199.woff");
+        }
+
+        .badge-four-seasons {
+            color: #FFF;
+            background-color: #1565C0;
+            padding: 0.1em;
+            border-radius: 0.2em;
+        }
+
+        .badge-ibis {
+            color: #FFF;
+            background-color: #c62828;
+            padding: 0.1em;
+            border-radius: 0.2em;
+        }
+
+        .ibis-header {
+            background-color: #343a40;
+        }
+
+        .ibis-body {
+            background-color: rgba(198, 40, 40, 0.8);
+            /* #c62828;  */
+        }
+
+        .four-seasons-header {
+            background-color: #343a40;
+        }
+
+        .four-seasons-body {
+            background-color: rgba(21, 101, 192, 0.8);
+            /* #1565C0;  */
+        }
+
+        .themed-grid-col {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            background-color: rgba(236, 230, 222, .15);
+            border: 1px solid rgba(236, 230, 222, .2);
+        }
+    </style>
+    <!-- Custom styles for this template -->
+</head>
+
+<body class="py-4" style="font-family: Bloomberg;">
+
+    <!--<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <a class="navbar-brand" href="#">Fixed navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline mt-2 mt-md-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>-->
+
+    <main role="main" class="container">
+
+        <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm" style="background-color: #ECE6DE">
+            <div class="lh-1">
+                <h1 class="h1 mb-0 text-dark lh-1">Creating a data strategy</h1>
+                <h2 class="h5 mb-0 text-dark lh-1">NAB&nbsp;&nbsp;&#x2022;&nbsp;&nbsp;Investment Banking&nbsp;&nbsp;&#x2022;&nbsp;&nbsp;Markets and Treasury Finance</h2>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12 col-sm-12 themed-grid-col">
+                    <h1>The starting situation</h1>
+                    <ul>
+                        <li>
+                            No data strategy in place regarding the use of Business Intelligence
+                        </li>
+                        <li>
+                            Most of the internal reports (e.g. reconciliations spreadsheets, Profits and Loss, traders’ sign-off, etc.) were produced in Excel with extensive use of VLOOKUP-like formulas and outdated VBA macros.
+                        </li>
+                        <li>
+                            Some spreadsheets were also converted into PDFs and PPTs, annihilating any sort of data analysis.
+                        </li>
+                        <li>
+                            Nobody could really fully understand those macros. Some people were able to do some debugging, but no one was able to redevelop it from scratch.
+                        </li>
+                        <li>
+                            There were no centralised way of disseminating data throughout the finance department. People were relying on emails. People were receiving 100+ emails per day. Most of them were sent on a daily basis, with CSV or XLSX attached. Some only contained screenshots of Excel tables. The email was used as a one-size-fits-all solution.
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!--<hr class="my-4">-->
+            <br />
+
+            <div class="row">
+                <div class="col-8 col-sm-8 themed-grid-col">
+                    <h1>What I did</h1>
+                    <ul>
+                        <li>
+                            I requested the implementation of a Power BI Server, so that we could redevelop and automate reports. It would become the main point of entry/portal for all finance reportings.
+                        </li>
+                        <li>
+                            Emails should be used to disseminate relevant and important information. It should not be used as a log monitoring tool.
+                        </li>
+                        <li>
+                            In some cases, dedicated workflows had to be developed in Python (via Jupyter Notebook) before generating a proper visualisation in Power BI.
+                        </li>
+                        <li>
+                            Data governance also had to be enforced. Some of those reports were sent out to a large audience, which did not necessarily need access to it (leveraging groups in SailPoint).
+                        </li>                        
+                    </ul>
+                </div>
+                
+                <div class="col-4 col-sm-4 themed-grid-col">
+                    <div class="card" style="width: 100%">
+                        <img class="card-img-top" src="img/connecting_to_apis_with_pbi.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><small>Connecting to APIs with Power BI</small></h5>
+                            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-12 col-sm-12 themed-grid-col">
+                    <h1>The deliverable and the outcome</h1>
+                    <ul>
+                        <li>
+                            Creation of state-of-the-art dashboards (e.g. Profit and Loss dashboard with drilling capabilities, allowing self-service analytics) for each and every team
+                        </li>
+                        <li>
+                            Implementation of fully automated dashboards (sourcing data from data lakes, data warehouses, APIs, etc. rather than manual mappings stored on shared drives)
+                        </li>
+                        <li>
+                            New SailPoint groups (Identity management tool) to limit access to certain Power BI folders and dashboards
+                        </li>
+                        <li>
+                            Development of data completeness dashboard (identifying when reports are ready for consumption, identifying bottlenecks in the data sourcing, etc.)
+                        </li>        
+                        <li>
+                            Monitoring usage metrics in workspaces (identifying popular dashboards, features, etc.)
+                        </li>                        
+                        <li>
+                            The CFO, executive general managers and finance partners can now attend a meeting with a dynamic tool allowing them to deliver storytelling. They can answer questions on-the-fly by drilling into the visualisations.
+                        </li>     
+                    </ul>
+                </div>
+            </div>
+
+            <br />
+
+
+            <!--<hr class="my-4">-->
+            <br />
+
+
+            <div class="row">
+                <div class="col-12 col-sm-12 themed-grid-col justify-content">
+                    <h1>Key takeaways</h1>
+                    <ul>
+                        <li>
+                            Change management skills required: it takes time for people to adapt to new ways of doing things (even though the new tools may make a lot of sense on the paper)
+                        </li>
+                        <li>
+                            Upskilling/training sessions were required so that end-users could fully embrace the new BI solutions.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+
+        <hr class="my-4">
+
+
+        <footer class="container">
+            <p class="float-right"><a href="#">Back to top</a></p>
+            <p>Sebastien Roh · <a target="_blank" href="https://www.linkedin.com/in/sebastienroh/">LinkedIn</a></p>
+        </footer>
+
+
+
+
+    </main>
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>      
+<script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
