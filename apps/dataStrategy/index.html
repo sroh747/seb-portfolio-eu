@@ -7,15 +7,21 @@
     <meta name="description" content="">
     <meta name="author" content="Sebastien Roh">
     <meta name="generator" content="Sebastien Roh">
-    <title>Data strategy</title>
+    <title>Creating a data strategy</title>
 
     <!--<link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/navbar-fixed/">-->
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
+
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+
 
     <!-- Bootstrap core CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
         crossorigin="anonymous">
-
-
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="js/correlation.js"></script>
@@ -50,8 +56,8 @@
         }
 
         .badge-ibis {
-            color: #FFF;
-            background-color: #c62828;
+            color: #000;
+            background-color: #F2C811;
             padding: 0.1em;
             border-radius: 0.2em;
         }
@@ -74,6 +80,9 @@
             /* #1565C0;  */
         }
 
+            
+
+
         .themed-grid-col {
             padding-top: 15px;
             padding-bottom: 15px;
@@ -84,7 +93,7 @@
     <!-- Custom styles for this template -->
 </head>
 
-<body class="py-4" style="font-family: Bloomberg;">
+<body class="py-4" style="font-family: Bloomberg; font-size: 0.8em;">
 
     <!--<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   <a class="navbar-brand" href="#">Fixed navbar</a>
@@ -112,63 +121,164 @@
 
     <main role="main" class="container">
 
-        <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm" style="background-color: #ECE6DE">
+        <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm"
+            style="background-color: #ECE6DE">
             <div class="lh-1">
                 <h1 class="h1 mb-0 text-dark lh-1">Creating a data strategy</h1>
-                <h2 class="h5 mb-0 text-dark lh-1">NAB&nbsp;&nbsp;&#x2022;&nbsp;&nbsp;Investment Banking&nbsp;&nbsp;&#x2022;&nbsp;&nbsp;Markets and Treasury Finance</h2>
+                <h2 class="h5 mb-0 text-dark lh-1">National Australia Bank
+                    (NAB)&nbsp;&nbsp;&#x2022;&nbsp;&nbsp;Investment Banking&nbsp;&nbsp;&#x2022;&nbsp;&nbsp;Markets and
+                    Treasury Finance</h2>
             </div>
         </div>
 
         <div class="container">
 
             <div class="row">
-                <div class="col-12 col-sm-12 themed-grid-col">
-                    <h1>The starting situation</h1>
+                <div class="col-8 col-sm-8 rounded themed-grid-col">
+                    <h3>The starting situation</h3>
                     <ul>
                         <li>
-                            No data strategy in place regarding the use of Business Intelligence
+                            <span class="badge-ibis">No proper data strategy in place regarding the use of Business
+                                Intelligence, master data management, self-service analytics, etc.</span>
                         </li>
                         <li>
-                            Most of the internal reports (e.g. reconciliations spreadsheets, Profits and Loss, traders’ sign-off, etc.) were produced in Excel with extensive use of VLOOKUP-like formulas and outdated VBA macros.
+                            Most of the internal reports (e.g. reconciliations spreadsheets, Profits and Loss, traders’
+                            sign-off, etc.) were produced in Excel with extensive use of VLOOKUP-like formulas,
+                            unnecessary manual interventions and outdated VBA macros (no expertise in
+                            coding/development).
                         </li>
                         <li>
-                            Some spreadsheets were also converted into PDFs and PPTs, annihilating any sort of data analysis.
+                            Some spreadsheets were also converted into PDFs and PPTs, annihilating any sort of data
+                            analysis.
                         </li>
                         <li>
-                            Nobody could really fully understand those macros. Some people were able to do some debugging, but no one was able to redevelop it from scratch.
+                            There were no centralised way of disseminating data throughout the finance department.
+                            People were relying on SharePoint drives and were receiving 100+ emails per day.
                         </li>
                         <li>
-                            There were no centralised way of disseminating data throughout the finance department. People were relying on emails. People were receiving 100+ emails per day. Most of them were sent on a daily basis, with CSV or XLSX attached. Some only contained screenshots of Excel tables. The email was used as a one-size-fits-all solution.
+                            Most of the reports were sent on a daily basis, with CSV or XLSX files attached. Some were
+                            inaccurate and only contained screenshots of Excel tables.
                         </li>
+                        <li>
+                            The email was used as a one-size-fits-all solution.
+                        </li>
+
                     </ul>
                 </div>
+                <div class="col-4 col-sm-4 rounded themed-grid-col">
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title"><small>About National Australia Bank (NAB) <img src="./../../img/flags-iso/shiny/16/AU.png"/></small></h5>
+                            <p class="card-text" style="text-align: justify"><small>NAB serves the financial needs of
+                                    their Australian, New Zealand and global customers.
+                                    <br /><br />
+                                    NAB's workforce is made up of more than 38,000 colleagues globally, supporting more
+                                    than eight and a half million customers in Australia and overseas across: personal
+                                    accounts, small, medium and large businesses, private clients, government and
+                                    institutional activities.</small></p>
+                            <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                            <footer class="blockquote-footer"><cite title="Source Title">NAB&nbsp;&#x2022;&nbsp;About
+                                    us&nbsp;&#x2022;&nbsp;nab.com.au [<a target="_blank" href="https://www.nab.com.au/"
+                                        title="nab.com.au">Online</a>]
+                                </cite></footer>
+                            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                        </div>
+                    </div>
 
+                </div>
             </div>
 
             <!--<hr class="my-4">-->
             <br />
 
             <div class="row">
-                <div class="col-8 col-sm-8 themed-grid-col">
-                    <h1>What I did</h1>
+                <div class="col-8 col-sm-8 rounded themed-grid-col">
+                    <h3>What I did</h3>
                     <ul>
                         <li>
-                            I requested the implementation of a Power BI Server, so that we could redevelop and automate reports. It would become the main point of entry/portal for all finance reportings.
+                            I collaborated with various departments (finance, IT) to <span class="badge-ibis">identify
+                                all the stakeholders involved and the required/existing data sources</span>.
                         </li>
                         <li>
-                            Emails should be used to disseminate relevant and important information. It should not be used as a log monitoring tool.
+                            I requested the <span class="badge-ibis">implementation of a Power BI Server</span>, so that
+                            we could <span class="badge-ibis">streamline and automate reports</span>. It would become
+                            the main point of entry/portal for all finance reportings.
                         </li>
                         <li>
-                            In some cases, dedicated workflows had to be developed in Python (via Jupyter Notebook) before generating a proper visualisation in Power BI.
+                            In some cases, <span class="badge-ibis">dedicated workflows</span> had to be developed in
+                            Python (prototyping using Jupyter Notebook) before generating proper visualisations in Power
+                            BI.
                         </li>
                         <li>
-                            Data governance also had to be enforced. Some of those reports were sent out to a large audience, which did not necessarily need access to it (leveraging groups in SailPoint).
-                        </li>                        
+                            <span class="badge-ibis">Strengthening and enhancing already existing APIs</span>.
+                        </li>
+                        <li>
+                            Data governance also had to be enforced. Some of those reports were sent out to a large
+                            audience, which did not necessarily need access to it (leveraging groups in SailPoint).
+                        </li>
+                        <li>
+                            Emails should be used to disseminate relevant and important information. It should not be
+                            used as a log monitoring tool.
+                        </li>
                     </ul>
                 </div>
+
+
                 
-                <div class="col-4 col-sm-4 themed-grid-col">
+                <div class="col-4 col-sm-4 rounded themed-grid-col">
                     <div class="card" style="width: 100%">
+
+                          
+                        <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                              <div class="carousel-item active">
+                                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
+                                <div class="container">
+                                  <div class="carousel-caption text-start">
+                                    <h1>Example headline.</h1>
+                                    <p class="opacity-75">Some representative placeholder content for the first slide of the carousel.</p>
+                                    <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="carousel-item">
+                                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
+                                <div class="container">
+                                  <div class="carousel-caption">
+                                    <h1>Another example headline.</h1>
+                                    <p>Some representative placeholder content for the second slide of the carousel.</p>
+                                    <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="carousel-item">
+                                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
+                                <div class="container">
+                                  <div class="carousel-caption text-end">
+                                    <h1>One more for good measure.</h1>
+                                    <p>Some representative placeholder content for the third slide of this carousel.</p>
+                                    <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
+                          </div>
+                        
+
+
                         <img class="card-img-top" src="img/connecting_to_apis_with_pbi.png" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title"><small>Connecting to APIs with Power BI</small></h5>
@@ -181,27 +291,35 @@
             <br />
 
             <div class="row">
-                <div class="col-12 col-sm-12 themed-grid-col">
-                    <h1>The deliverable and the outcome</h1>
+                <div class="col-12 col-sm-12 rounded themed-grid-col">
+                    <h3>The deliverable and the outcome</h3>
                     <ul>
                         <li>
-                            Creation of state-of-the-art dashboards (e.g. Profit and Loss dashboard with drilling capabilities, allowing self-service analytics) for each and every team
+                            <span class="badge-ibis">Creation of customised, state-of-the-art dashboards</span> (e.g.
+                            Profit and Loss dashboard with drilling capabilities, period-over-period analysis,
+                            self-service analytics) for each and every team.
                         </li>
                         <li>
-                            Implementation of fully automated dashboards (sourcing data from data lakes, data warehouses, APIs, etc. rather than manual mappings stored on shared drives)
+                            Implementation of <span class="badge-ibis">fully automated dashboards</span> (sourcing data
+                            from data lakes, data warehouses, APIs, etc. rather than manual mappings stored on shared
+                            drives).
                         </li>
                         <li>
-                            New SailPoint groups (Identity management tool) to limit access to certain Power BI folders and dashboards
+                            <span class="badge-ibis">Improved data governance</span>: new SailPoint groups (Identity
+                            management tool) to limit access to certain Power BI folders and dashboards.
                         </li>
                         <li>
-                            Development of data completeness dashboard (identifying when reports are ready for consumption, identifying bottlenecks in the data sourcing, etc.)
-                        </li>        
+                            Development of data completeness dashboard (identifying when reports are ready for
+                            consumption, identifying bottlenecks in the data sourcing, etc.).
+                        </li>
                         <li>
-                            Monitoring usage metrics in workspaces (identifying popular dashboards, features, etc.)
-                        </li>                        
+                            Monitoring usage metrics in workspaces (identifying popular dashboards, features, etc.).
+                        </li>
                         <li>
-                            The CFO, executive general managers and finance partners can now attend a meeting with a dynamic tool allowing them to deliver storytelling. They can answer questions on-the-fly by drilling into the visualisations.
-                        </li>     
+                            The CFO, executive general managers and finance partners can now attend a meeting with a
+                            dynamic tool allowing them to <span class="badge-ibis">deliver storytelling</span>. They can
+                            answer questions on-the-fly by drilling into the visualisations.
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -209,19 +327,18 @@
             <br />
 
 
-            <!--<hr class="my-4">-->
-            <br />
-
-
             <div class="row">
-                <div class="col-12 col-sm-12 themed-grid-col justify-content">
-                    <h1>Key takeaways</h1>
+                <div class="col-12 col-sm-12 rounded themed-grid-col justify-content">
+                    <h3>Key takeaways</h3>
                     <ul>
                         <li>
-                            Change management skills required: it takes time for people to adapt to new ways of doing things (even though the new tools may make a lot of sense on the paper)
+                            <span class="badge-ibis">Change management</span> skills required: it takes time for people
+                            to adapt to new ways of doing things (even though the new tools may make a lot of sense on
+                            the paper)
                         </li>
                         <li>
-                            Upskilling/training sessions were required so that end-users could fully embrace the new BI solutions.
+                            <span class="badge-ibis">Upskilling/training sessions</span> were required so that end-users
+                            could fully embrace the new BI solutions.
                         </li>
                     </ul>
                 </div>
