@@ -94,6 +94,24 @@
       --bs-btn-active-border-color: #5a23c8;
     }
 
+    .btn-bd-secondary {
+      --bd-violet-bg: #000;
+      --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+      --bs-btn-font-weight: 600;
+      --bs-btn-color: var(--bs-white);
+      --bs-btn-bg: var(--bd-violet-bg);
+      --bs-btn-border-color: var(--bd-violet-bg);
+      --bs-btn-hover-color: var(--bs-white);
+      --bs-btn-hover-bg: #333;
+      --bs-btn-hover-border-color: #333;
+      --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+      --bs-btn-active-color: var(--bs-btn-hover-color);
+      --bs-btn-active-bg: #333;
+      --bs-btn-active-border-color: #333;
+    }
+
+
     .bd-mode-toggle {
       z-index: 1500;
     }
@@ -135,7 +153,7 @@
   </svg>
 
   <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+    <button class="btn btn-bd-secondary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
       aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
       <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
         <use href="#circle-half"></use>
@@ -206,13 +224,23 @@
     <div class="navbar navbar-dark bg-dark shadow-sm">
       <div class="container">
         <a href="#" class="navbar-brand d-flex align-items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+          <!--<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
             stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2"
             viewBox="0 0 24 24">
             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
             <circle cx="12" cy="13" r="4" />
           </svg>
-          <strong>Business Case Studies</strong>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-rocket-takeoff" viewBox="0 0 16 16">
+            <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362s.96-1.932.362-2.531c-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532"/>
+            <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9 9 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a10 10 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093q.1.026.16.045c.184.06.279.13.351.295l.029.073a3.5 3.5 0 0 1 .157.721c.055.485.051 1.178-.159 2.065m-4.828 7.475.04-.04-.107 1.081a1.54 1.54 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a9 9 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006M5.205 5c-.625.626-.94 1.351-1.004 2.09a9 9 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a3 3 0 0 0-.045-.283 3 3 0 0 0-.3-.041Z"/>
+            <path d="M7.009 12.139a7.6 7.6 0 0 1-1.804-1.352A7.6 7.6 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
+          </svg>-->
+          <picture>
+            <img src="./favicon/apple-touch-icon.png" width="35em" style="border: none;" class="img-thumbnail no-border"
+              alt="...">
+          </picture>
+
+          &nbsp;<strong>Business Case Studies</strong>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
           aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
@@ -238,8 +266,11 @@
     </section>-->
 
     <div class="album py-5 bg-body-tertiary">
+
+
       <div class="container">
 
+        <h2>Data Science&nbsp;&#x2022;&nbsp;Data Analytics</h2>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
 
@@ -250,7 +281,7 @@
                 <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Voluntary Carbon Market Tool</h3>
                 <h6>Generating insights for Carbon traders, salespeople and C-level executives</h6>
                 <div class="btn-group">
-                  <a target="_blank" class="btn btn-dark btn-sm">Coming up soon...</a>
+                  <a target="_blank" class="btn btn-success btn-sm">Coming up soon...</a>
                 </div>
               </div>
             </div>
@@ -270,25 +301,46 @@
             </div>
           </div>
 
+          <div class="col">
+            <div class="card shadow-sm">
+              <img src="./apps/strategyOfPricing/img/regression.png" style="filter: brightness(95%)" class="card-img-top" alt="...">
+              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
+              <div class="card-body">
+                <h5 class="text-dark">Statistical modelling&nbsp;&#x2022;&nbsp;regression analysis for prediction</h5>
+                <p class="card-text">Pricing strategy: assessing if hotel room rates are correlated with GDP per capita
+                </p>
+                <div class="d-flex justify-content-center">
+                  <div class="btn-group">
+                    <a href="./apps/strategyOfPricing/index.html" target="_blank" class="btn btn-sm btn-dark">Learn
+                      more</a>
+                  </div>
+                  <!--<small class="text-body-secondary">HEC Lausanne</small>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+
 
           <div class="col">
             <div class="card shadow-sm">
-              <img src="./img/ML2.png" class="card-img-top" alt="...">
+              <img src="./img/ML2.png" style="filter: brightness(95%)" class="card-img-top" alt="...">
               <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
               <div class="card-body">
                 <h5 class="text-dark">Supervised Machine Learning models&nbsp;&#x2022;&nbsp;Classification</h5>
                 <p class="card-text">Predicting inaccurate rates and improving data quality and accuracy | preprocessing
                   data, basic feature engineering, visualizing data, and model building.</p>
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-center">
                   <div class="btn-group">
                     <a href="https://github.com/sroh747/Predictions-using-Python/blob/main/Prediction%20of%20a%20Categorical%20Variable%20(defaulting%20on%20a%20loan%20or%20not).ipynb"
                       target="_blank" class="btn btn-dark btn-sm">GitHub repository</a>
                   </div>
-                  <small class="text-body-secondary">2021</small>
+                  <!--<small class="text-body-secondary">2021</small>-->
                 </div>
               </div>
             </div>
           </div>
+
 
 
           <div class="col">
@@ -296,21 +348,63 @@
               <img src="./img/tf-idf.jpg" class="card-img-top" alt="...">
               <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
               <div class="card-body">
-                <h5 class="text-dark">Natural Language Processing (NLP) for non-financial risk dept.</h5>
-                <p class="card-text">Keyword (n-grams) extraction with TF-IDF and SKlearn (unsupervised ML model)</p>
-                <p class="card-text">Identifying systemic anomalies logged in their risk management tool (e.g. wrong
-                  rates, compliance issues, etc.)</p>
-                <div class="d-flex justify-content-between align-items-center">
+                <h5 class="text-dark">Unsupervised Machine Learning models&nbsp;&#x2022;&nbsp;Natural Language
+                  Processing (NLP)</h5>
+                <p class="card-text">Extracting Keyword (n-grams) with TF-IDF and SKlearn for a non-financial risk dept.
+                </p>
+                <p class="card-text">Identifying systemic anomalies logged in a risk management tool (e.g. wrong rates,
+                  compliance issues, etc.)</p>
+                <div class="d-flex justify-content-center">
                   <div class="btn-group">
                     <a href="https://github.com/sroh747/NLP-text-mining/blob/main/Keyword%20(n-grams)%20extraction%20with%20TF-IDF%20and%20SKlearn.ipynb"
                       target="_blank" class="btn btn-sm btn-dark">GitHub repository</a>
                   </div>
-                  <small class="text-body-secondary">2020</small>
+                  <!--<small class="text-body-secondary">2020</small>-->
                 </div>
               </div>
             </div>
           </div>
 
+
+          <div class="col">
+            <div class="card shadow-sm">
+              <img src="./img/factor_cluster_analysis.png" class="card-img-top" alt="...">
+              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
+              <div class="card-body">
+                <h5 class="text-dark">Business Insights&nbsp;&#x2022;&nbsp;Factor and Cluster Analysis</h5>
+                <p class="card-text">Identifying potential travellers’ segments in the Swiss market (budget, no-limit,
+                  comfy, shopping, sporty, etc.)</p>
+                <div class="d-flex justify-content-center">
+                  <small class="text-body-secondary">Master thesis&nbsp;&#x2022;&nbsp;HEC Lausanne</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col">
+            <div class="card shadow-sm">
+              <img src="./apps/choiceBasedConjointAnalysis/images/airfares.png" style="filter: brightness(95%)" class="card-img-top" alt="...">
+              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
+              <div class="card-body">
+                <h5 class="text-dark">Business Insights&nbsp;&#x2022;&nbsp;Choice-Based Conjoint (CBC) Analysis</h5>
+                <p class="card-text">Identifying how a respondent values combinations of features</p>
+                <div class="d-flex justify-content-center">
+                  <div class="btn-group">
+                    <a href="./apps/choiceBasedConjointAnalysis/index.html" target="_blank"
+                      class="btn btn-sm btn-dark">Learn more</a>
+                  </div>
+                  <!--<small class="text-body-secondary">HEC Lausanne</small>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <br />
+        <hr />
+        <h2>Data Strategy</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
           <div class="col">
             <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
@@ -329,49 +423,17 @@
 
           <div class="col">
             <div class="card shadow-sm">
-              <img src="./apps/strategyOfPricing/img/regression.png" class="card-img-top" alt="...">
+              <img src="./img/data_architecture.jpg" style="filter: brightness(95%)" class="card-img-top" alt="...">
               <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
               <div class="card-body">
-                <h5 class="text-dark">Statistical modelling&nbsp;&#x2022;&nbsp;regression analysis for prediction</h5>
-                <p class="card-text">Pricing strategy: relationship between GDP and room rates</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <a href="./apps/strategyOfPricing/index.html" target="_blank" class="btn btn-sm btn-dark">Learn
-                      more</a>
-                  </div>
-                  <small class="text-body-secondary">HEC Lausanne</small>
+                <h5 class="text-dark">Data architecture</h5>
+                <p class="card-text">Data collection, data modelling, data flows and reporting.</p>
+                <div class="d-flex justify-content-center">
+                  <small class="text-body-secondary">2018/2024</small>
                 </div>
               </div>
             </div>
           </div>
-
-
-          <div class="col">
-            <div class="card shadow-sm">
-              <img src="./img/scraper2.webp" class="card-img-top" alt="...">
-              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
-              <div class="card-body">
-                <h5 class="text-dark">Market Intelligence&nbsp;&#x2022;&nbsp;web scraping</h5>
-                <p class="card-text">Automating Web scraping of airfares to identify emerging trends and patterns</p>
-                <p class="card-text">
-                  <span class="badge text-bg-secondary">AWS Lambda</span>
-                  <span class="badge text-bg-secondary">AWS S3</span>
-                  <span class="badge text-bg-secondary">AWS DynamoDB</span>
-                  <span class="badge text-bg-secondary">d3.js</span>
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <a href="./demos/index.html" target="_blank" class="btn btn-sm btn-dark">Airfares tracker</a>
-                    <a href="./demos/d3_line_chart_json_sydney_adelaide.html" target="_blank"
-                      class="btn btn-sm btn-dark">Scatter plot</a>
-                    <a href="https://github.com/sroh747/Web-scraping" target="_blank"
-                      class="btn btn-sm btn-dark">GitHub</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
 
           <!--<div class="col">
             <div class="card shadow-sm">
@@ -395,6 +457,112 @@
             </div>
           </div>-->
 
+        </div>
+
+        <br />
+        <hr />
+        <h2>Data Engineering</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+          <div class="col">
+            <div class="card shadow-sm">
+              <img src="./img/market_data.png" class="card-img-top" alt="...">
+              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
+              <div class="card-body">
+                <h5 class="text-dark">Market Intelligence&nbsp;&#x2022;&nbsp;web scraping</h5>
+                <p class="card-text">Automating web scraping of market data (Volume, Open Interest, settlement prices)
+                  to identify emerging trends and patterns</p>
+                <p class="card-text">Serverless data pipelines</p>
+                <p class="card-text">
+                  <span class="badge text-bg-secondary">Azure DevOps</span>
+                  <span class="badge text-bg-secondary">Azure Repos</span>
+                  <span class="badge text-bg-secondary">Azure Pipelines</span>
+                </p>
+                <div class="d-flex justify-content-center">
+                  <!--<div class="btn-group">
+                    <a href="./demos/index.html" target="_blank" class="btn btn-sm btn-dark">Airfares tracker</a>&nbsp;
+                    <a href="./demos/d3_line_chart_json_sydney_adelaide.html" target="_blank"
+                      class="btn btn-sm btn-dark">Scatter plot</a>&nbsp;
+                    <a href="https://github.com/sroh747/Web-scraping" target="_blank"
+                      class="btn btn-sm btn-dark">GitHub</a>
+                  </div>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col">
+            <div class="card shadow-sm">
+              <img src="./img/scraper2.webp" class="card-img-top" alt="...">
+              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
+              <div class="card-body">
+                <h5 class="text-dark">Market Intelligence&nbsp;&#x2022;&nbsp;web scraping</h5>
+                <p class="card-text">Automating web scraping of airfares to identify emerging trends and patterns</p>
+                <p class="card-text">Serverless data pipelines</p>
+                <p class="card-text">
+                  <span class="badge text-bg-secondary">AWS Lambda</span>
+                  <span class="badge text-bg-secondary">AWS S3</span>
+                  <span class="badge text-bg-secondary">AWS DynamoDB</span>
+                  <span class="badge text-bg-secondary">d3.js</span>
+                </p>
+                <div class="d-flex justify-content-center">
+                  <div class="btn-group">
+                    <a href="./demos/index.html" target="_blank" class="btn btn-sm btn-dark">Airfares tracker</a>&nbsp;
+                    <a href="./demos/d3_line_chart_json_sydney_adelaide.html" target="_blank"
+                      class="btn btn-sm btn-dark">Scatter plot</a>&nbsp;
+                    <a href="https://github.com/sroh747/Web-scraping" target="_blank"
+                      class="btn btn-sm btn-dark">GitHub</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <br />
+        <hr />
+        <h2>Custom web application</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+          <div class="col">
+            <div class="card shadow-sm">
+              <img src="./img/pricing-grid.png" style="filter: brightness(95%)" class="card-img-top" alt="...">
+              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
+              <div class="card-body">
+                <h5 class="text-dark">Dynamic Pricing</h5>
+                <p class="card-text">Assessing products by region, product category, expiration, etc.</p>
+                <p class="card-text">Ability to quickly retrieve historical data, drill down into it, analyse the spread
+                  between curves, etc.</p>
+                <div class="d-flex justify-content-center">
+                  <p class="card-text">
+                    <span class="badge text-bg-secondary">NoSQL database</span>
+                    <span class="badge text-bg-secondary">Azure Functions</span>
+                    <span class="badge text-bg-secondary">React front-end</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col">
+            <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+              style="background-image: url('./img/runner2.jpg');">
+              <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+                <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Knowledge Management System</h3>
+                <p class="card-text">
+                  <span class="badge text-bg-dark">MySQL database</span>
+                  <span class="badge text-bg-dark">PHP</span>
+                  <span class="badge text-bg-dark">d3.js</span>
+                </p>
+                <div class="btn-group">
+                  <a target="_blank" class="btn btn-dark btn-sm">Learn more</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
           <div class="col">
             <div class="card shadow-sm">
@@ -407,112 +575,24 @@
                 <p class="card-text">
                   <span class="badge text-bg-secondary">Data warehouse</span>
                   <span class="badge text-bg-secondary">MySQL database</span>
+                  <span class="badge text-bg-secondary">PHP</span>
                   <span class="badge text-bg-secondary">d3.js</span>
                 </p>
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-center">
                   <div class="btn-group">
                     <a href="./apps/wmByRegions/index.html" target="_blank" class="btn btn-sm btn-dark">Learn more</a>
                   </div>
-                  <small class="text-body-secondary">2018/2019</small>
                 </div>
               </div>
             </div>
           </div>
-
-
-
-          <div class="col">
-            <div class="card shadow-sm">
-              <img src="./img/factor_cluster_analysis.png" class="card-img-top" alt="...">
-              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
-              <div class="card-body">
-                <h5 class="text-dark">Business Insights&nbsp;&#x2022;&nbsp;Factor and Cluster Analysis</h5>
-                <p class="card-text">Identifying potential travellers’ segments in the Swiss market (budget, no-limit,
-                  comfy, shopping, sporty, etc.)</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <small class="text-body-secondary">Master thesis&nbsp;&#x2022;&nbsp;HEC Lausanne</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-          <div class="col">
-            <div class="card shadow-sm">
-              <img src="./apps/choiceBasedConjointAnalysis/images/airfares.png" class="card-img-top" alt="...">
-              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
-              <div class="card-body">
-                <h5 class="text-dark">Business Insights&nbsp;&#x2022;&nbsp;Choice-Based Conjoint (CBC) Analysis</h5>
-                <p class="card-text">Identifying how a respondent values combinations of features</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <a href="./apps/choiceBasedConjointAnalysis/index.html" target="_blank"
-                      class="btn btn-sm btn-dark">Learn more</a>
-                  </div>
-                  <small class="text-body-secondary">HEC Lausanne</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-          <div class="col">
-            <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
-              style="background-image: url('./img/runner1.jpg');">
-              <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-                <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Knowledge Management System</h3>
-                <p class="card-text">
-                  <span class="badge text-bg-dark">MySQL database</span>
-                  <span class="badge text-bg-dark">d3.js</span>
-                </p>
-                <div class="btn-group">
-                  <a href="#" target="_blank" class="btn btn-dark btn-sm">Learn more</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-
-          <div class="col">
-            <div class="card shadow-sm">
-              <img src="./img/data_architecture.jpg" class="card-img-top" alt="...">
-              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
-              <div class="card-body">
-                <h5 class="text-dark">Data architecture</h5>
-                <p class="card-text">Data collection, data modelling, data flows and reporting.</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <small class="text-body-secondary">2018/2024</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-
-          <div class="col">
-            <div class="card shadow-sm">
-              <img src="./img/pricing-grid.png" class="card-img-top" alt="...">
-              <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
-              <div class="card-body">
-                <h5 class="text-dark">Pricing grid</h5>
-                <p class="card-text">Assessing assets on a daily basis (by region, technology, etc.)</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <small class="text-body-secondary">2022/2023</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
 
 
 
         </div>
       </div>
+
+
     </div>
 
   </main>

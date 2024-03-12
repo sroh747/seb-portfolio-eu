@@ -13,18 +13,17 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
 
-
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
-
-
     <!-- Bootstrap core CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
-        crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="js/correlation.js"></script>
+
+
+    <!-- Bootstrap's icons library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 
     <style>
@@ -48,41 +47,13 @@
             src: url("css/fonts/Bloomberg Logotypes-Medium-4f4134c199.woff");
         }
 
-        .badge-four-seasons {
-            color: #FFF;
-            background-color: #1565C0;
-            padding: 0.1em;
-            border-radius: 0.2em;
+
+
+
+
+        .blockquote-footer {
+            color: rgba(194, 0, 0);
         }
-
-        .badge-ibis {
-            color: #000;
-            background-color: #F2C811;
-            padding: 0.1em;
-            border-radius: 0.2em;
-        }
-
-
-
-        .ibis-header {
-            background-color: #343a40;
-        }
-
-        .ibis-body {
-            background-color: rgba(198, 40, 40, 0.8);
-            /* #c62828;  */
-        }
-
-        .four-seasons-header {
-            background-color: #343a40;
-        }
-
-        .four-seasons-body {
-            background-color: rgba(21, 101, 192, 0.8);
-            /* #1565C0;  */
-        }
-
-
 
         .themed-grid-col {
             padding-top: 15px;
@@ -91,14 +62,11 @@
             border: 1px solid rgba(236, 230, 222, .2);
         }
 
-
-
-
-
         .themed-grid-col-nab-about {
             padding-top: 15px;
             padding-bottom: 15px;
-            background-color: rgb(194, 0, 0, 0.3); /* rgb(230, 230, 230); */
+            background-color: rgb(194, 0, 0, 0.2);
+            /* rgb(230, 230, 230); */
             color: black;
             border: 1px solid rgba(236, 230, 222, .2);
         }
@@ -106,7 +74,8 @@
         .themed-grid-col-nab-header {
             padding-top: 15px;
             padding-bottom: 15px;
-            background-color: black; /* #ECE6DE;*/
+            background-color: black;
+            /* #ECE6DE;*/
             border: 1px solid rgba(236, 230, 222, .2);
         }
 
@@ -116,14 +85,21 @@
 
 
         .badge-nab {
-            background-color: rgb(194, 0, 0, 0.3); /*red: rgb(165, 0, 0, 0.3); rgb(194, 0, 0, 0.3); yellow: rgb(255, 193, 7) */
+            background-color: rgb(194, 0, 0, 0.2);
+            /*red: rgb(165, 0, 0, 0.3); rgb(194, 0, 0, 0.3); yellow: rgb(255, 193, 7) */
             padding: 0.1em;
             border-radius: 0.2em;
         }
-
-
+        
     </style>
     <!-- Custom styles for this template -->
+
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href=./../../favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./../../favicon/favicon-16x16.png">
+
 </head>
 
 <body class="py-4" style="font-family: Bloomberg; font-size: 1em;">
@@ -154,7 +130,8 @@
 
     <main role="main" class="container">
 
-        <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm themed-grid-col-nab-header">
+        <div
+            class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm themed-grid-col-nab-header">
             <div class="lh-1">
                 <h1 class="h1 mb-0 text-top-header lh-1">Creating a data strategy</h1>
                 <h2 class="h5 mb-0 text-light lh-1">National Australia Bank
@@ -202,18 +179,18 @@
                         <div class="card-body">
                             <h5 class="card-title"><small>About National Australia Bank (NAB)</small></h5>
                             <p class="card-text" style="text-align: justify">NAB serves the financial needs of
-                                    their Australian, New Zealand and global customers.
-                                    <br /><br />
-                                    NAB's workforce is made up of more than 38,000 colleagues globally, supporting more
-                                    than eight and a half million customers in Australia and overseas across: personal
-                                    accounts, small, medium and large businesses, private clients, government and
-                                    institutional activities.</p>
+                                their Australian, New Zealand and global customers.
+                                <br /><br />
+                                NAB's workforce is made up of more than 38,000 colleagues globally, supporting more
+                                than eight and a half million customers in Australia and overseas across: personal
+                                accounts, small, medium and large businesses, private clients, government and
+                                institutional activities.
+                            </p>
                             <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
                             <footer class="blockquote-footer"><cite title="Source Title">
-                                    NAB&nbsp;&#x2022;&nbsp;
-                                    About
-                                    us&nbsp;&#x2022;&nbsp;nab.com.au [<a target="_blank" href="https://www.nab.com.au/"
-                                        title="nab.com.au">Online</a>] <!--<picture>
+                                    NAB&nbsp;&#x2022;&nbsp;About us&nbsp;&#x2022;&nbsp;<a target="_blank"
+                                        href="https://www.nab.com.au/" title="nab.com.au">nab.com.au <i
+                                            class="bi bi-link-45deg"></i></a> <!--<picture>
                                             <img src="./../../img/flags-iso/shiny/16/au.png" style="border: none;"
                                                 class="img-thumbnail no-border" alt="...">
                                         </picture>-->
