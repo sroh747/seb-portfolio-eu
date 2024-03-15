@@ -7,7 +7,7 @@ a:active {
 .container {
     max-width: 940px;
     margin: auto;
-    margin-left: 10em;
+    /*margin-left: 10em;*/
 }
 
 .button {

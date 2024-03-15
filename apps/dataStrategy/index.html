@@ -51,26 +51,6 @@
 
 
 
-        .blockquote-footer {
-            color: rgba(194, 0, 0);
-        }
-
-        .themed-grid-col {
-            padding-top: 15px;
-            padding-bottom: 15px;
-            background-color: rgba(236, 230, 222, .15);
-            border: 1px solid rgba(236, 230, 222, .2);
-        }
-
-        .themed-grid-col-nab-about {
-            padding-top: 15px;
-            padding-bottom: 15px;
-            background-color: rgb(194, 0, 0, 0.2);
-            /* rgb(230, 230, 230); */
-            color: black;
-            border: 1px solid rgba(236, 230, 222, .2);
-        }
-
         .themed-grid-col-nab-header {
             padding-top: 15px;
             padding-bottom: 15px;
@@ -84,13 +64,40 @@
         }
 
 
+
+        .themed-grid-col {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            /*background-color: rgba(236, 230, 222, .15);
+            border: 1px solid rgba(236, 230, 222, .6);*/
+        }
+
+        .themed-grid-col-nab-about {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            background-color: rgb(194, 0, 0, 0.1);
+            border: 2px solid rgba(0, 0, 0, 0.8);
+            /* rgb(230, 230, 230); */
+            color: black;
+            font-size: 0.9em;
+        }
+
+
+
         .badge-nab {
-            background-color: rgb(194, 0, 0, 0.2);
+            background-color: rgb(194, 0, 0, 0.15);
             /*red: rgb(165, 0, 0, 0.3); rgb(194, 0, 0, 0.3); yellow: rgb(255, 193, 7) */
             padding: 0.1em;
             border-radius: 0.2em;
         }
-        
+
+        .blockquote-footer {
+            color: black;
+        }
+
+
+
+
     </style>
     <!-- Custom styles for this template -->
 
@@ -203,7 +210,6 @@
             </div>
 
             <!--<hr class="my-4">-->
-            <br />
 
             <div class="row">
                 <div class="col-8 col-sm-8 rounded themed-grid-col">
@@ -240,7 +246,7 @@
 
 
                 <div class="col-4 col-sm-4 rounded">
-                    <div class="card" style="width: 100%">
+                    <div class="card themed-grid-col-nab-about" style="width: 100%">
                         <div class="card-body">
                             <h5 class="card-title"><small>Connecting to APIs with Power BI</small></h5>
                             <img class="card-img-top" src="img/connecting_to_apis_with_pbi.png" alt="Card image cap">
@@ -250,7 +256,6 @@
                 </div>
             </div>
 
-            <br />
 
             <div class="row">
                 <div class="col-12 col-sm-12 rounded themed-grid-col">
@@ -286,7 +291,6 @@
                 </div>
             </div>
 
-            <br />
 
 
             <div class="row">
@@ -309,7 +313,8 @@
 
         </div>
 
-        <hr class="my-4">
+        <br/>
+        <!--<hr class="my-4">-->
 
 
         <footer class="container">
