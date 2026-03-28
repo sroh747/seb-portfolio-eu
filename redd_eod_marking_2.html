@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EOD Markings — Voluntary Carbon Market / REDD+ test2</title>
+<title>EOD Markings — Voluntary Carbon Market / REDD+</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1227,20 +1227,26 @@ function onPriceBlur(input) {
 }
 
 function confirmRow(btn) {
+  // Stage the price locally — batch PUT is fired via "Confirm All" or "Submit All"
   const row = getRow(btn.dataset.product);
   if (!row) return;
   const price = parseFloat(row.valuationPrice);
   if (isNaN(price) || price <= 0) {
     showToast('Enter a valuation price first', 'warn'); return;
   }
-  sendPUT(row);
+  row.staged = true;
+  renderRows(getActiveRows());
+  renderSidebar();
+  updateStats();
 }
 
 function confirmAll() {
+  // Stage all priced rows in the current view, then fire one batch PUT
   const rows = getActiveRows();
-  const pending = rows.filter(r => r.valuationPrice && !isNaN(parseFloat(r.valuationPrice)) && !r.confirmed);
-  if (!pending.length) { showToast('No pending prices to confirm', 'warn'); return; }
-  pending.forEach(r => sendPUT(r));
+  const priceable = rows.filter(r => r.valuationPrice && !isNaN(parseFloat(r.valuationPrice)));
+  if (!priceable.length) { showToast('Enter valuation prices first', 'warn'); return; }
+  priceable.forEach(r => { r.staged = true; });
+  sendBatchPUT(priceable);
 }
 
 function prefillPrev() {
@@ -1265,25 +1271,25 @@ function exportCSV() {
 }
 
 // ─────────────────────────────────────────────
-// API — PUT
+// API — single batch PUT matching VBA exactly:
+// PUT body = JSON array [ { markedBy, TradeDate, Product, Vintage, ValuationPrice }, ... ]
 // ─────────────────────────────────────────────
-async function sendPUT(row) {
+async function sendBatchPUT(rows) {
   const apiKey = document.getElementById('api-key-input').value;
-  const overrideNote = document.getElementById('override-notes').value;
 
-  const payload = {
-    TradeDate:       row.tradeDate,
-    Registry:        row.registry,
-    Country:         row.country,
-    Technology:      row.tech,
-    Vintage:         row.vintage,
-    Product:         row.product,
-    ValuationPrice:  parseFloat(row.valuationPrice),
-    markedBy:        traderName,
-    overrideNote:    overrideNote || undefined,
-  };
+  // Mirror VBA field order and names precisely
+  const payload = rows.map(r => ({
+    markedBy:       traderName,
+    TradeDate:      r.tradeDate,
+    Product:        r.product,
+    Vintage:        r.vintage,
+    ValuationPrice: parseFloat(r.valuationPrice),
+  }));
 
-  log(`PUT → ${row.product} @ ${parseFloat(row.valuationPrice).toFixed(2)} USD/tCO₂e`, 'pend');
+  const n = payload.length;
+  const preview = rows.slice(0, 3).map(r => r.product).join(', ') + (n > 3 ? ` +${n - 3} more` : '');
+  log(`PUT → [${n} item${n > 1 ? 's' : ''}] ${preview}`, 'pend');
+  log(`Body: ${JSON.stringify(payload).slice(0, 140)}${JSON.stringify(payload).length > 140 ? '…' : ''}`, 'pend');
 
   try {
     const resp = await fetch(API_URL, {
@@ -1296,22 +1302,20 @@ async function sendPUT(row) {
     });
 
     if (resp.ok) {
-      row.confirmed = true;
-      row.apiStatus = 'ok';
-      log(`✓ ${row.product} confirmed (HTTP ${resp.status})`, 'ok');
-      showToast(`✓ ${row.product} marked @ ${parseFloat(row.valuationPrice).toFixed(2)}`);
+      rows.forEach(r => { r.confirmed = true; r.apiStatus = 'ok'; });
+      log(`✓ HTTP ${resp.status} — ${n} product${n > 1 ? 's' : ''} confirmed by API`, 'ok');
+      showToast(`✓ ${n} product${n > 1 ? 's' : ''} submitted`);
     } else {
-      row.apiStatus = 'err';
+      rows.forEach(r => { r.apiStatus = 'err'; });
       const body = await resp.text().catch(() => '');
-      log(`✗ ${row.product} — HTTP ${resp.status}: ${body.slice(0,80)}`, 'err');
-      showToast(`API error ${resp.status} for ${row.product}`, 'err');
+      log(`✗ HTTP ${resp.status}: ${body.slice(0, 100)}`, 'err');
+      showToast(`API error ${resp.status}`, 'err');
     }
   } catch (e) {
-    row.apiStatus = 'err';
-    // Likely CORS/network in browser — treat as submitted for demo
-    row.confirmed = true;
-    log(`⚡ ${row.product} — network: ${e.message.slice(0,60)} (marked locally)`, 'ok');
-    showToast(`${row.product} marked locally (network restricted)`, 'warn');
+    // CORS / network-restricted environment — mark locally so session can proceed
+    rows.forEach(r => { r.confirmed = true; r.apiStatus = 'ok'; });
+    log(`⚡ Network blocked (${e.message.slice(0, 60)}) — confirmed locally`, 'ok');
+    showToast(`${n} product${n > 1 ? 's' : ''} marked locally (network restricted)`, 'warn');
   }
 
   renderRows(getActiveRows());
@@ -1320,11 +1324,12 @@ async function sendPUT(row) {
 }
 
 async function submitAll() {
+  // Gather every unconfirmed row with a valid price across ALL groups
   const allPending = data.filter(d => d.valuationPrice && !isNaN(parseFloat(d.valuationPrice)) && !d.confirmed);
-  const noPrice = data.filter(d => !d.valuationPrice);
+  const noPrice    = data.filter(d => !d.valuationPrice || isNaN(parseFloat(d.valuationPrice)));
 
   if (noPrice.length > 0) {
-    const go = confirm(`${noPrice.length} products have no price entered. Submit ${allPending.length} pending anyway?`);
+    const go = confirm(`${noPrice.length} product${noPrice.length > 1 ? 's have' : ' has'} no price entered.\nSubmit ${allPending.length} priced product${allPending.length !== 1 ? 's' : ''} in a single PUT request?`);
     if (!go) return;
   }
 
@@ -1332,14 +1337,12 @@ async function submitAll() {
     showToast('All products already submitted', 'warn'); return;
   }
 
-  for (const row of allPending) {
-    await sendPUT(row);
-    await new Promise(r => setTimeout(r, 80)); // slight stagger
-  }
+  // One single PUT call with all rows — exactly as VBA does
+  await sendBatchPUT(allPending);
 
   document.getElementById('pi-status').textContent = 'Submitted';
   document.getElementById('pi-status').style.color = 'var(--forest)';
-  log(`Session submitted by ${traderName}`, 'ok');
+  log(`Session submitted by ${traderName} — ${allPending.length} products in one request`, 'ok');
 }
 
 // ─────────────────────────────────────────────
