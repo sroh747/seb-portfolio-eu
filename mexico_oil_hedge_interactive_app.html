@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mexico's Oil Price–Hedging Programme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D1B2A;
+    --green-dark: #1B4332;
+    --green-mid: #2D6A4F;
+    --green-light: #52B788;
+    --gold: #D4A017;
+    --gold-light: #F0C040;
+    --cream: #F5F0E8;
+    --white: #FFFFFF;
+    --muted: #8A9BA8;
+    --red: #C0392B;
+    --profit: #27AE60;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    min-height: 100vh;
+  }
+
+  .app { max-width: 900px; margin: 0 auto; }
+
+  /* NAV TABS */
+  .nav {
+    display: flex;
+    background: #0a1520;
+    border-bottom: 1px solid rgba(212,160,23,0.2);
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 14px 20px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .nav-tab:hover { color: var(--cream); }
+  .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* PANELS */
+  .panel { display: none; padding: 24px; animation: fadeIn 0.3s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* TITLES */
+  .panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .panel-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* STAT CARDS */
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,160,23,0.15);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; font-family: 'IBM Plex Mono', monospace; }
+  .stat-value { font-size: 22px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
+  .stat-value.gold { color: var(--gold-light); }
+  .stat-value.green { color: var(--green-light); }
+  .stat-value.red { color: #e74c3c; }
+  .stat-value.white { color: var(--white); }
+
+  /* SLIDER CONTROLS */
+  .controls { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  .controls-title { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+  .ctrl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 500px) { .ctrl-row { grid-template-columns: 1fr; } }
+  .ctrl { margin-bottom: 12px; }
+  .ctrl-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .ctrl-label span:last-child { color: var(--cream); font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+  input[type=range] {
+    width: 100%; height: 4px; background: rgba(255,255,255,0.1);
+    border-radius: 2px; outline: none; -webkit-appearance: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--gold); cursor: pointer;
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%; background: var(--gold); cursor: pointer; border: none;
+  }
+
+  /* CHART AREA */
+  .chart-wrap { position: relative; width: 100%; height: 260px; }
+
+  /* P&L RESULT BOX */
+  .pnl-box {
+    border-radius: 10px; padding: 18px 20px; margin-top: 16px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .pnl-box.itm { background: rgba(39,174,96,0.12); border: 1px solid rgba(39,174,96,0.35); }
+  .pnl-box.otm { background: rgba(192,57,43,0.1); border: 1px solid rgba(192,57,43,0.25); }
+  .pnl-box.atm { background: rgba(212,160,23,0.1); border: 1px solid rgba(212,160,23,0.3); }
+  .pnl-label { font-size: 12px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; }
+  .pnl-num { font-size: 28px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
+  .pnl-status { font-size: 13px; font-weight: 500; max-width: 400px; }
+
+  /* TIMELINE */
+  .timeline { display: flex; flex-direction: column; gap: 1px; overflow-x: auto; }
+  .tl-row {
+    display: grid; grid-template-columns: 60px 1fr 110px 110px 100px;
+    gap: 8px; align-items: center; padding: 10px 12px; font-size: 12px;
+    border-radius: 4px; min-width: 580px;
+  }
+  .tl-header { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; background: rgba(0,0,0,0.2); }
+  .tl-row:not(.tl-header):hover { background: rgba(255,255,255,0.04); }
+  .pill {
+    display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace; font-weight: 600;
+  }
+  .pill.itm { background: rgba(39,174,96,0.2); color: #52BE80; }
+  .pill.otm { background: rgba(192,57,43,0.15); color: #E74C3C; }
+
+  /* GOVERNANCE DIAGRAM */
+  .gov-flow { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .gov-node {
+    width: 100%; max-width: 480px; padding: 14px 20px;
+    border-radius: 8px; text-align: center; position: relative;
+  }
+  .gov-node-title { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
+  .gov-node-sub { font-size: 12px; color: var(--muted); }
+  .gov-arrow { width: 2px; height: 28px; background: rgba(212,160,23,0.4); margin: 0 auto; position: relative; }
+  .gov-arrow::after { content: ''; position: absolute; bottom: -6px; left: -4px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid rgba(212,160,23,0.5); }
+
+  /* OPTION PAYOFF LEGEND */
+  .payoff-legend { display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 12px; }
+  .leg-dot { display: inline-block; width: 12px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+
+  /* INFO CARDS */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .info-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; }
+  .info-card-label { font-size: 11px; color: var(--gold); font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .info-card-text { font-size: 13px; color: var(--cream); line-height: 1.6; }
+
+  /* OPTION COST TABLE */
+  .opt-table { width: 100%; border-collapse: collapse; font-size: 13px; font-family: 'IBM Plex Mono', monospace; }
+  .opt-table th { padding: 10px 12px; text-align: left; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .opt-table td { padding: 11px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--cream); }
+  .opt-table tr.highlight td { color: var(--gold-light); background: rgba(212,160,23,0.08); }
+  .opt-table td.val { text-align: right; font-weight: 600; }
+
+  /* BADGE */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-family: 'IBM Plex Mono', monospace; }
+  .badge-gold { background: rgba(212,160,23,0.2); color: var(--gold-light); }
+
+  /* FOOTNOTE */
+  .footnote { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 16px; line-height: 1.6; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="nav">
+    <div class="nav-tab active" onclick="show('overview', this)">Overview</div>
+    <div class="nav-tab" onclick="show('simulator', this)">Hedge Simulator</div>
+    <div class="nav-tab" onclick="show('derivatives', this)">Derivatives</div>
+    <div class="nav-tab" onclick="show('history', this)">Historical Results</div>
+    <div class="nav-tab" onclick="show('governance', this)">Governance</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="panel active" id="panel-overview">
+    <div class="panel-title">Mexico's Oil Price–Hedging Programme</div>
+    <div class="panel-subtitle">Sovereign fiscal insurance since the 1990s · Executed by Banco de México</div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-label">Oil share of federal revenue</div><div class="stat-value gold">&gt;30%</div></div>
+      <div class="stat-card"><div class="stat-label">Peak MTM value (2009)</div><div class="stat-value green">~$10B</div></div>
+      <div class="stat-card"><div class="stat-label">2008 WTI crash</div><div class="stat-value red">−72%</div></div>
+      <div class="stat-card"><div class="stat-label">Option type used</div><div class="stat-value white" style="font-size:14px;line-height:1.4">Asian term put</div></div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-label">The Problem</div>
+        <div class="info-card-text">Oil revenues fund over 30% of Mexico's federal budget. A sharp price drop threatens public spending, destabilises markets, and can force emergency austerity.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">The Solution</div>
+        <div class="info-card-text">Each year, Mexico buys Asian term put options on Maya crude, locking in a floor price consistent with the federal budget. If prices crash, the options pay out.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Why it worked in 2009</div>
+        <div class="info-card-text">WTI collapsed from $140 to $40. Mexico's hedges generated nearly $10bn in mark-to-market value, publicly disclosed to anchor investor confidence.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">The FEIP fund</div>
+        <div class="info-card-text">The Oil Income Stabilisation Fund (FEIP) holds hedge premiums and profits. But its limited size ($1–6bn) means it can't absorb big shocks alone — the hedge programme fills the gap.</div>
+      </div>
+    </div>
+
+    <div style="background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.25);border-radius:10px;padding:16px 20px;">
+      <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;">FEIP Fund Balance (illustrative, $bn)</div>
+      <div id="feip-bars" style="display:flex;align-items:flex-end;gap:8px;height:80px;"></div>
+    </div>
+
+    <div class="footnote">Source: Duclaud &amp; García, "Mexico's Oil Price–Hedging Program", IMF Chapter 15. Views are those of the authors and do not represent official IMF or Banco de México policy.</div>
+  </div>
+
+  <!-- SIMULATOR -->
+  <div class="panel" id="panel-simulator">
+    <div class="panel-title">Hedge Simulator</div>
+    <div class="panel-subtitle">Adjust parameters to see how the option pays off in different oil price scenarios</div>
+
+    <div class="controls">
+      <div class="controls-title">Programme Parameters</div>
+      <div class="ctrl-row">
+        <div>
+          <div class="ctrl">
+            <div class="ctrl-label"><span>Strike price (budget reference, $/bbl)</span><span id="lbl-strike">$57</span></div>
+            <input type="range" min="30" max="100" step="1" value="57" id="sl-strike" oninput="updateSim()">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-label"><span>Average realised oil price ($/bbl)</span><span id="lbl-avg">$49</span></div>
+            <input type="range" min="20" max="130" step="1" value="49" id="sl-avg" oninput="updateSim()">
+          </div>
+        </div>
+        <div>
+          <div class="ctrl">
+            <div class="ctrl-label"><span>Export volume (billion bbl/year)</span><span id="lbl-vol">0.45</span></div>
+            <input type="range" min="0.2" max="0.7" step="0.01" value="0.45" id="sl-vol" oninput="updateSim()">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-label"><span>Option premium paid ($/bbl)</span><span id="lbl-prem">$4.18</span></div>
+            <input type="range" min="1" max="15" step="0.1" value="4.18" id="sl-prem" oninput="updateSim()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-row" id="sim-stats"></div>
+
+    <div class="chart-wrap">
+      <canvas id="simChart"></canvas>
+    </div>
+
+    <div class="pnl-box atm" id="pnl-box">
+      <div>
+        <div class="pnl-label">Net hedge payoff</div>
+        <div class="pnl-num" id="pnl-num">—</div>
+      </div>
+      <div class="pnl-status" id="pnl-status">—</div>
+    </div>
+
+    <div class="footnote">Payoff = max(0, Strike − Avg price) × Volume − Premium cost. This models a single Asian term put with term settlement.</div>
+  </div>
+
+  <!-- DERIVATIVES -->
+  <div class="panel" id="panel-derivatives">
+    <div class="panel-title">The Derivatives Toolkit</div>
+    <div class="panel-subtitle">How instruments evolved — and why Asian term puts won</div>
+
+    <div style="margin-bottom:20px;">
+      <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Option payoff diagram — put option</div>
+      <div class="chart-wrap" style="height:200px;">
+        <canvas id="payoffChart"></canvas>
+      </div>
+      <div class="payoff-legend">
+        <span><span class="leg-dot" style="background:#52B788;"></span>Net P&amp;L with hedge</span>
+        <span><span class="leg-dot" style="background:#E74C3C;"></span>Unhedged oil revenue</span>
+        <span><span class="leg-dot" style="background:rgba(212,160,23,0.6);display:inline-block;width:2px;height:12px;vertical-align:middle;margin-right:5px;"></span>Strike price</span>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">Option cost comparison — WTI $87.50 strike (Dec 2011)</div>
+    <table class="opt-table">
+      <thead><tr><th>Option type</th><th>Premium ($/bbl)</th><th>Payoff mechanic</th><th>Cashflows</th></tr></thead>
+      <tbody>
+        <tr class="highlight"><td><span class="badge badge-gold">★ Preferred</span> Asian term settled</td><td class="val">$4.18</td><td>Avg price vs strike over 12 months</td><td class="val">1</td></tr>
+        <tr><td>European term settled</td><td class="val">$5.21</td><td>Spot price vs strike at expiry</td><td class="val">1</td></tr>
+        <tr><td>Asian monthly (strip)</td><td class="val">$5.61</td><td>Avg per calendar month vs strike</td><td class="val">12</td></tr>
+        <tr><td>European monthly settled</td><td class="val">$8.31</td><td>Monthly spot vs strike at expiry</td><td class="val">12</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:20px;">
+      <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Why Asian options beat European in 2009</div>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;font-size:13px;line-height:1.8;color:var(--cream);">
+        Oil prices crashed from $140 to $30 mid-year, then recovered to above strike by December. A <span style="color:#E74C3C;font-weight:500">European option</span> (checks price only at expiry) would have expired <em>worthless</em> — zero payout. The <span style="color:#52B788;font-weight:500">Asian option</span> (checks average price across all 252 trading days) would have settled <em>in-the-money</em>, fully compensating for the months of low prices, regardless of the recovery.
+      </div>
+    </div>
+
+    <div class="info-grid" style="margin-top:20px;">
+      <div class="info-card">
+        <div class="info-card-label">Underlying: Maya crude</div>
+        <div class="info-card-text">80%+ of Mexico's production. No screen market — priced by PMI as: <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold-light);">0.40×(WTX Sour + Fuel Oil) + 0.10×(LLS + Brent) + K</span>. Eliminates basis risk vs WTI/Brent proxies.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Strike price logic</div>
+        <div class="info-card-text">Set OTM at delta 10–25%, calibrated to the federal budget oil reference price. Balances protection against catastrophic downside with manageable premium cost.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="panel" id="panel-history">
+    <div class="panel-title">Historical Performance</div>
+    <div class="panel-subtitle">Programme years and estimated outcomes — the 2009 vintage is the landmark</div>
+
+    <div class="chart-wrap" style="height:220px;">
+      <canvas id="histChart"></canvas>
+    </div>
+
+    <div style="height:14px;"></div>
+    <div class="timeline">
+      <div class="tl-row tl-header">
+        <div>Year</div><div>Description</div><div>Strike ($/bbl)</div><div>Avg price ($/bbl)</div><div>Outcome</div>
+      </div>
+      <div class="tl-row"><div style="color:var(--muted);font-family:'IBM Plex Mono',monospace">2001</div><div>Post 9/11 demand shock</div><div style="font-family:'IBM Plex Mono',monospace">$16</div><div style="font-family:'IBM Plex Mono',monospace">$17</div><div><span class="pill otm">OTM</span></div></div>
+      <div class="tl-row"><div style="color:var(--muted);font-family:'IBM Plex Mono',monospace">2002</div><div>Iraq war premium, stable</div><div style="font-family:'IBM Plex Mono',monospace">$17</div><div style="font-family:'IBM Plex Mono',monospace">$21</div><div><span class="pill otm">OTM</span></div></div>
+      <div class="tl-row"><div style="color:var(--muted);font-family:'IBM Plex Mono',monospace">2005</div><div>Katrina supply disruption</div><div style="font-family:'IBM Plex Mono',monospace">$27</div><div style="font-family:'IBM Plex Mono',monospace">$42</div><div><span class="pill otm">OTM</span></div></div>
+      <div class="tl-row"><div style="color:var(--muted);font-family:'IBM Plex Mono',monospace">2006</div><div>Rising commodity super-cycle</div><div style="font-family:'IBM Plex Mono',monospace">$35</div><div style="font-family:'IBM Plex Mono',monospace">$53</div><div><span class="pill otm">OTM</span></div></div>
+      <div class="tl-row"><div style="color:var(--muted);font-family:'IBM Plex Mono',monospace">2008</div><div>Pre-crisis WTI peaks at $140</div><div style="font-family:'IBM Plex Mono',monospace">$49</div><div style="font-family:'IBM Plex Mono',monospace">$85</div><div><span class="pill otm">OTM</span></div></div>
+      <div class="tl-row" style="background:rgba(39,174,96,0.06);"><div style="color:var(--gold-light);font-family:'IBM Plex Mono',monospace;font-weight:700">2009</div><div style="color:var(--white)">★ Financial crisis — landmark year</div><div style="font-family:'IBM Plex Mono',monospace;color:var(--white)">$70</div><div style="font-family:'IBM Plex Mono',monospace;color:var(--white)">$57</div><div><span class="pill itm">ITM ~$5B</span></div></div>
+      <div class="tl-row"><div style="color:var(--muted);font-family:'IBM Plex Mono',monospace">2010</div><div>Recovery year, prices rebound</div><div style="font-family:'IBM Plex Mono',monospace">$59</div><div style="font-family:'IBM Plex Mono',monospace">$72</div><div><span class="pill otm">OTM</span></div></div>
+      <div class="tl-row"><div style="color:var(--muted);font-family:'IBM Plex Mono',monospace">2011</div><div>Arab Spring supply premium</div><div style="font-family:'IBM Plex Mono',monospace">$65</div><div style="font-family:'IBM Plex Mono',monospace">$99</div><div><span class="pill otm">OTM</span></div></div>
+    </div>
+
+    <div class="footnote">Note: OTM (out-of-the-money) outcomes are NOT losses — they mean oil prices exceeded the budget price, boosting revenues beyond forecast. Premium cost is insurance, not a sunk cost. ITM = payout received. Figures are illustrative based on publicly reported programme data.</div>
+  </div>
+
+  <!-- GOVERNANCE -->
+  <div class="panel" id="panel-governance">
+    <div class="panel-title">Governance Structure</div>
+    <div class="panel-subtitle">Three-tier oversight — Ministry of Finance → Subcommittee → Banco de México</div>
+
+    <div class="gov-flow" style="margin-bottom:24px;">
+      <div class="gov-node" style="background:var(--navy);border:1px solid rgba(212,160,23,0.4);">
+        <div class="gov-node-title">FEIP Technical Committee</div>
+        <div class="gov-node-sub">Ministry of Finance · Decides whether to hedge and sets the resource envelope</div>
+      </div>
+      <div class="gov-arrow"></div>
+      <div class="gov-node" style="background:#152236;border:1px solid rgba(82,183,136,0.3);">
+        <div class="gov-node-title">Oil Price–Hedging Subcommittee</div>
+        <div class="gov-node-sub">Finance + PEMEX + Energy Ministry + Banco de México · Designs instruments</div>
+      </div>
+      <div class="gov-arrow"></div>
+      <div class="gov-node" style="background:#1B4332;border:1px solid rgba(82,183,136,0.5);">
+        <div class="gov-node-title" style="color:var(--gold-light)">Banco de México — Executing Agent</div>
+        <div class="gov-node-sub" style="color:rgba(245,240,232,0.7)">Trades put options · Manages counterparties · Runs collateral under ISDA agreements</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Execution process</div>
+    <div id="exec-steps"></div>
+
+    <div class="info-grid" style="margin-top:20px;">
+      <div class="info-card">
+        <div class="info-card-label">Counterparty selection</div>
+        <div class="info-card-text">BdM runs thorough analysis of institutions' market coverage, valuation methodology, risk-warehousing capacity, and trading platform depth before inviting them to bid.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Legal framework</div>
+        <div class="info-card-text">All trades governed by ISDA master agreements. Zero-threshold collateral policies eliminate credit risk. Eligible collateral: highly rated government fixed-income only.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Execution discipline</div>
+        <div class="info-card-text">BdM enters market opportunistically — buying when implied volatility is low and liquidity is high. Keeping the programme confidential reduces market impact and cost.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Collateral management</div>
+        <div class="info-card-text">Daily mark-to-market margin calls. As option value rises, counterparties post more collateral to BdM. Transparency reports flow to MoF and auditors throughout.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function show(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  el.classList.add('active');
+  if (id === 'simulator') { setTimeout(buildSimChart, 50); }
+  if (id === 'derivatives') { setTimeout(buildPayoffChart, 50); }
+  if (id === 'history') { setTimeout(buildHistChart, 50); }
+}
+
+// FEIP BARS
+(function() {
+  const data = [{y:2004,v:1.1},{y:2005,v:1.5},{y:2006,v:3.1},{y:2007,v:5.3},{y:2008,v:6.4},{y:2009,v:2.0},{y:2010,v:1.5}];
+  const max = 6.4;
+  const c = document.getElementById('feip-bars');
+  if (!c) return;
+  data.forEach(d => {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;gap:4px';
+    const pct = Math.round((d.v / max) * 72);
+    wrap.innerHTML = `<div style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--gold-light)">${d.v}</div>
+      <div style="width:100%;background:${d.y===2009?'rgba(39,174,96,0.7)':'rgba(212,160,23,0.45)'};border-radius:3px 3px 0 0;height:${pct}px;"></div>
+      <div style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted)">${d.y}</div>`;
+    c.appendChild(wrap);
+  });
+})();
+
+// EXEC STEPS
+(function() {
+  const steps = [
+    ['01', 'Market intelligence', 'BdM and MoF analyse energy market trends, identify entry windows, and shortlist counterparties based on capability and pricing.'],
+    ['02', 'Subcommittee approval', 'Hedging subcommittee agrees on instrument specifications: type, strike (delta 10–25%), volume, and maximum premium budget.'],
+    ['03', 'Competitive bidding', 'BdM solicits quotes from approved counterparties simultaneously. Trade awarded to the institution offering the lowest premium.'],
+    ['04', 'Execution', 'Options purchased in tranches — timed to low-volatility, high-liquidity windows to minimise market impact and cost.'],
+    ['05', 'Collateral management', 'Daily MTM margin calls under ISDA. BdM holds or returns collateral as option value moves.'],
+    ['06', 'Settlement & reporting', 'At year-end, options settle. BdM prepares MTM, activity, and collateral reports for MoF and auditors.'],
+  ];
+  const container = document.getElementById('exec-steps');
+  if (!container) return;
+  steps.forEach(s => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);align-items:flex-start';
+    row.innerHTML = `<div style="min-width:28px;height:28px;border-radius:50%;background:rgba(212,160,23,0.2);border:1px solid rgba(212,160,23,0.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--gold-light);font-weight:600">${s[0]}</div>
+      <div><div style="font-size:13px;font-weight:500;color:var(--white);margin-bottom:3px">${s[1]}</div><div style="font-size:12px;color:var(--muted);line-height:1.6">${s[2]}</div></div>`;
+    container.appendChild(row);
+  });
+})();
+
+// SIMULATOR
+let simChart = null;
+function updateSim() {
+  const strike = parseFloat(document.getElementById('sl-strike').value);
+  const avg = parseFloat(document.getElementById('sl-avg').value);
+  const vol = parseFloat(document.getElementById('sl-vol').value);
+  const prem = parseFloat(document.getElementById('sl-prem').value);
+
+  document.getElementById('lbl-strike').textContent = '$' + strike;
+  document.getElementById('lbl-avg').textContent = '$' + avg;
+  document.getElementById('lbl-vol').textContent = vol.toFixed(2);
+  document.getElementById('lbl-prem').textContent = '$' + prem.toFixed(2);
+
+  const payoff = Math.max(0, strike - avg) * vol;
+  const premCost = prem * vol;
+  const netPnl = payoff - premCost;
+  const revGap = (avg - strike) * vol;
+
+  const fmt = v => {
+    const sign = v < 0 ? '-' : '+';
+    const abs = Math.abs(v);
+    if (abs >= 1) return sign + '$' + abs.toFixed(1) + 'B';
+    return sign + '$' + (abs * 1000).toFixed(0) + 'M';
+  };
+  const fmtAbs = v => {
+    const abs = Math.abs(v);
+    if (abs >= 1) return '$' + abs.toFixed(1) + 'B';
+    return '$' + (abs * 1000).toFixed(0) + 'M';
+  };
+
+  document.getElementById('sim-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Option payoff</div><div class="stat-value ${payoff>0?'green':'red'}">${fmtAbs(payoff)}</div></div>
+    <div class="stat-card"><div class="stat-label">Premium paid</div><div class="stat-value gold">${fmtAbs(premCost)}</div></div>
+    <div class="stat-card"><div class="stat-label">Net hedge gain</div><div class="stat-value ${netPnl>0?'green':'red'}">${fmt(netPnl)}</div></div>
+    <div class="stat-card"><div class="stat-label">Revenue vs budget</div><div class="stat-value ${revGap>=0?'green':'red'}">${fmt(revGap)}</div></div>
+  `;
+
+  const box = document.getElementById('pnl-box');
+  const num = document.getElementById('pnl-num');
+  const stat = document.getElementById('pnl-status');
+  box.className = 'pnl-box ' + (avg < strike ? 'itm' : avg === strike ? 'atm' : 'otm');
+  num.textContent = fmt(netPnl);
+  num.style.color = netPnl > 0 ? '#27AE60' : '#e74c3c';
+
+  if (avg < strike) {
+    stat.innerHTML = `<span style="color:#52BE80;font-weight:500">Option IN-THE-MONEY</span> — Average price ($${avg}) fell below strike ($${strike}). The hedge pays out ${fmtAbs(payoff)}, compensating for the revenue shortfall of ${fmtAbs(Math.abs(revGap))}.`;
+  } else {
+    stat.innerHTML = `<span style="color:var(--muted);font-weight:500">Option OUT-OF-THE-MONEY</span> — Average price ($${avg}) exceeded strike ($${strike}). Options expire worthless but oil revenues were ${fmt(Math.abs(revGap))} above budget. Premium cost is insurance paid, not a loss.`;
+  }
+
+  if (simChart) {
+    const prices = Array.from({length:13}, (_,i) => Math.round(20 + i*9));
+    simChart.data.datasets[0].data = prices.map(p => Math.max(0,(strike-p)*vol) - premCost);
+    simChart.data.datasets[1].data = prices.map(p => (p-strike)*vol);
+    simChart.update('none');
+  }
+}
+
+function buildSimChart() {
+  if (simChart) return;
+  const ctx = document.getElementById('simChart');
+  if (!ctx) return;
+  const strike = parseFloat(document.getElementById('sl-strike').value);
+  const vol = parseFloat(document.getElementById('sl-vol').value);
+  const prem = parseFloat(document.getElementById('sl-prem').value);
+  const prices = Array.from({length:13}, (_,i) => Math.round(20 + i*9));
+
+  simChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: prices,
+      datasets: [
+        { label: 'Net hedge P&L ($bn)', data: prices.map(p => Math.max(0,(strike-p)*vol)-prem*vol), borderColor:'#52B788', backgroundColor:'rgba(82,183,136,0.08)', fill:true, tension:0.3, pointRadius:3 },
+        { label: 'Revenue gap vs budget ($bn)', data: prices.map(p => (p-strike)*vol), borderColor:'rgba(192,57,43,0.7)', borderDash:[4,3], fill:false, tension:0.1, pointRadius:0 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}bn` }}},
+      scales:{
+        x:{ title:{display:true,text:'Avg oil price ($/bbl)',color:'#8A9BA8',font:{size:11}}, ticks:{color:'#8A9BA8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.06)'}},
+        y:{ title:{display:true,text:'$bn',color:'#8A9BA8',font:{size:11}}, ticks:{color:'#8A9BA8',font:{size:11},callback:v=>'$'+v.toFixed(1)+'B'}, grid:{color:'rgba(255,255,255,0.06)'}}
+      }
+    }
+  });
+  updateSim();
+}
+
+// PAYOFF CHART
+let payoffChart = null;
+function buildPayoffChart() {
+  if (payoffChart) return;
+  const ctx = document.getElementById('payoffChart');
+  if (!ctx) return;
+  const strike = 70;
+  const prices = Array.from({length:21}, (_,i) => i*7);
+  payoffChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: prices,
+      datasets: [
+        { label: 'Hedged revenue', data: prices.map(p => p < strike ? strike - 4.18 : p - 4.18), borderColor:'#52B788', fill:false, tension:0.1, borderWidth:2.5 },
+        { label: 'Unhedged revenue', data: prices.map(p => p), borderColor:'rgba(192,57,43,0.7)', borderDash:[5,3], fill:false, tension:0, borderWidth:1.5 },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}},
+      scales:{
+        x:{ title:{display:true,text:'Oil price at settlement ($/bbl)',color:'#8A9BA8',font:{size:11}}, ticks:{color:'#8A9BA8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.05)'}},
+        y:{ title:{display:true,text:'Revenue ($/bbl)',color:'#8A9BA8',font:{size:11}}, ticks:{color:'#8A9BA8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.05)'}}
+      }
+    }
+  });
+}
+
+// HIST CHART
+let histChart = null;
+function buildHistChart() {
+  if (histChart) return;
+  const ctx = document.getElementById('histChart');
+  if (!ctx) return;
+  const years = [2001,2002,2005,2006,2008,2009,2010,2011];
+  const strikes = [16,17,27,35,49,70,59,65];
+  const avgs = [17,21,42,53,85,57,72,99];
+  histChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [
+        { label: 'Strike ($/bbl)', data: strikes, backgroundColor:'rgba(212,160,23,0.55)', borderColor:'rgba(212,160,23,0.9)', borderWidth:1 },
+        { label: 'Avg realised price ($/bbl)', data: avgs, backgroundColor: avgs.map((a,i) => a < strikes[i] ? 'rgba(39,174,96,0.6)' : 'rgba(192,57,43,0.45)'), borderColor: avgs.map((a,i) => a < strikes[i] ? 'rgba(39,174,96,0.9)' : 'rgba(192,57,43,0.8)'), borderWidth:1 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y}/bbl`}}},
+      scales:{
+        x:{ ticks:{color:'#8A9BA8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.05)'}},
+        y:{ title:{display:true,text:'$/bbl',color:'#8A9BA8',font:{size:11}}, ticks:{color:'#8A9BA8',font:{size:11},callback:v=>'$'+v}, grid:{color:'rgba(255,255,255,0.06)'}}
+      }
+    }
+  });
+}
+
+updateSim();
+</script>
+</body>
+</html>
