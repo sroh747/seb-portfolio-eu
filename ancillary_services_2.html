@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ancillary Services — Grid Stability Explained</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08090C;--bg2:#0E1018;--bg3:#141720;
+  --border:#1E2230;--border2:#2A2F45;
+  --text:#E8EAF0;--muted:#6B7099;--dim:#3D4260;
+  --freq:#00E5A0;--up:#00E5A0;--down:#F97316;--sym:#A78BFA;
+  --warn:#F59E0B;--danger:#EF4444;
+  --blue:#3B82F6;--purple:#A78BFA;--teal:#14B8A6;--orange:#F97316;--pink:#EC4899;
+  --cap:#EC4899;--nrg:#F59E0B;
+  --radius:12px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;}
+.shell{max-width:940px;margin:0 auto;padding:0 24px 80px}
+
+/* HERO */
+.hero{padding:64px 0 48px;border-bottom:1px solid var(--border);margin-bottom:48px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,#00E5A018 0%,transparent 70%);pointer-events:none;}
+.hero-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--freq);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.hero-tag::before{content:'';display:block;width:24px;height:1px;background:var(--freq);}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(36px,6vw,64px);font-weight:800;line-height:1.05;letter-spacing:-2px;color:var(--text);margin-bottom:20px;}
+.hero h1 span{color:var(--freq);}
+.hero p{font-size:17px;color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:28px;}
+.freq-bar{display:flex;align-items:center;gap:16px;font-family:'IBM Plex Mono',monospace;font-size:12px;}
+.freq-label{color:var(--muted);}
+.freq-number{color:var(--freq);font-size:18px;font-weight:500;}
+.freq-unit{color:var(--dim);font-size:11px;}
+#live-freq-bar{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.freq-fill{height:100%;border-radius:2px;transition:width 0.4s ease,background 0.4s ease;}
+
+/* SECTION HEADERS */
+.section-header{margin-bottom:32px;}
+.section-label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--freq);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.section-header h2{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.5px;color:var(--text);margin-bottom:8px;}
+.section-header p{font-size:15px;color:var(--muted);max-width:620px;}
+
+/* KEY CONCEPTS: DIRECTION */
+.concepts-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:48px;}
+.concept-card{border-radius:var(--radius);padding:22px;border:1px solid var(--border);background:var(--bg2);position:relative;overflow:hidden;}
+.concept-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.concept-card.up::after{background:var(--up);}
+.concept-card.dn::after{background:var(--down);}
+.concept-card.sym::after{background:var(--sym);}
+.concept-card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.concept-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+.dir-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500;letter-spacing:0.5px;}
+.dir-badge.up{background:#00E5A020;color:var(--up);border:1px solid #00E5A040;}
+.dir-badge.dn{background:#F9731620;color:var(--down);border:1px solid #F9731640;}
+.dir-badge.sym{background:#A78BFA20;color:var(--sym);border:1px solid #A78BFA40;}
+
+/* CAPACITY vs ENERGY BLOCK */
+.cap-energy-section{margin-bottom:64px;}
+.ce-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.ce-card{border-radius:10px;padding:20px;border:1px solid;}
+.ce-card.cap{background:#EC489910;border-color:#EC489930;}
+.ce-card.nrg{background:#F59E0B10;border-color:#F59E0B30;}
+.ce-card h4{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;margin-bottom:10px;letter-spacing:1px;text-transform:uppercase;}
+.ce-card.cap h4{color:var(--cap);}
+.ce-card.nrg h4{color:var(--nrg);}
+.ce-card p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+.ce-example{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);background:var(--bg3);border-radius:6px;padding:10px 12px;line-height:1.9;}
+
+/* BATTERY REVENUE DEMO */
+.battery-demo{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:64px;}
+.bd-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.bd-sliders{}
+.bd-slider-row{margin-bottom:14px;}
+.bd-slider-row label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.bd-slider-row label span{color:var(--text);font-weight:500;}
+input[type=range]{width:100%;height:4px;background:var(--border2);border-radius:2px;appearance:none;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--freq);cursor:pointer;box-shadow:0 0 8px var(--freq);}
+.bd-results{}
+.bd-meter{margin-bottom:10px;}
+.bd-meter-label{font-size:12px;color:var(--muted);margin-bottom:5px;font-family:'IBM Plex Mono',monospace;font-size:11px;}
+.bd-meter-row{display:flex;align-items:center;gap:10px;}
+.bd-bar-wrap{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+.bd-bar{height:100%;border-radius:5px;transition:width 0.4s ease;}
+.bd-val{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text);min-width:90px;text-align:right;}
+.bd-total-box{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;margin-top:16px;}
+.bd-total-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.bd-total-val{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--text);margin-bottom:10px;}
+.bd-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.bd-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:3px 10px;border-radius:5px;}
+
+/* SERVICE CARDS */
+.services{display:flex;flex-direction:column;gap:0;margin-bottom:64px;}
+.service-card{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);margin-bottom:12px;overflow:hidden;transition:border-color 0.2s;cursor:pointer;}
+.service-card:hover{border-color:var(--border2);}
+.service-card.open{border-color:var(--border2);}
+.service-header{display:flex;align-items:center;gap:14px;padding:18px 24px;user-select:none;}
+.service-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;box-shadow:0 0 12px currentColor;}
+.service-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;flex:1;color:var(--text);}
+.svc-badges{display:flex;gap:5px;align-items:center;flex-wrap:wrap;}
+.svc-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;border-radius:20px;border:1px solid currentColor;opacity:0.8;letter-spacing:0.5px;}
+.service-chevron{color:var(--dim);transition:transform 0.25s ease;font-size:12px;flex-shrink:0;}
+.service-card.open .service-chevron{transform:rotate(180deg);}
+.service-body{display:none;padding:0 24px 24px;}
+.service-card.open .service-body{display:block;}
+.service-body p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:14px;}
+
+/* Dir + Cap/Energy info row inside each service */
+.dir-cap-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.dcp-panel{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.dcp-panel h4{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;}
+.dir-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.dir-pill{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 10px;border-radius:5px;}
+.dir-pill.up{background:#00E5A015;color:var(--up);border:1px solid #00E5A040;}
+.dir-pill.dn{background:#F9731615;color:var(--down);border:1px solid #F9731640;}
+.dir-pill.sym{background:#A78BFA15;color:var(--sym);border:1px solid #A78BFA40;}
+.dir-pill.off{opacity:0.25;}
+.ce-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.ce-pill{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 10px;border-radius:5px;}
+.ce-pill.cap{background:#EC489915;color:var(--cap);border:1px solid #EC489940;}
+.ce-pill.nrg{background:#F59E0B15;color:var(--nrg);border:1px solid #F59E0B40;}
+.ce-pill.off{opacity:0.25;}
+.dcp-note{font-size:12px;color:var(--dim);margin-top:8px;line-height:1.5;}
+
+/* chips */
+.detail-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.chip{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 12px;border-radius:6px;background:var(--bg);border:1px solid var(--border2);color:var(--muted);display:flex;align-items:center;gap:6px;}
+.chip-dot{width:6px;height:6px;border-radius:50%;}
+
+/* SIMULATOR */
+.sim-section{margin-bottom:64px;}
+.sim-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;}
+.dir-toggle{display:flex;align-items:center;gap:8px;margin-bottom:20px;padding:12px 16px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);}
+.dtog-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-right:4px;}
+.dir-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 14px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.dir-btn.act-up{background:#00E5A020;color:var(--up);border-color:#00E5A050;}
+.dir-btn.act-dn{background:#F9731620;color:var(--down);border-color:#F9731650;}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;}
+.sim-control label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.sim-control label span{color:var(--text);font-weight:500;}
+.sim-freq-display{text-align:center;margin-bottom:24px;padding:20px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);}
+.sim-freq-big{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;letter-spacing:-2px;transition:color 0.4s;}
+.sim-freq-sub{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);margin-top:4px;}
+.viz-panel{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px;}
+.viz-title{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+canvas.viz{display:block;width:100%!important;}
+.sim-response-list{display:flex;flex-direction:column;gap:8px;}
+.sim-response-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);transition:all 0.3s;opacity:0.3;}
+.sim-response-item.active{opacity:1;border-color:var(--border2);}
+.sim-response-item.firing{opacity:1;animation:pulse-item 1.5s ease infinite;}
+@keyframes pulse-item{0%,100%{border-color:var(--border2)}50%{border-color:currentColor;box-shadow:0 0 12px currentColor}}
+.sri-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.sri-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;flex:1;}
+.sri-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;}
+.sri-time{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+.sri-dir{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;}
+.sri-status{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;background:var(--bg);border:1px solid var(--border);color:var(--muted);}
+
+/* TIMELINE */
+.tl-axis{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-top:6px;}
+.tl-bar-wrap{position:relative;height:32px;background:var(--bg);border-radius:4px;overflow:hidden;margin-bottom:4px;}
+.tl-bar{position:absolute;top:6px;height:20px;border-radius:3px;display:flex;align-items:center;padding:0 8px;}
+.tl-bar-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#fff;white-space:nowrap;overflow:hidden;}
+
+/* MARKET TABLE */
+.market-section{margin-bottom:64px;}
+.market-table{width:100%;border-collapse:collapse;}
+.market-table th{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);}
+.market-table td{padding:12px 12px;font-size:13px;color:var(--text);border-bottom:1px solid var(--border);vertical-align:middle;}
+.market-table tr:last-child td{border-bottom:none;}
+.market-table tr:hover td{background:var(--bg3);}
+.market-table td:first-child{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:32px 0 0;font-size:13px;color:var(--dim);font-family:'IBM Plex Mono',monospace;display:flex;justify-content:space-between;align-items:center;}
+
+/* ANIMATIONS */
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeSlideUp 0.5s ease both;}
+.anim-d1{animation-delay:0.05s}.anim-d2{animation-delay:0.1s}.anim-d3{animation-delay:0.15s}.anim-d4{animation-delay:0.2s}.anim-d5{animation-delay:0.25s}
+
+@media(max-width:620px){
+  .concepts-trio,.ce-grid,.dir-cap-row,.sim-grid,.bd-grid{grid-template-columns:1fr}
+  .hero h1{font-size:36px}.svc-badges{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- HERO -->
+<header class="hero anim">
+  <div class="hero-tag">Power Systems · Grid Operations</div>
+  <h1>Ancillary<br><span>Services</span></h1>
+  <p>The invisible infrastructure keeping your lights on — explained through direction (up, down, symmetrical) and the critical distinction between capacity and energy.</p>
+  <div class="freq-bar">
+    <span class="freq-label">Grid frequency</span>
+    <span class="freq-number" id="hero-freq">50.00</span>
+    <span class="freq-unit">Hz</span>
+    <div id="live-freq-bar"><div class="freq-fill" id="freq-fill" style="width:50%;background:var(--freq)"></div></div>
+    <span class="freq-label">±0.2 Hz band</span>
+  </div>
+</header>
+
+<!-- CONCEPT 1: DIRECTION -->
+<section class="anim anim-d1" style="margin-bottom:64px">
+  <div class="section-header">
+    <div class="section-label">Concept 01 — Direction</div>
+    <h2>Up, Down & Symmetrical</h2>
+    <p>Every ancillary service product has a direction. This determines whether a provider must be ready to <em>increase</em> output, <em>decrease</em> it, or <em>both simultaneously</em> — and fundamentally shapes who can qualify.</p>
+  </div>
+  <div class="concepts-trio">
+    <div class="concept-card up">
+      <h3><span class="dir-badge up">▲ UP</span></h3>
+      <p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px">Upward reserve</p>
+      <p>The provider <strong>increases generation</strong> or <strong>decreases consumption</strong>. Activated when frequency falls — demand exceeds supply. A thermal plant ramping up, a battery discharging, or an aluminium smelter halting production are all upward actions.</p>
+      <p style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--up)">Freq drops → UP fires</p>
+    </div>
+    <div class="concept-card dn">
+      <h3><span class="dir-badge dn">▼ DOWN</span></h3>
+      <p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px">Downward reserve</p>
+      <p>The provider <strong>decreases generation</strong> or <strong>increases consumption</strong>. Activated when frequency rises — surplus supply. Solar curtailment, a battery charging, pumped hydro pumping. Increasingly critical on high-renewable grids with midday surpluses.</p>
+      <p style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--down)">Freq rises → DOWN fires</p>
+    </div>
+    <div class="concept-card sym">
+      <h3><span class="dir-badge sym">↕ SYM</span></h3>
+      <p style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px">Symmetrical reserve</p>
+      <p>The provider holds a midpoint and must ramp <strong>both directions simultaneously</strong> on command. This is the most demanding qualification: a battery must stay near 50% SoC, a plant at part-load. FCR is always symmetrical. Commands a premium in auctions.</p>
+      <p style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--sym)">Equal headroom both ways</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEPT 2: CAPACITY vs ENERGY -->
+<section class="cap-energy-section anim anim-d1">
+  <div class="section-header">
+    <div class="section-label">Concept 02 — Payment structure</div>
+    <h2>Capacity vs Energy</h2>
+    <p>Ancillary service markets pay for two distinct things. Conflating them is the most common mistake — especially for storage assets trying to stack revenues.</p>
+  </div>
+  <div class="ce-grid">
+    <div class="ce-card cap">
+      <h4>⚡ Capacity — paid in MW</h4>
+      <p>Payment for <strong>being available</strong>: having technical capability and reserved headroom, regardless of whether you are ever called. This is the reservation fee — you are paid to stand ready.</p>
+      <p>Capacity payments are the foundation of ancillary service revenue for assets that are rarely activated (e.g. black start, replacement reserves). They also reward fast-response assets like batteries that provide high option value at low activation frequency.</p>
+      <div class="ce-example">
+        A gas turbine holds 100 MW of aFRR capacity<br>
+        at €5/MW/h for 4 hours → <strong style="color:var(--cap)">€2,000 capacity revenue</strong><br>
+        even if never activated once.
+      </div>
+    </div>
+    <div class="ce-card nrg">
+      <h4>🔋 Energy — paid in MWh</h4>
+      <p>Payment for <strong>actual energy delivered</strong> when activated. This only flows on activation. For upward activation, providers receive activation price × MWh injected. Downward activation may earn a saving or a separate payment.</p>
+      <p>Energy payments can dwarf capacity payments during scarcity events when activation prices spike. But for storage, every MWh delivered depletes state of charge — so unlimited energy revenue isn't possible. This is the fundamental constraint.</p>
+      <div class="ce-example">
+        That turbine is then activated: 80 MW for 2 h<br>
+        = 160 MWh × €120/MWh → <strong style="color:var(--nrg)">€19,200 energy revenue</strong><br>
+        on top of the €2,000 capacity payment.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BATTERY REVENUE DEMO -->
+<section class="anim anim-d2" style="margin-bottom:64px">
+  <div class="section-header" style="margin-top:32px">
+    <div class="section-label">Concept 02b — Interactive</div>
+    <h2>Battery revenue stack</h2>
+    <p>Adjust the parameters to see how capacity and energy payments interact — and how activation depletes state of charge.</p>
+  </div>
+  <div class="battery-demo">
+    <div class="bd-grid">
+      <div class="bd-sliders">
+        <div class="bd-slider-row">
+          <label>Capacity bid <span id="lbl-cbid">100 MW</span></label>
+          <input type="range" min="10" max="300" value="100" step="10" id="sl-cbid" oninput="updateBd()">
+        </div>
+        <div class="bd-slider-row">
+          <label>Capacity price <span id="lbl-cprice">€5 /MW/h</span></label>
+          <input type="range" min="0" max="30" value="5" step="1" id="sl-cprice" oninput="updateBd()">
+        </div>
+        <div class="bd-slider-row">
+          <label>Hours held <span id="lbl-hours">4 h</span></label>
+          <input type="range" min="1" max="24" value="4" step="1" id="sl-hours" oninput="updateBd()">
+        </div>
+        <div class="bd-slider-row">
+          <label>Activation duration <span id="lbl-adur">1.5 h</span></label>
+          <input type="range" min="0" max="4" value="1.5" step="0.5" id="sl-adur" oninput="updateBd()">
+        </div>
+        <div class="bd-slider-row">
+          <label>Activation price <span id="lbl-aprice">€120 /MWh</span></label>
+          <input type="range" min="0" max="500" value="120" step="10" id="sl-aprice" oninput="updateBd()">
+        </div>
+        <div class="bd-slider-row">
+          <label>Battery energy rating <span id="lbl-bate">200 MWh</span></label>
+          <input type="range" min="50" max="1000" value="200" step="50" id="sl-bate" oninput="updateBd()">
+        </div>
+      </div>
+      <div class="bd-results">
+        <div class="bd-meter" style="margin-bottom:14px">
+          <div class="bd-meter-label" style="color:var(--cap)">⚡ CAPACITY REVENUE</div>
+          <div class="bd-meter-row">
+            <div class="bd-bar-wrap"><div class="bd-bar" id="bar-cap" style="background:var(--cap)"></div></div>
+            <span class="bd-val" id="val-cap">€2,000</span>
+          </div>
+        </div>
+        <div class="bd-meter" style="margin-bottom:6px">
+          <div class="bd-meter-label" style="color:var(--nrg)">🔋 ENERGY REVENUE (on activation)</div>
+          <div class="bd-meter-row">
+            <div class="bd-bar-wrap"><div class="bd-bar" id="bar-nrg" style="background:var(--nrg)"></div></div>
+            <span class="bd-val" id="val-nrg">€18,000</span>
+          </div>
+        </div>
+        <div class="bd-meter" style="margin-bottom:14px">
+          <div class="bd-meter-label" style="color:#EF4444">🔴 STATE OF CHARGE CONSUMED</div>
+          <div class="bd-meter-row">
+            <div class="bd-bar-wrap"><div class="bd-bar" id="bar-soc" style="background:#EF444488"></div></div>
+            <span class="bd-val" id="val-soc">75%</span>
+          </div>
+        </div>
+        <div class="bd-total-box">
+          <div class="bd-total-label">Total revenue this period</div>
+          <div class="bd-total-val" id="val-total">€20,000</div>
+          <div class="bd-badges">
+            <span class="bd-badge" style="background:#EC489915;color:var(--cap);border:1px solid #EC489940" id="bdg-cap">Cap only: €2,000</span>
+            <span class="bd-badge" style="background:#F59E0B15;color:var(--nrg);border:1px solid #F59E0B40" id="bdg-act">Activated: €20,000</span>
+            <span class="bd-badge" id="bdg-warn" style="background:#EF444415;color:#EF4444;border:1px solid #EF444440;display:none">⚠ SoC depleted!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE CARDS -->
+<section class="anim anim-d2" style="margin-bottom:64px">
+  <div class="section-header">
+    <div class="section-label">01 — Core services</div>
+    <h2>The seven pillars — with direction & payment</h2>
+    <p>Click each service. Inside, you'll find direction badges (▲ ▼ ↕) and payment structure (capacity / energy) for every product.</p>
+  </div>
+  <div class="services" id="services-list"></div>
+</section>
+
+<!-- SIMULATOR -->
+<section class="sim-section anim anim-d3">
+  <div class="section-header">
+    <div class="section-label">02 — Interactive simulator</div>
+    <h2>Frequency event simulator</h2>
+    <p>Choose whether generation is lost (▲ UP reserves activate) or excess generation spikes frequency (▼ DOWN reserves activate).</p>
+  </div>
+  <div class="sim-panel">
+    <div class="dir-toggle">
+      <span class="dtog-label">Event type</span>
+      <button class="dir-btn act-dn" id="btn-dn" onclick="setDir('dn')">▼ Generation loss → UP reserves</button>
+      <button class="dir-btn" id="btn-up" onclick="setDir('up')">▲ Surplus generation → DOWN reserves</button>
+    </div>
+    <div class="sim-grid">
+      <div class="sim-control">
+        <label>Magnitude <span id="lbl-gen">500 MW</span></label>
+        <input type="range" id="sl-gen" min="0" max="3000" value="500" step="100" oninput="runSim()">
+      </div>
+      <div class="sim-control">
+        <label>System inertia <span id="lbl-inertia">Medium</span></label>
+        <input type="range" id="sl-inertia" min="1" max="3" value="2" step="1" oninput="runSim()">
+      </div>
+    </div>
+    <div class="sim-freq-display">
+      <div class="sim-freq-big" id="sim-freq-big">50.00 Hz</div>
+      <div class="sim-freq-sub" id="sim-freq-sub">Grid nominal — no disturbance</div>
+    </div>
+    <div class="viz-panel" style="margin-bottom:16px">
+      <div class="viz-title">Frequency trajectory after disturbance</div>
+      <div style="position:relative;height:140px"><canvas id="sim-chart" class="viz"></canvas></div>
+    </div>
+    <div class="sim-response-list" id="sim-responses"></div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="anim anim-d4" style="margin-bottom:64px">
+  <div class="section-header">
+    <div class="section-label">03 — Timeline</div>
+    <h2>Response cascade</h2>
+    <p>Services activate in tiers from milliseconds to hours. Symmetrical products (FCR, FFR) are always on. Directional products are called on demand.</p>
+  </div>
+  <div class="viz-panel" id="timeline-panel"></div>
+</section>
+
+<!-- MARKET TABLE -->
+<section class="market-section anim anim-d5">
+  <div class="section-header">
+    <div class="section-label">04 — Markets</div>
+    <h2>Who provides what — by direction</h2>
+    <p>Note the asymmetry: downward capability (▼) is often more constrained for thermal plants — and more valuable on grids with high renewable penetration.</p>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+  <table class="market-table">
+    <thead>
+      <tr>
+        <th>Technology</th>
+        <th>FCR ↕</th>
+        <th>aFRR ▲</th>
+        <th>aFRR ▼</th>
+        <th>mFRR ▲</th>
+        <th>Black start</th>
+        <th>Voltage ↕</th>
+      </tr>
+    </thead>
+    <tbody id="market-tbody"></tbody>
+  </table>
+  </div>
+  <p style="font-size:12px;color:var(--dim);font-family:'IBM Plex Mono',monospace;margin-top:10px">✦ Excellent · Good · Capable* (with compliance) · Limited · ✗ Not possible</p>
+</section>
+
+<footer class="footer">
+  <span>ANCILLARY SERVICES EXPLAINER</span>
+  <span>ENTSO-E / IEEE / IEA reference</span>
+</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ── SERVICE DATA ───────────────────────────────────────────────────────────
+const SERVICES = [
+  {
+    id:'fcr', color:'#00E5A0', tag:'AUTOMATIC',
+    title:'FCR — Frequency Containment Reserve',
+    dirs:['sym'], capTypes:['cap','nrg'],
+    dirNote:'Always symmetrical ↕ — providers must simultaneously hold equal upward and downward headroom. A battery must sit near 50% SoC; a thermal plant at part-load.',
+    capNote:'Capacity fee (€/MW/h) paid continuously. Energy is settled when the service responds, typically at the marginal clearing price. Both revenue streams apply.',
+    desc:`<p>FCR is the first automatic response to frequency deviations. Synchronized generators and batteries respond proportionally within <strong>30 seconds</strong> — no human required. Below 49.99 Hz, FCR ramps up; above 50.01 Hz, it ramps down.</p>
+    <p>FCR doesn't restore frequency to 50 Hz — it stops the fall. Because it is symmetrical, every provider runs at a midpoint: a 100 MW battery bids 50 MW FCR, keeping 50 MW headroom up <em>and</em> 50 MW down. This idle mid-point operation has a cost, which is why capacity payments exist. In the European synchronous area, <strong>±3 GW</strong> of FCR is held at all times.</p>
+    <p><strong>Who provides it:</strong> Batteries (ideal — fast and naturally symmetrical), thermal plants at part-load, large hydro, demand response with bi-directional capability.</p>`,
+    chips:[{color:'#A78BFA',label:'↕ Symmetrical'},{color:'#F59E0B',label:'≤30s response'},{color:'#EC4899',label:'Capacity fee'},{color:'#F59E0B',label:'Energy settled'}],
+  },
+  {
+    id:'afrr', color:'#3B82F6', tag:'AUTOMATIC',
+    title:'aFRR — automatic Frequency Restoration Reserve',
+    dirs:['up','dn'], capTypes:['cap','nrg'],
+    dirNote:'Sold as separate ▲ and ▼ products with independent auctions and prices. On sunny afternoons only ▼ downward aFRR is called. Batteries can bid both directions simultaneously.',
+    capNote:'Separate capacity auctions for ▲ and ▼, often daily or weekly. Energy payment activates when AGC calls the resource. Both directions carry capacity + energy structure.',
+    desc:`<p>aFRR is controlled automatically by the grid's AGC (Automatic Generation Control) system. While FCR stops frequency falling, aFRR restores it to exactly 50.000 Hz and eliminates area control error. It must deploy within <strong>5 minutes</strong>.</p>
+    <p>Critically, ▲ upward and ▼ downward aFRR are <em>separate products</em> with separate prices. Downward capacity is increasingly scarce and expensive on high-solar grids: at midday, operators need assets that can absorb surplus power fast. A battery bidding both ▲ and ▼ simultaneously maximises its capacity revenue.</p>
+    <p><strong>▲ providers:</strong> Fast hydro, gas peakers, batteries discharging, demand response reducing load.<br>
+    <strong>▼ providers:</strong> Batteries charging, pumped hydro pumping, solar/wind curtailment, industrial loads ramping up.</p>`,
+    chips:[{color:'#00E5A0',label:'▲ Up product'},{color:'#F97316',label:'▼ Down product'},{color:'#F59E0B',label:'≤5 min response'},{color:'#EC4899',label:'Capacity + energy'}],
+  },
+  {
+    id:'mfrr', color:'#A78BFA', tag:'MANUAL',
+    title:'mFRR — manual Frequency Restoration Reserve',
+    dirs:['up','dn'], capTypes:['cap','nrg'],
+    dirNote:'Separate ▲ and ▼ products. Downward mFRR (redispatch) is essential when excess renewable output floods a transmission corridor — operators curtail upstream generation.',
+    capNote:'Availability payment for holding capacity. Energy payment flows on activation — often at elevated spot prices during scarcity. Downward energy may result in a cost saving rather than a payment.',
+    desc:`<p>mFRR is the human-dispatched backup layer — activated by phone, SCADA command, or automated tender. Deployment completes within <strong>12.5 to 30 minutes</strong>.</p>
+    <p>The ▼ downward direction is particularly important for congestion management. When a wind corridor overproduces beyond line capacity, operators call downward mFRR to curtail generation upstream or increase consumption downstream — this is redispatch. Volumes of downward mFRR are rising fast with renewable growth.</p>
+    <p><strong>▲ providers:</strong> Gas CCGT, oil peakers, large hydro from reserve, interruptible industrial loads.<br>
+    <strong>▼ providers:</strong> Wind/solar curtailment contracts, electrolysers, industrial flexible consumption, pumped storage.</p>`,
+    chips:[{color:'#A78BFA',label:'Manual dispatch'},{color:'#F59E0B',label:'≤30 min'},{color:'#F97316',label:'▼ Redispatch key'},{color:'#EC4899',label:'Capacity + energy'}],
+  },
+  {
+    id:'rr', color:'#F97316', tag:'REPLACEMENT',
+    title:'RR — Replacement Reserve',
+    dirs:['up','dn'], capTypes:['cap'],
+    dirNote:'Separate ▲ and ▼ products. Downward RR can be scheduled day-ahead to pre-absorb forecast renewable surplus — effectively pre-committing curtailment to avoid real-time reserve costs.',
+    capNote:'Primarily a capacity product — providers commit availability hours ahead. The energy component is largely implicit in re-scheduling the unit commitment, not separately settled at an energy price.',
+    desc:`<p>Replacement Reserves replenish the mFRR resources already deployed, restoring full margins for the next event. Activation spans <strong>30 minutes to several hours</strong>, which allows pre-activation based on day-ahead forecasts.</p>
+    <p>Both ▲ and ▼ RR are used. Downward RR is increasingly scheduled the evening before when large renewable surplus is forecast — operators pre-commit curtailment rather than scrambling in real time. ENTSO-E's <strong>TERRE</strong> platform enables cross-border RR trade, letting operators buy the cheapest reserves from neighbouring countries.</p>
+    <p><strong>Who provides it:</strong> Thermal plants from cold/warm standby, large hydro reservoirs, cross-border capacity via interconnectors. This is primarily a <strong>capacity product</strong> — the energy component is implicit in rescheduling.</p>`,
+    chips:[{color:'#F97316',label:'Slow activation'},{color:'#F59E0B',label:'30 min – hours'},{color:'#A78BFA',label:'Replenishes mFRR'},{color:'#3B82F6',label:'Cross-border TERRE'},{color:'#EC4899',label:'Mainly capacity'}],
+  },
+  {
+    id:'si', color:'#EC4899', tag:'INERTIA',
+    title:'Synthetic Inertia & Fast Frequency Response',
+    dirs:['up','dn'], capTypes:['cap','nrg'],
+    dirNote:'Can be ▲ upward (inject power when freq drops) or ▼ downward (absorb when freq spikes). FFR products in GB and Nordic specify both directions. Direction matters because inverter-based resources must be pre-programmed.',
+    capNote:'Capacity product — providers are paid to be ready within milliseconds. The energy component per activation is tiny (seconds of power) but pays a very high implicit $/MWh given the extreme speed premium.',
+    desc:`<p>As synchronous generators are replaced by inverter-based renewables, physical inertia disappears. Synthetic inertia emulates spinning mass electronically within <strong>200–500 ms</strong> — often faster than real inertia.</p>
+    <p>Direction matters: ▲ FFR injects power when frequency drops after a plant trip. ▼ FFR absorbs power when excess renewable generation spikes frequency. Both directions are procured in markets like Great Britain (DC) and Nordic (FFR), which have structurally low inertia. Grid codes are increasingly mandating minimum synthetic inertia from new renewable projects.</p>`,
+    chips:[{color:'#EC4899',label:'<500ms'},{color:'#F59E0B',label:'Inverter-based'},{color:'#00E5A0',label:'↕ Both dirs'},{color:'#EC4899',label:'Capacity + energy'}],
+  },
+  {
+    id:'voltage', color:'#14B8A6', tag:'VOLTAGE',
+    title:'Voltage Control & Reactive Power',
+    dirs:['up','dn'], capTypes:['cap'],
+    dirNote:'▲ Upward = inject reactive power (Q) to raise voltage (lagging). ▼ Downward = absorb reactive power to lower voltage (leading). Both are always needed; lines consume Q over distance.',
+    capNote:'Pure capacity product. Reactive power providers are paid for availability and technical compliance, not per MVAR actually delivered. Often a regulated obligation rather than a competitive market.',
+    desc:`<p>Voltage is local — every network node must stay within ±5–10% of nominal. Frequency is the same everywhere on a synchronous grid; voltage is not. A line can be at exactly 50 Hz while one end has critically low voltage.</p>
+    <p>Voltage is controlled by managing reactive power (MVAR). ▲ injecting reactive power raises voltage; ▼ absorbing it lowers voltage. Sources include synchronous generators, STATCOMs, SVCs, and capacitor banks. As solar and wind inverters increasingly provide reactive support, the gap that opens at night (no solar) or low wind is a growing challenge — synchronous condensers (generators spinning without fuel) are making a comeback to fill it.</p>`,
+    chips:[{color:'#14B8A6',label:'Local ↕ control'},{color:'#F59E0B',label:'MVAR reactive'},{color:'#A78BFA',label:'STATCOMs, SVCs'},{color:'#EC4899',label:'Capacity only'}],
+  },
+  {
+    id:'bs', color:'#F59E0B', tag:'RESILIENCE',
+    title:'Black Start Capability',
+    dirs:['up'], capTypes:['cap'],
+    dirNote:'By definition ▲ upward only — it is the act of energising a dead network from zero. There is no downward equivalent. Nuclear cannot black start; it needs external power to maintain safety cooling.',
+    capNote:'Pure capacity product — a retainer fee for maintaining and regularly testing the capability. There is no energy payment because activations are so rare. The entire value proposition is optionality.',
+    desc:`<p>If the grid collapses, you cannot restart a thermal plant without electricity — a chicken-and-egg problem. Black start solves it: certain generators start from zero using onboard auxiliaries, energise a "power island", and grow it outward until the full grid is restored. This can take <strong>12–48 hours</strong>.</p>
+    <p>Black start is a <strong>pure capacity product</strong> — an annual retainer for readiness. There is no energy settlement because activations are extremely rare and planned. Hydro is ideal (water pressure is always available). Batteries are emerging for small island restoration. Nuclear cannot participate — it requires external power for safety cooling throughout the restart process.</p>`,
+    chips:[{color:'#F59E0B',label:'▲ Only — energise'},{color:'#F97316',label:'Rarest event'},{color:'#00E5A0',label:'Hydro ideal'},{color:'#EF4444',label:'12–48h restore'},{color:'#EC4899',label:'Capacity only'}],
+  },
+];
+
+const MARKET_DATA = [
+  {tech:'Battery storage',  fcr:'✦',aup:'✦',adn:'✦',   mup:'Good',  bs:'Limited',v:'Good'},
+  {tech:'Hydro reservoir',  fcr:'Good',aup:'✦',adn:'Good',mup:'✦',   bs:'✦ Best', v:'Moderate'},
+  {tech:'Gas CCGT',         fcr:'Moderate',aup:'Good',adn:'Limited',mup:'✦',bs:'Good',v:'Good'},
+  {tech:'Nuclear',          fcr:'Limited',aup:'Limited',adn:'Moderate',mup:'Moderate',bs:'✗',v:'✦'},
+  {tech:'Wind onshore',     fcr:'Capable*',aup:'Capable*',adn:'✦ curtail',mup:'Limited',bs:'✗',v:'Capable*'},
+  {tech:'Solar PV',         fcr:'Capable*',aup:'Capable*',adn:'✦ curtail',mup:'✗',bs:'✗',v:'Capable*'},
+  {tech:'Demand response',  fcr:'Capable*',aup:'Good',adn:'Good',mup:'Good',bs:'✗',v:'✗'},
+  {tech:'Pumped storage',   fcr:'✦',aup:'✦',adn:'✦',   mup:'✦',     bs:'Moderate',v:'Good'},
+  {tech:'Electrolyser',     fcr:'✗',aup:'✗',adn:'✦',   mup:'Good',  bs:'✗',v:'✗'},
+];
+
+// ── RENDER SERVICES ────────────────────────────────────────────────────────
+const sl = document.getElementById('services-list');
+SERVICES.forEach(svc => {
+  const allDirs = ['up','dn','sym'];
+  const dirLabels = {up:'▲ Up',dn:'▼ Down',sym:'↕ Sym'};
+  const dirPills = allDirs.map(d =>
+    `<span class="dir-pill ${d}${svc.dirs.includes(d)?'':' off'}">${dirLabels[d]}</span>`
+  ).join('');
+  const cePills = ['cap','nrg'].map(t =>
+    `<span class="ce-pill ${t}${svc.capTypes.includes(t)?'':' off'}">${t==='cap'?'⚡ Capacity':'🔋 Energy'}</span>`
+  ).join('');
+  const hdrBadges = svc.dirs.map(d=>{
+    const c={up:'var(--up)',dn:'var(--down)',sym:'var(--sym)'};
+    const l={up:'▲',dn:'▼',sym:'↕'};
+    return `<span class="svc-tag" style="color:${c[d]}">${l[d]}</span>`;
+  }).join('');
+
+  const card = document.createElement('div');
+  card.className = 'service-card';
+  card.innerHTML = `
+    <div class="service-header">
+      <div class="service-dot" style="color:${svc.color};background:${svc.color}"></div>
+      <div class="service-title">${svc.title}</div>
+      <div class="svc-badges">
+        <span class="svc-tag" style="color:${svc.color}">${svc.tag}</span>
+        ${hdrBadges}
+        ${svc.capTypes.includes('cap')&&svc.capTypes.includes('nrg')?'<span class="svc-tag" style="color:var(--cap)">⚡🔋</span>':svc.capTypes.includes('cap')?'<span class="svc-tag" style="color:var(--cap)">⚡ Cap</span>':''}
+      </div>
+      <div class="service-chevron">▼</div>
+    </div>
+    <div class="service-body">
+      ${svc.desc}
+      <div class="dir-cap-row">
+        <div class="dcp-panel">
+          <h4>Direction</h4>
+          <div class="dir-pills">${dirPills}</div>
+          <div class="dcp-note">${svc.dirNote}</div>
+        </div>
+        <div class="dcp-panel">
+          <h4>Payment structure</h4>
+          <div class="ce-pills">${cePills}</div>
+          <div class="dcp-note">${svc.capNote}</div>
+        </div>
+      </div>
+      <div class="detail-chips">
+        ${svc.chips.map(c=>`<div class="chip"><div class="chip-dot" style="background:${c.color}"></div>${c.label}</div>`).join('')}
+      </div>
+    </div>`;
+  card.querySelector('.service-header').addEventListener('click', () => {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.service-card.open').forEach(c=>c.classList.remove('open'));
+    if(!isOpen) card.classList.add('open');
+  });
+  sl.appendChild(card);
+});
+
+// ── MARKET TABLE ───────────────────────────────────────────────────────────
+const tbody = document.getElementById('market-tbody');
+MARKET_DATA.forEach(row => {
+  const tr = document.createElement('tr');
+  const cell = v => {
+    if(v==='✦') return `<td><span style="color:#00E5A0">✦ Best</span></td>`;
+    if(v.startsWith('✦')) return `<td><span style="color:#00E5A0">${v}</span></td>`;
+    if(v==='✗') return `<td><span style="color:var(--dim)">✗</span></td>`;
+    if(v.includes('curtail')) return `<td><span style="color:var(--down)">${v}</span></td>`;
+    if(v.includes('*')) return `<td><span style="color:var(--warn)">${v}</span></td>`;
+    if(v==='Good') return `<td><span style="color:var(--text)">Good</span></td>`;
+    return `<td><span style="color:var(--muted)">${v}</span></td>`;
+  };
+  tr.innerHTML = `<td>${row.tech}</td>${cell(row.fcr)}${cell(row.aup)}${cell(row.adn)}${cell(row.mup)}${cell(row.bs)}${cell(row.v)}`;
+  tbody.appendChild(tr);
+});
+
+// ── LIVE FREQ ──────────────────────────────────────────────────────────────
+let freqOffset = 0;
+setInterval(() => {
+  freqOffset += (Math.random()-0.5)*0.005;
+  freqOffset *= 0.97;
+  const freq = 50 + freqOffset;
+  document.getElementById('hero-freq').textContent = freq.toFixed(2);
+  const fill = document.getElementById('freq-fill');
+  fill.style.width = Math.max(5,Math.min(95,50+freqOffset*100))+'%';
+  const abs = Math.abs(freqOffset);
+  fill.style.background = abs>0.15?'#EF4444':abs>0.08?'#F59E0B':'#00E5A0';
+}, 500);
+
+// ── BATTERY DEMO ───────────────────────────────────────────────────────────
+function updateBd() {
+  const cBid = parseInt(document.getElementById('sl-cbid').value);
+  const cPrice = parseInt(document.getElementById('sl-cprice').value);
+  const hours = parseInt(document.getElementById('sl-hours').value);
+  const aDur = parseFloat(document.getElementById('sl-adur').value);
+  const aPrice = parseInt(document.getElementById('sl-aprice').value);
+  const batE = parseInt(document.getElementById('sl-bate').value);
+
+  document.getElementById('lbl-cbid').textContent = `${cBid} MW`;
+  document.getElementById('lbl-cprice').textContent = `€${cPrice} /MW/h`;
+  document.getElementById('lbl-hours').textContent = `${hours} h`;
+  document.getElementById('lbl-adur').textContent = `${aDur} h`;
+  document.getElementById('lbl-aprice').textContent = `€${aPrice} /MWh`;
+  document.getElementById('lbl-bate').textContent = `${batE} MWh`;
+
+  const capRev = cBid * cPrice * hours;
+  const mwhDel = cBid * aDur;
+  const nrgRev = mwhDel * aPrice;
+  const socPct = Math.min(100, Math.round(mwhDel / batE * 100));
+  const total = capRev + nrgRev;
+  const MAX = 400000;
+
+  document.getElementById('val-cap').textContent = `€${capRev.toLocaleString()}`;
+  document.getElementById('val-nrg').textContent = `€${nrgRev.toLocaleString()}`;
+  document.getElementById('val-soc').textContent = `${socPct}%`;
+  document.getElementById('val-total').textContent = `€${total.toLocaleString()}`;
+  document.getElementById('bdg-cap').textContent = `Cap only: €${capRev.toLocaleString()}`;
+  document.getElementById('bdg-act').textContent = `Activated: €${total.toLocaleString()}`;
+  document.getElementById('bdg-warn').style.display = socPct >= 100 ? 'inline-block' : 'none';
+
+  document.getElementById('bar-cap').style.width = Math.min(100,capRev/MAX*100)+'%';
+  document.getElementById('bar-nrg').style.width = Math.min(100,nrgRev/MAX*100)+'%';
+  document.getElementById('bar-soc').style.width = socPct+'%';
+}
+updateBd();
+
+// ── TIMELINE ──────────────────────────────────────────────────────────────
+const TL_EVENTS = [
+  {label:'Synthetic inertia / FFR ↕ ▲▼', start:0, end:0.5, color:'#EC4899'},
+  {label:'FCR (primary) ↕ symmetrical',   start:0.5, end:30, color:'#00E5A0'},
+  {label:'aFRR ▲ or ▼ — separate products', start:30, end:300, color:'#3B82F6'},
+  {label:'mFRR ▲ or ▼ — incl. redispatch', start:300, end:1800, color:'#A78BFA'},
+  {label:'Replacement reserves ▲▼ — TERRE', start:1800, end:7200, color:'#F97316'},
+];
+const LOG_MAX = Math.log10(7200);
+const logPos = s => Math.log10(Math.max(s,0.1))/LOG_MAX*100;
+const tp = document.getElementById('timeline-panel');
+tp.innerHTML = `<div class="viz-title">Response time — log scale · ↕ = symmetrical · ▲▼ = directional separate products</div>`;
+TL_EVENTS.forEach(e => {
+  const left = logPos(e.start);
+  const width = logPos(e.end)-left;
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `<div class="tl-bar-wrap"><div class="tl-bar" style="left:${left}%;width:${width}%;background:${e.color}22;border:1px solid ${e.color}44"><span class="tl-bar-label" style="color:${e.color}">${e.label}</span></div></div>`;
+  tp.appendChild(wrap);
+});
+const ax = document.createElement('div');
+ax.className='tl-axis';
+['0.1s','1s','10s','1min','10min','1h','2h'].forEach(l=>{const s=document.createElement('span');s.textContent=l;ax.appendChild(s);});
+tp.appendChild(ax);
+
+// ── SIMULATOR ─────────────────────────────────────────────────────────────
+let simDir = 'dn';
+function setDir(d){
+  simDir=d;
+  document.getElementById('btn-dn').className='dir-btn'+(d==='dn'?' act-dn':'');
+  document.getElementById('btn-up').className='dir-btn'+(d==='up'?' act-up':'');
+  runSim();
+}
+
+const SIM_RESPONSES = [
+  {id:'si',   name:'Synthetic inertia',  color:'#EC4899', up:'▲ FFR inject', dn:'▼ FFR absorb', time:'< 0.5s',  thr:200},
+  {id:'fcr',  name:'FCR (symmetrical)',  color:'#00E5A0', up:'▲ ramp up',    dn:'▼ ramp down',  time:'≤ 30s',   thr:500},
+  {id:'afrr', name:'aFRR',              color:'#3B82F6', up:'▲ upward',     dn:'▼ downward',   time:'≤ 5 min', thr:1000},
+  {id:'mfrr', name:'mFRR',              color:'#A78BFA', up:'▲ dispatch',   dn:'▼ redispatch', time:'≤ 30 min',thr:2000},
+  {id:'rr',   name:'Replacement reserve',color:'#F97316',up:'▲ uplift',     dn:'▼ absorb',     time:'≤ 2 hrs', thr:3000},
+];
+
+const rList = document.getElementById('sim-responses');
+SIM_RESPONSES.forEach(r => {
+  const div = document.createElement('div');
+  div.className='sim-response-item';
+  div.id='sri-'+r.id;
+  div.style.color=r.color;
+  div.innerHTML=`
+    <div class="sri-dot" style="background:${r.color}"></div>
+    <span class="sri-name">${r.name}</span>
+    <div class="sri-meta">
+      <span class="sri-time">${r.time}</span>
+      <span class="sri-dir" id="sri-dir-${r.id}" style="background:${r.color}20;color:${r.color};border:1px solid ${r.color}40">▼ DOWN</span>
+    </div>
+    <span class="sri-status" id="sri-st-${r.id}">standby</span>`;
+  rList.appendChild(div);
+});
+
+let simChart;
+function runSim(){
+  const gen=parseInt(document.getElementById('sl-gen').value);
+  const inertia=parseInt(document.getElementById('sl-inertia').value);
+  const iLabels=['Low','Medium','High'];
+  document.getElementById('lbl-gen').textContent=`${gen} MW`;
+  document.getElementById('lbl-inertia').textContent=iLabels[inertia-1];
+
+  const isDown = simDir==='dn';
+  const df0=gen/(2000*inertia);
+  const nom=50;
+  const extreme=isDown?nom-df0*2.5:nom+df0*2.5;
+  const steady=isDown?nom-df0*0.8:nom+df0*0.8;
+  const final=gen<100?nom:isDown?Math.max(48.5,steady):Math.min(51.5,steady);
+
+  const pts=30;
+  const labels=Array.from({length:pts},(_,i)=>i*2+'s');
+  const curve=Array.from({length:pts},(_,i)=>{
+    const t=i/pts;
+    if(gen===0)return nom;
+    const ex=extreme+(nom-extreme)*Math.exp(-t*4);
+    const rc=final+(ex-final)*Math.exp(-t*3);
+    return isDown?+(Math.max(48.5,rc).toFixed(3)):+(Math.min(51.5,rc).toFixed(3));
+  });
+  curve[0]=nom;
+
+  const extremeVal=isDown?Math.min(...curve):Math.max(...curve);
+  const bigEl=document.getElementById('sim-freq-big');
+  const subEl=document.getElementById('sim-freq-sub');
+  if(gen===0){bigEl.textContent='50.00 Hz';bigEl.style.color='';subEl.textContent='Grid nominal — no disturbance';}
+  else if(isDown){
+    bigEl.textContent=extremeVal.toFixed(2)+' Hz';
+    bigEl.style.color=extremeVal<49.2?'#EF4444':extremeVal<49.5?'#F59E0B':'#00E5A0';
+    subEl.textContent=extremeVal<49.2?'⚠ Critical — ▲ UP reserves firing hard':'▲ UP reserves activated — frequency restoring';
+  } else {
+    bigEl.textContent=extremeVal.toFixed(2)+' Hz';
+    bigEl.style.color=extremeVal>50.8?'#EF4444':extremeVal>50.5?'#F59E0B':'#00E5A0';
+    subEl.textContent=extremeVal>50.8?'⚠ High frequency — ▼ DOWN reserves firing':'▼ DOWN reserves activated — absorbing surplus';
+  }
+
+  SIM_RESPONSES.forEach(r=>{
+    const el=document.getElementById('sri-'+r.id);
+    const st=document.getElementById('sri-st-'+r.id);
+    const di=document.getElementById('sri-dir-'+r.id);
+    di.textContent=isDown?r.dn:r.up;
+    el.className='sim-response-item';
+    if(gen>=r.thr){el.classList.add('firing');st.textContent='FIRING';st.style.color=r.color;st.style.borderColor=r.color;}
+    else if(gen>r.thr*0.5){el.classList.add('active');st.textContent='standby';st.style.color='';st.style.borderColor='';}
+    else{st.textContent='standby';st.style.color='';st.style.borderColor='';}
+  });
+
+  const bcolor=isDown?'#00E5A0':'#F97316';
+  const bgcolor=isDown?'#00E5A010':'#F9731610';
+  const minY=isDown?48.5:49.8, maxY=isDown?50.3:51.5;
+  const ctx=document.getElementById('sim-chart').getContext('2d');
+  if(simChart)simChart.destroy();
+  simChart=new Chart(ctx,{
+    type:'line',
+    data:{labels,datasets:[
+      {label:'Frequency',data:curve,borderColor:bcolor,borderWidth:2,pointRadius:0,fill:true,backgroundColor:bgcolor,tension:0.4},
+      {label:'50.5Hz',data:Array(pts).fill(50.5),borderColor:'#F59E0B55',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false},
+      {label:'49.5Hz',data:Array(pts).fill(49.5),borderColor:'#F59E0B55',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false},
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,animation:false,
+      plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:{
+        x:{ticks:{color:'#3D4260',font:{size:9},maxTicksLimit:8},grid:{color:'#1E223033'}},
+        y:{min:minY,max:maxY,ticks:{color:'#6B7099',font:{size:9},callback:v=>`${v.toFixed(1)}Hz`},grid:{color:'#1E223066'}}
+      }
+    }
+  });
+}
+runSim();
+</script>
+</body>
+</html>

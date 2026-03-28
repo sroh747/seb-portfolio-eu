@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Carbon CTRM</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Courier New', monospace; }
+  select, input { outline: none; }
+  select option { background: #1a1a1a; color: #e2e8f0; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #2a3548; border-radius: 3px; }
+  .tbl-wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+const THEMES = {
+  "Dark Terminal": { bg:"#0f1117", surface:"#131820", border:"#1e2533", borderHover:"#2a3548", text:"#e2e8f0", accent:"#4ade80", amber:"#fbbf24", red:"#f87171", blue:"#60a5fa", muted:"#6b7280", tabActive:"#1a2235", rowAlt:"#0f1117" },
+  "Light Pro":     { bg:"#f4f5f7", surface:"#ffffff", border:"#dde1e7", borderHover:"#b0b8c4", text:"#1a1f2e", accent:"#16a34a", amber:"#d97706", red:"#dc2626", blue:"#2563eb", muted:"#6b7280", tabActive:"#ffffff", rowAlt:"#f9fafb" }
+};
+
+const PROJECTS = [
+  { id:"P001", name:"Amazon Basin REDD+",   standard:"Verra (VCS)",   type:"REDD+",         country:"Brazil",    vintage:2022 },
+  { id:"P002", name:"Kenyan Cookstoves",    standard:"Gold Standard", type:"Cookstoves",    country:"Kenya",     vintage:2023 },
+  { id:"P003", name:"Borneo Reforestation", standard:"Verra (VCS)",   type:"Afforestation", country:"Indonesia", vintage:2022 },
+  { id:"P004", name:"Tamil Nadu Solar",     standard:"Gold Standard", type:"Solar",         country:"India",     vintage:2023 },
+  { id:"P005", name:"Madre de Dios REDD+",  standard:"Verra (VCS)",   type:"REDD+",         country:"Peru",      vintage:2021 },
+];
+
+const COUNTERPARTIES = [
+  { id:"CP01", name:"GreenFinance AG",    type:"Buyer",  limit:5000000, country:"Switzerland" },
+  { id:"CP02", name:"Carbon Bridge Ltd",  type:"Broker", limit:2000000, country:"UK" },
+  { id:"CP03", name:"EcoAssets GmbH",     type:"Seller", limit:3000000, country:"Germany" },
+  { id:"CP04", name:"Climate Capital SA", type:"Buyer",  limit:8000000, country:"France" },
+  { id:"CP05", name:"Verdant Markets Inc",type:"Broker", limit:1500000, country:"USA" },
+];
+
+const SEED_TRADES = [
+  { id:"T001", date:"2024-11-05", project:"P001", side:"BUY",  qty:5000,  price:12.50, counterparty:"CP03", status:"Settled" },
+  { id:"T002", date:"2024-11-12", project:"P002", side:"SELL", qty:3000,  price:18.20, counterparty:"CP01", status:"Settled" },
+  { id:"T003", date:"2024-12-01", project:"P001", side:"SELL", qty:2000,  price:13.80, counterparty:"CP04", status:"Settled" },
+  { id:"T004", date:"2024-12-10", project:"P003", side:"BUY",  qty:8000,  price:9.75,  counterparty:"CP03", status:"Settled" },
+  { id:"T005", date:"2025-01-08", project:"P004", side:"BUY",  qty:4000,  price:15.00, counterparty:"CP02", status:"Settled" },
+  { id:"T006", date:"2025-01-20", project:"P002", side:"BUY",  qty:6000,  price:17.50, counterparty:"CP05", status:"Settled" },
+  { id:"T007", date:"2025-02-03", project:"P005", side:"BUY",  qty:10000, price:8.00,  counterparty:"CP03", status:"Active" },
+  { id:"T008", date:"2025-02-14", project:"P004", side:"SELL", qty:2500,  price:16.50, counterparty:"CP01", status:"Active" },
+  { id:"T009", date:"2025-03-01", project:"P003", side:"SELL", qty:3000,  price:11.20, counterparty:"CP04", status:"Active" },
+  { id:"T010", date:"2025-03-15", project:"P001", side:"BUY",  qty:4000,  price:14.10, counterparty:"CP02", status:"Active" },
+];
+
+const MTM = { P001:14.50, P002:18.80, P003:10.90, P004:16.20, P005:8.60 };
+const TABS = ["Blotter","Positions","P&L","Counterparties","Risk"];
+
+const fmt   = (n,d=0) => Number(n).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtUSD = n => (n<0?"-$":"$")+fmt(Math.abs(n));
+const fmtK   = n => n>=1000?fmt(n/1000,1)+"k":fmt(n);
+
+const makeS = T => ({
+  app:    { fontFamily:"'Courier New',monospace", background:T.bg, color:T.text, minHeight:"100vh" },
+  hdr:    { background:T.surface, borderBottom:"1px solid "+T.border, padding:"12px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" },
+  logo:   { fontSize:15, fontWeight:600, color:T.accent, letterSpacing:1 },
+  tag:    { fontSize:11, background:T.bg, color:T.muted, padding:"2px 8px", borderRadius:4, border:"1px solid "+T.border },
+  tabBar: { display:"flex", gap:4, padding:"10px 20px 0", background:T.bg, borderBottom:"1px solid "+T.border },
+  tab:    a=>({ cursor:"pointer", fontSize:12, padding:"6px 14px", borderRadius:"4px 4px 0 0", background:a?T.tabActive:"transparent", color:a?T.accent:T.muted, border:a?"1px solid "+T.border:"1px solid transparent", borderBottom:a?"1px solid "+T.tabActive:"1px solid transparent", marginBottom:-1 }),
+  body:   { padding:20 },
+  card:   { background:T.surface, border:"1px solid "+T.border, borderRadius:8, padding:"16px 20px", marginBottom:16 },
+  kpiG:   { display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:20 },
+  kpi:    { background:T.surface, border:"1px solid "+T.border, borderRadius:8, padding:"14px 16px" },
+  kpiLbl: { fontSize:11, color:T.muted, marginBottom:4, textTransform:"uppercase", letterSpacing:1 },
+  kpiVal: { fontSize:22, fontWeight:500 },
+  tbl:    { width:"100%", borderCollapse:"collapse", fontSize:12 },
+  th:     { textAlign:"left", padding:"8px 12px", borderBottom:"1px solid "+T.border, color:T.muted, fontSize:11, textTransform:"uppercase", letterSpacing:0.8 },
+  td:     { padding:"8px 12px", borderBottom:"1px solid "+T.bg, color:T.text },
+  badge:  c=>({ display:"inline-block", padding:"2px 8px", borderRadius:4, fontSize:11, background:c+"22", color:c }),
+  secTtl: { fontSize:13, color:T.muted, textTransform:"uppercase", letterSpacing:1, marginBottom:12, fontWeight:500 },
+  inp:    { background:T.bg, border:"1px solid "+T.borderHover, borderRadius:6, color:T.text, padding:"7px 10px", fontSize:12, fontFamily:"'Courier New',monospace", width:"100%" },
+  sel:    { background:T.bg, border:"1px solid "+T.borderHover, borderRadius:6, color:T.text, padding:"7px 10px", fontSize:12, fontFamily:"'Courier New',monospace", width:"100%" },
+  btn:    c=>({ background:c+"18", border:"1px solid "+c+"55", color:c, borderRadius:6, padding:"7px 16px", fontSize:12, cursor:"pointer", fontFamily:"'Courier New',monospace" }),
+  rowAlt: i=>({ background:i%2===0?T.rowAlt:"transparent" }),
+  barBg:  { height:4, background:T.border, borderRadius:2 },
+  thmSel: { background:T.surface, border:"1px solid "+T.borderHover, borderRadius:6, color:T.text, padding:"5px 10px", fontSize:11, fontFamily:"'Courier New',monospace", cursor:"pointer" },
+});
+
+function Blotter({trades,setTrades,S,T}) {
+  const [form,setForm] = useState({date:"",project:"P001",side:"BUY",qty:"",price:"",counterparty:"CP01"});
+  const [hover,setHover] = useState(null);
+  const set = (k,v) => setForm(f=>({...f,[k]:v}));
+  const {accent,blue,amber,muted} = T;
+  const submit = () => {
+    if(!form.date||!form.qty||!form.price) return;
+    setTrades(t=>[{id:"T"+String(t.length+1).padStart(3,"0"),...form,qty:+form.qty,price:+form.price,status:"Active"},...t]);
+    setForm({date:"",project:"P001",side:"BUY",qty:"",price:"",counterparty:"CP01"});
+  };
+  return (
+    <div>
+      <div style={S.kpiG}>
+        <div style={S.kpi}><div style={S.kpiLbl}>Total Trades</div><div style={{...S.kpiVal,color:accent}}>{trades.length}</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Buy Volume</div><div style={{...S.kpiVal,color:blue}}>{fmtK(trades.filter(t=>t.side==="BUY").reduce((s,t)=>s+t.qty,0))} tCO₂e</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Sell Volume</div><div style={{...S.kpiVal,color:amber}}>{fmtK(trades.filter(t=>t.side==="SELL").reduce((s,t)=>s+t.qty,0))} tCO₂e</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Gross Notional</div><div style={{...S.kpiVal,color:T.text}}>{fmtUSD(trades.reduce((s,t)=>s+t.qty*t.price,0))}</div></div>
+      </div>
+      <div style={S.card}>
+        <div style={S.secTtl}>New Trade</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:8,marginBottom:12}}>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Date</div><input type="date" style={S.inp} value={form.date} onChange={e=>set("date",e.target.value)}/></div>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Project</div><select style={S.sel} value={form.project} onChange={e=>set("project",e.target.value)}>{PROJECTS.map(p=><option key={p.id} value={p.id}>{p.id} – {p.name.split(" ").slice(0,2).join(" ")}</option>)}</select></div>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Side</div><select style={S.sel} value={form.side} onChange={e=>set("side",e.target.value)}><option>BUY</option><option>SELL</option></select></div>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Qty (tCO₂e)</div><input type="number" style={S.inp} placeholder="0" value={form.qty} onChange={e=>set("qty",e.target.value)}/></div>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Price (USD)</div><input type="number" style={S.inp} placeholder="0.00" value={form.price} onChange={e=>set("price",e.target.value)}/></div>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Counterparty</div><select style={S.sel} value={form.counterparty} onChange={e=>set("counterparty",e.target.value)}>{COUNTERPARTIES.map(c=><option key={c.id} value={c.id}>{c.id} – {c.name.split(" ")[0]}</option>)}</select></div>
+        </div>
+        <button style={S.btn(accent)} onClick={submit}>+ Capture Trade</button>
+      </div>
+      <div style={S.card}>
+        <div className="tbl-wrap">
+          <table style={S.tbl}>
+            <thead><tr>{["Trade ID","Date","Project","Std","Side","Qty","Price","Notional","Counterparty","Status"].map(h=><th key={h} style={S.th}>{h}</th>)}</tr></thead>
+            <tbody>{trades.map((t,i)=>{
+              const proj=PROJECTS.find(p=>p.id===t.project), cp=COUNTERPARTIES.find(c=>c.id===t.counterparty);
+              return <tr key={t.id} style={{background:hover===i?T.borderHover+"33":i%2===0?T.rowAlt:"transparent"}} onMouseEnter={()=>setHover(i)} onMouseLeave={()=>setHover(null)}>
+                <td style={{...S.td,color:muted}}>{t.id}</td>
+                <td style={S.td}>{t.date}</td>
+                <td style={{...S.td,color:T.text}}>{proj?.name}</td>
+                <td style={S.td}><span style={S.badge(proj?.standard==="Verra (VCS)"?blue:accent)}>{proj?.standard==="Verra (VCS)"?"VCS":"GS"}</span></td>
+                <td style={S.td}><span style={S.badge(t.side==="BUY"?blue:amber)}>{t.side}</span></td>
+                <td style={{...S.td,textAlign:"right"}}>{fmt(t.qty)}</td>
+                <td style={{...S.td,textAlign:"right"}}>${t.price.toFixed(2)}</td>
+                <td style={{...S.td,textAlign:"right",color:T.text}}>{fmtUSD(t.qty*t.price)}</td>
+                <td style={S.td}>{cp?.name}</td>
+                <td style={S.td}><span style={S.badge(t.status==="Active"?accent:muted)}>{t.status}</span></td>
+              </tr>;
+            })}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Positions({trades,S,T}) {
+  const {blue,red,amber,muted} = T;
+  const positions = useMemo(()=>{
+    const map={};
+    trades.forEach(t=>{
+      const proj=PROJECTS.find(p=>p.id===t.project);
+      if(!map[t.project]) map[t.project]={project:proj,net:0,buyQty:0,sellQty:0,buyNotional:0,sellNotional:0};
+      if(t.side==="BUY"){map[t.project].net+=t.qty;map[t.project].buyQty+=t.qty;map[t.project].buyNotional+=t.qty*t.price;}
+      else{map[t.project].net-=t.qty;map[t.project].sellQty+=t.qty;map[t.project].sellNotional+=t.qty*t.price;}
+    });
+    return Object.values(map).map(p=>({...p,avgBuy:p.buyQty>0?p.buyNotional/p.buyQty:0,avgSell:p.sellQty>0?p.sellNotional/p.sellQty:0,mtm:MTM[p.project.id]||0,mktValue:(MTM[p.project.id]||0)*p.net}));
+  },[trades]);
+  const totNet=positions.reduce((s,p)=>s+p.net,0), totMkt=positions.reduce((s,p)=>s+p.mktValue,0);
+  return (
+    <div>
+      <div style={S.kpiG}>
+        <div style={S.kpi}><div style={S.kpiLbl}>Net Position</div><div style={{...S.kpiVal,color:totNet>=0?blue:red}}>{fmt(totNet)} tCO₂e</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Long</div><div style={{...S.kpiVal,color:blue}}>{fmtK(positions.filter(p=>p.net>0).reduce((s,p)=>s+p.net,0))} tCO₂e</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Short</div><div style={{...S.kpiVal,color:amber}}>{fmtK(positions.filter(p=>p.net<0).reduce((s,p)=>s+Math.abs(p.net),0))} tCO₂e</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Mkt Value</div><div style={{...S.kpiVal,color:T.text}}>{fmtUSD(totMkt)}</div></div>
+      </div>
+      <div style={S.card}><div className="tbl-wrap"><table style={S.tbl}>
+        <thead><tr>{["Project","Standard","Type","Country","Vintage","Avg Buy","Avg Sell","Net Pos","MtM Price","Mkt Value","Direction"].map(h=><th key={h} style={S.th}>{h}</th>)}</tr></thead>
+        <tbody>{positions.map((p,i)=>(
+          <tr key={i} style={S.rowAlt(i)}>
+            <td style={{...S.td,color:T.text}}>{p.project.name}</td>
+            <td style={S.td}><span style={S.badge(p.project.standard==="Verra (VCS)"?blue:T.accent)}>{p.project.standard==="Verra (VCS)"?"VCS":"GS"}</span></td>
+            <td style={{...S.td,color:muted}}>{p.project.type}</td>
+            <td style={{...S.td,color:muted}}>{p.project.country}</td>
+            <td style={{...S.td,textAlign:"center"}}>{p.project.vintage}</td>
+            <td style={{...S.td,textAlign:"right",color:blue}}>{p.buyQty>0?"$"+p.avgBuy.toFixed(2):"—"}</td>
+            <td style={{...S.td,textAlign:"right",color:amber}}>{p.sellQty>0?"$"+p.avgSell.toFixed(2):"—"}</td>
+            <td style={{...S.td,textAlign:"right",color:p.net>0?blue:p.net<0?red:muted,fontWeight:500}}>{fmt(p.net)}</td>
+            <td style={{...S.td,textAlign:"right"}}>${p.mtm.toFixed(2)}</td>
+            <td style={{...S.td,textAlign:"right",color:p.mktValue>=0?T.text:red}}>{fmtUSD(p.mktValue)}</td>
+            <td style={S.td}><span style={S.badge(p.net>0?blue:p.net<0?red:muted)}>{p.net>0?"LONG":p.net<0?"SHORT":"FLAT"}</span></td>
+          </tr>
+        ))}</tbody>
+      </table></div></div>
+    </div>
+  );
+}
+
+function PnL({trades,S,T}) {
+  const {blue,red,accent,amber,muted} = T;
+  const pnl = useMemo(()=>{
+    const map={};
+    trades.forEach(t=>{
+      if(!map[t.project]) map[t.project]={buys:[],sells:[]};
+      if(t.side==="BUY") map[t.project].buys.push({qty:t.qty,price:t.price});
+      else map[t.project].sells.push({qty:t.qty,price:t.price});
+    });
+    return PROJECTS.map(proj=>{
+      const d=map[proj.id]||{buys:[],sells:[]};
+      const avgBuy=d.buys.length?d.buys.reduce((s,b)=>s+b.qty*b.price,0)/d.buys.reduce((s,b)=>s+b.qty,0):0;
+      const netBuy=d.buys.reduce((s,b)=>s+b.qty,0), netSell=d.sells.reduce((s,s2)=>s+s2.qty,0);
+      const realised=d.sells.reduce((s,s2)=>s+s2.qty*(s2.price-avgBuy),0);
+      const unrealised=(netBuy-netSell)>0?(netBuy-netSell)*((MTM[proj.id]||0)-avgBuy):0;
+      return {proj,avgBuy,realised,unrealised,total:realised+unrealised};
+    }).filter(r=>r.realised!==0||r.unrealised!==0);
+  },[trades]);
+  const totR=pnl.reduce((s,p)=>s+p.realised,0), totU=pnl.reduce((s,p)=>s+p.unrealised,0), totT=totR+totU;
+  return (
+    <div>
+      <div style={S.kpiG}>
+        <div style={S.kpi}><div style={S.kpiLbl}>Total P&L</div><div style={{...S.kpiVal,color:totT>=0?accent:red}}>{fmtUSD(totT)}</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Realised</div><div style={{...S.kpiVal,color:totR>=0?blue:red}}>{fmtUSD(totR)}</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Unrealised</div><div style={{...S.kpiVal,color:totU>=0?accent:red}}>{fmtUSD(totU)}</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>P&L Ratio</div><div style={{...S.kpiVal,color:amber}}>{totR!==0?(totT/Math.abs(totR)*100).toFixed(1)+"%":"—"}</div></div>
+      </div>
+      <div style={S.card}><div className="tbl-wrap"><table style={S.tbl}>
+        <thead><tr>{["Project","Standard","Avg Cost","MtM Price","Realised P&L","Unrealised P&L","Total P&L","Contribution"].map(h=><th key={h} style={S.th}>{h}</th>)}</tr></thead>
+        <tbody>{pnl.map((r,i)=>(
+          <tr key={i} style={S.rowAlt(i)}>
+            <td style={{...S.td,color:T.text}}>{r.proj.name}</td>
+            <td style={S.td}><span style={S.badge(r.proj.standard==="Verra (VCS)"?blue:accent)}>{r.proj.standard==="Verra (VCS)"?"VCS":"GS"}</span></td>
+            <td style={{...S.td,textAlign:"right"}}>${r.avgBuy.toFixed(2)}</td>
+            <td style={{...S.td,textAlign:"right",color:amber}}>${(MTM[r.proj.id]||0).toFixed(2)}</td>
+            <td style={{...S.td,textAlign:"right",color:r.realised>=0?blue:red}}>{fmtUSD(r.realised)}</td>
+            <td style={{...S.td,textAlign:"right",color:r.unrealised>=0?accent:red}}>{fmtUSD(r.unrealised)}</td>
+            <td style={{...S.td,textAlign:"right",color:r.total>=0?accent:red,fontWeight:500}}>{fmtUSD(r.total)}</td>
+            <td style={{...S.td,textAlign:"right",color:muted}}>{totT?(r.total/Math.abs(totT)*100).toFixed(1)+"%":"—"}</td>
+          </tr>
+        ))}</tbody>
+      </table></div></div>
+    </div>
+  );
+}
+
+function Counterparties({trades,S,T}) {
+  const [cps,setCps] = useState(COUNTERPARTIES);
+  const [form,setForm] = useState({name:"",type:"Buyer",limit:"",country:""});
+  const {accent,blue,amber,muted,red} = T;
+  const set = (k,v) => setForm(f=>({...f,[k]:v}));
+  const exposure = useMemo(()=>{ const m={}; trades.forEach(t=>{m[t.counterparty]=(m[t.counterparty]||0)+t.qty*t.price;}); return m; },[trades]);
+  const add = () => { if(!form.name||!form.limit) return; setCps(c=>[...c,{id:"CP"+String(c.length+1).padStart(2,"0"),...form,limit:+form.limit}]); setForm({name:"",type:"Buyer",limit:"",country:""}); };
+  return (
+    <div>
+      <div style={S.card}>
+        <div style={S.secTtl}>Add Counterparty</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:12}}>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Name</div><input style={S.inp} placeholder="Entity name" value={form.name} onChange={e=>set("name",e.target.value)}/></div>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Type</div><select style={S.sel} value={form.type} onChange={e=>set("type",e.target.value)}><option>Buyer</option><option>Seller</option><option>Broker</option></select></div>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Credit Limit (USD)</div><input type="number" style={S.inp} placeholder="0" value={form.limit} onChange={e=>set("limit",e.target.value)}/></div>
+          <div><div style={{fontSize:11,color:muted,marginBottom:4}}>Country</div><input style={S.inp} placeholder="Country" value={form.country} onChange={e=>set("country",e.target.value)}/></div>
+        </div>
+        <button style={S.btn(accent)} onClick={add}>+ Add Counterparty</button>
+      </div>
+      <div style={S.card}><div className="tbl-wrap"><table style={S.tbl}>
+        <thead><tr>{["ID","Name","Type","Country","Credit Limit","Exposure","Utilisation","Status"].map(h=><th key={h} style={S.th}>{h}</th>)}</tr></thead>
+        <tbody>{cps.map((cp,i)=>{
+          const exp=exposure[cp.id]||0, util=cp.limit>0?exp/cp.limit:0, uc=util>0.8?red:util>0.5?amber:accent;
+          return <tr key={i} style={S.rowAlt(i)}>
+            <td style={{...S.td,color:muted}}>{cp.id}</td>
+            <td style={{...S.td,color:T.text}}>{cp.name}</td>
+            <td style={S.td}><span style={S.badge(cp.type==="Buyer"?blue:cp.type==="Seller"?amber:muted)}>{cp.type}</span></td>
+            <td style={{...S.td,color:muted}}>{cp.country}</td>
+            <td style={{...S.td,textAlign:"right"}}>{fmtUSD(cp.limit)}</td>
+            <td style={{...S.td,textAlign:"right",color:T.text}}>{fmtUSD(exp)}</td>
+            <td style={{...S.td,textAlign:"right"}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,justifyContent:"flex-end"}}>
+                <div style={{...S.barBg,width:60}}><div style={{width:Math.min(util*100,100)+"%",height:"100%",background:uc,borderRadius:2}}/></div>
+                <span style={{color:uc,fontSize:11}}>{(util*100).toFixed(1)}%</span>
+              </div>
+            </td>
+            <td style={S.td}><span style={S.badge(util>0.8?red:accent)}>{util>0.8?"BREACH":"OK"}</span></td>
+          </tr>;
+        })}</tbody>
+      </table></div></div>
+    </div>
+  );
+}
+
+function Risk({trades,S,T}) {
+  const {accent,amber,red,blue,muted} = T;
+  const positions = useMemo(()=>{
+    const map={};
+    trades.forEach(t=>{
+      const proj=PROJECTS.find(p=>p.id===t.project);
+      if(!map[t.project]) map[t.project]={project:proj,net:0,notional:0};
+      map[t.project].net+=(t.side==="BUY"?1:-1)*t.qty;
+      map[t.project].notional+=t.qty*t.price;
+    });
+    return Object.values(map);
+  },[trades]);
+  const totN=positions.reduce((s,p)=>s+p.notional,0);
+  const vol=0.18, vc=1.645;
+  const portVaR=positions.reduce((s,p)=>s+Math.abs(p.net)*(MTM[p.project.id]||0)*vol/Math.sqrt(252)*vc,0)*0.7;
+  const maxC=positions.length?Math.max(...positions.map(p=>p.notional/totN)):0;
+  const byStd={"Verra (VCS)":0,"Gold Standard":0};
+  positions.forEach(p=>{byStd[p.project.standard]=(byStd[p.project.standard]||0)+p.notional;});
+  const byType={};
+  positions.forEach(p=>{byType[p.project.type]=(byType[p.project.type]||0)+p.notional;});
+  const rc=portVaR/totN>0.05?red:portVaR/totN>0.02?amber:accent;
+  const tc=[accent,blue,amber,red,"#a78bfa","#34d399"];
+  return (
+    <div>
+      <div style={S.kpiG}>
+        <div style={S.kpi}><div style={S.kpiLbl}>1-Day VaR (95%)</div><div style={{...S.kpiVal,color:rc}}>{fmtUSD(portVaR)}</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>VaR / Notional</div><div style={{...S.kpiVal,color:rc}}>{(portVaR/totN*100).toFixed(2)}%</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Max Concentration</div><div style={{...S.kpiVal,color:maxC>0.4?amber:accent}}>{(maxC*100).toFixed(1)}%</div></div>
+        <div style={S.kpi}><div style={S.kpiLbl}>Portfolio Notional</div><div style={{...S.kpiVal,color:T.text}}>{fmtUSD(totN)}</div></div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
+        <div style={S.card}>
+          <div style={S.secTtl}>Concentration by Project</div>
+          {positions.sort((a,b)=>b.notional-a.notional).map((p,i)=>{
+            const pct=totN>0?p.notional/totN:0, c=pct>0.35?amber:accent;
+            return <div key={i} style={{marginBottom:12}}>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:12,marginBottom:4}}><span style={{color:T.text}}>{p.project.name}</span><span style={{color:c}}>{(pct*100).toFixed(1)}%</span></div>
+              <div style={S.barBg}><div style={{width:(pct*100)+"%",height:"100%",background:c,borderRadius:2}}/></div>
+            </div>;
+          })}
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:16}}>
+          <div style={S.card}>
+            <div style={S.secTtl}>By Standard</div>
+            {Object.entries(byStd).map(([k,v],i)=>{
+              const pct=totN>0?v/totN:0, c=k==="Verra (VCS)"?blue:accent;
+              return <div key={i} style={{marginBottom:10}}>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:12,marginBottom:4}}><span style={{color:muted}}>{k}</span><span style={{color:c}}>{(pct*100).toFixed(1)}%</span></div>
+                <div style={S.barBg}><div style={{width:(pct*100)+"%",height:"100%",background:c,borderRadius:2}}/></div>
+              </div>;
+            })}
+          </div>
+          <div style={S.card}>
+            <div style={S.secTtl}>By Project Type</div>
+            {Object.entries(byType).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>{
+              const pct=totN>0?v/totN:0, c=tc[i%tc.length];
+              return <div key={i} style={{marginBottom:8}}>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:12,marginBottom:3}}><span style={{color:muted}}>{k}</span><span style={{color:c}}>{(pct*100).toFixed(1)}%</span></div>
+                <div style={{...S.barBg,height:3}}><div style={{width:(pct*100)+"%",height:"100%",background:c,borderRadius:2}}/></div>
+              </div>;
+            })}
+          </div>
+        </div>
+      </div>
+      <div style={S.card}><div className="tbl-wrap"><table style={S.tbl}>
+        <thead><tr>{["Project","Net Position","MtM Price","Mkt Value","Daily Vol","1-Day VaR (95%)","VaR %"].map(h=><th key={h} style={S.th}>{h}</th>)}</tr></thead>
+        <tbody>{positions.map((p,i)=>{
+          const mv=Math.abs(p.net)*(MTM[p.project.id]||0), pv=mv*vol/Math.sqrt(252)*vc, vp=mv>0?pv/mv:0;
+          return <tr key={i} style={S.rowAlt(i)}>
+            <td style={{...S.td,color:T.text}}>{p.project.name}</td>
+            <td style={{...S.td,textAlign:"right",color:p.net>=0?blue:red}}>{fmt(p.net)} tCO₂e</td>
+            <td style={{...S.td,textAlign:"right"}}>${(MTM[p.project.id]||0).toFixed(2)}</td>
+            <td style={{...S.td,textAlign:"right"}}>{fmtUSD(mv)}</td>
+            <td style={{...S.td,textAlign:"right",color:muted}}>{(vol/Math.sqrt(252)*100).toFixed(2)}%</td>
+            <td style={{...S.td,textAlign:"right",color:vp>0.05?red:amber}}>{fmtUSD(pv)}</td>
+            <td style={{...S.td,textAlign:"right",color:vp>0.05?red:accent}}>{(vp*100).toFixed(2)}%</td>
+          </tr>;
+        })}</tbody>
+      </table></div></div>
+    </div>
+  );
+}
+
+function App() {
+  const [tab,setTab]   = useState("Blotter");
+  const [trades,setTrades] = useState(SEED_TRADES);
+  const [themeName,setThemeName] = useState("Light Pro");
+  const T = THEMES[themeName];
+  const S = useMemo(()=>makeS(T),[themeName]);
+
+  return (
+    <div style={S.app}>
+      <div style={S.hdr}>
+        <div style={{display:"flex",alignItems:"center",gap:12}}>
+          <span style={S.logo}>▲ CARBON CTRM</span>
+          <span style={S.tag}>VCS · Gold Standard</span>
+        </div>
+        <div style={{display:"flex",gap:10,alignItems:"center"}}>
+          <span style={{...S.tag,color:T.accent}}>● LIVE</span>
+          <span style={{fontSize:11,color:T.muted}}>{new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"})}</span>
+          <select value={themeName} onChange={e=>setThemeName(e.target.value)} style={S.thmSel}>
+            {Object.keys(THEMES).map(n=><option key={n}>{n}</option>)}
+          </select>
+        </div>
+      </div>
+      <div style={S.tabBar}>
+        {TABS.map(t=><div key={t} style={S.tab(tab===t)} onClick={()=>setTab(t)}>{t}</div>)}
+      </div>
+      <div style={S.body}>
+        {tab==="Blotter"        && <Blotter       trades={trades} setTrades={setTrades} S={S} T={T}/>}
+        {tab==="Positions"      && <Positions     trades={trades} S={S} T={T}/>}
+        {tab==="P&L"            && <PnL           trades={trades} S={S} T={T}/>}
+        {tab==="Counterparties" && <Counterparties trades={trades} S={S} T={T}/>}
+        {tab==="Risk"           && <Risk          trades={trades} S={S} T={T}/>}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

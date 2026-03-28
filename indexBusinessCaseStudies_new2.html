@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Business Case Studies | Data Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #faf9f6;
+      --cream2: #f3f1ec;
+      --border: #e5e2da;
+      --border2: #d4d0c6;
+      --text: #1c1b18;
+      --text-muted: #7a7568;
+      --text-light: #b0ab9e;
+      --accent: #b06a2e;
+      --accent-light: #f0e6d8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 26px 64px;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0;
+      background: rgba(250,249,246,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo em { color: var(--accent); font-style: italic; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      padding: 88px 64px 72px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 72px;
+      align-items: end;
+    }
+    .hero-kicker {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-kicker::before {
+      content: '';
+      display: block; width: 20px; height: 1px;
+      background: var(--accent);
+    }
+    .hero-h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 5vw, 66px);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    .hero-h1 em { color: var(--accent); font-style: italic; }
+    .hero-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 460px;
+      line-height: 1.8;
+    }
+    .hero-stats {
+      border: 1px solid var(--border);
+    }
+    .hero-stat {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 16px;
+    }
+    .hero-stat:last-child { border-bottom: none; }
+    .hero-stat-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      white-space: nowrap;
+    }
+    .hero-stat-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--text);
+      text-align: right;
+    }
+    .hero-stat-val.small {
+      font-size: 13px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+    }
+
+    /* SECTION */
+    .section {
+      padding: 64px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 40px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-num {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* GRIDS */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+
+    /* CARD */
+    .card {
+      background: var(--cream);
+      padding: 26px 26px 22px;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .card:hover { background: #fff; }
+
+    .card-img {
+      width: 100%; aspect-ratio: 16/9;
+      overflow: hidden; margin-bottom: 18px;
+      background: var(--cream2);
+    }
+    .card-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      filter: saturate(0.7);
+    }
+    .card:hover .card-img img { transform: scale(1.03); filter: saturate(0.9); }
+
+    .card-cat {
+      font-size: 10px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 16px; }
+    .card-tag {
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      color: var(--text-light);
+      border: 1px solid var(--border2);
+      padding: 2px 7px;
+      background: var(--cream2);
+    }
+    .card-link {
+      font-size: 11px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      border-bottom: 1px solid var(--accent-light);
+      padding-bottom: 1px;
+      transition: gap 0.2s, border-color 0.2s;
+    }
+    .card-link:hover { gap: 10px; border-color: var(--accent); }
+
+    .card-soon {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-light);
+      border: 1px solid var(--border2);
+      padding: 2px 7px;
+      display: inline-block; margin-bottom: 6px;
+    }
+
+    /* COVER CARD */
+    .card-cover {
+      padding: 0; min-height: 240px;
+      position: relative; overflow: hidden;
+    }
+    .card-cover-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      filter: saturate(0.55) brightness(0.65);
+      transition: transform 0.5s ease, filter 0.4s ease;
+    }
+    .card-cover:hover .card-cover-bg { transform: scale(1.03); filter: saturate(0.75) brightness(0.72); }
+    .card-cover-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(18,16,12,0.78) 0%, rgba(18,16,12,0.1) 55%, transparent 100%);
+    }
+    .card-cover-content {
+      position: relative; z-index: 1;
+      padding: 24px; height: 100%;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .card-cover .card-cat { color: rgba(255,255,255,0.55); }
+    .card-cover .card-title { color: #fff; font-size: 18px; }
+    .card-cover .card-desc { color: rgba(255,255,255,0.45); font-size: 12px; margin-bottom: 12px; }
+
+    /* LIST */
+    .list-card { border: 1px solid var(--border); }
+    .list-row {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none; color: inherit;
+      transition: background 0.2s;
+    }
+    .list-row:last-child { border-bottom: none; }
+    .list-row:hover { background: #fff; }
+    .list-row:hover .list-num { color: var(--accent); }
+    .list-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px; color: var(--text-light);
+      transition: color 0.2s;
+    }
+    .list-title { font-size: 14px; color: var(--text); }
+    .list-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .list-cat {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); white-space: nowrap;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 400;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 8px 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-filled { background: var(--accent); color: #fff; }
+    .btn-filled:hover { background: #963f14; gap: 9px; }
+    .btn-ghost { border: 1px solid var(--border2); color: var(--text-muted); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); gap: 9px; }
+
+    /* FOOTER */
+    footer {
+      padding: 36px 64px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px; color: var(--text);
+    }
+    .footer-logo em { color: var(--accent); font-style: italic; }
+    .footer-copy { font-size: 11px; letter-spacing: 0.06em; color: var(--text-light); }
+    .footer-top {
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-light); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-top:hover { color: var(--accent); }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      nav, .section, footer { padding-left: 20px; padding-right: 20px; }
+      .hero { padding: 56px 20px 48px; grid-template-columns: 1fr; gap: 36px; }
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 14px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo">Data &amp; <em>Markets</em></a>
+    <div class="nav-links">
+      <a href="#trading">Trading</a>
+      <a href="#science">Data Science</a>
+      <a href="#engineering">Engineering</a>
+      <a href="#reporting">Reporting</a>
+      <a href="https://github.com/sroh747" target="_blank">GitHub ↗</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <div class="hero-kicker">Geneva, Switzerland &nbsp;·&nbsp; Data Management</div>
+      <h1 class="hero-h1">Data Strategy &amp;<br><em>Market Intelligence</em></h1>
+      <p class="hero-desc">A curated portfolio of work across commodity trading, data governance, machine learning and custom analytics — bridging financial markets with scalable data systems.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-label">Domains</span>
+        <span class="hero-stat-val">6</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Case Studies</span>
+        <span class="hero-stat-val">12+</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Stack</span>
+        <span class="hero-stat-val small">Azure · AWS · Python · SQL</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Focus</span>
+        <span class="hero-stat-val small">Commodities &amp; Finance</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 COMMODITY TRADING -->
+  <section class="section" id="trading">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Commodity Trading</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="grid-3 reveal">
+      <div class="card" style="grid-column: span 2;">
+        <div class="card-img"><img src="./img/hacienda_hedge.jpg" alt="Hacienda Hedge"></div>
+        <div class="card-cat">Commodity Trading · Mexico</div>
+        <div class="card-title">Hacienda Hedge: Mexico's Oil Price-Hedging Programme</div>
+        <div class="card-desc">A secretive sovereign oil strategy that locks in profits and shields the country from price shocks. Interactive options simulator.</div>
+        <a href="mexico_oil_hedge_interactive_app.html" target="_blank" class="card-link">Open Simulator →</a>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="./img/Coffee-Beans-Sack.jpg" alt="Dynamic Pricing"></div>
+        <div class="card-cat">Soft Commodities</div>
+        <div class="card-title">Dynamic Pricing Models</div>
+        <div class="card-desc">Daily assessed products — NoSQL, cloud-first, React front-end.</div>
+        <div class="card-tags">
+          <span class="card-tag">NoSQL</span><span class="card-tag">Cloud</span><span class="card-tag">React</span>
+        </div>
+        <a href="http://universalcoffeepricing.s3-website.eu-central-2.amazonaws.com/index.html" target="_blank" class="card-link">Live Demo →</a>
+      </div>
+    </div>
+
+    <div class="grid-2 reveal" style="margin-top: 1px;">
+      <div class="card card-cover">
+        <div class="card-cover-bg" style="background-image: url('./img/vcm.webp');"></div>
+        <div class="card-cover-overlay"></div>
+        <div class="card-cover-content">
+          <div class="card-cat">Carbon · ESG</div>
+          <div class="card-title">Voluntary Carbon Markets</div>
+          <div class="card-desc">Market analysis, supply &amp; demand, carbon ratings and trends</div>
+          <span class="card-soon">Coming soon</span>
+        </div>
+      </div>
+      <div class="card card-cover">
+        <div class="card-cover-bg" style="background-image: url('./img/hydro.jpg');"></div>
+        <div class="card-cover-overlay"></div>
+        <div class="card-cover-content">
+          <div class="card-cat">Renewable Energy</div>
+          <div class="card-title">Renewable Energy Markets</div>
+          <div class="card-desc">Bringing price transparency to traders and executives</div>
+          <span class="card-soon">Coming soon</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 DATA STRATEGY -->
+  <section class="section" id="strategy">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Data Strategy &amp; Governance</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="grid-2 reveal">
+      <div class="card card-cover">
+        <div class="card-cover-bg" style="background-image: url('./img/unsplash-photo-3.jpg');"></div>
+        <div class="card-cover-overlay"></div>
+        <div class="card-cover-content">
+          <div class="card-cat">Data Strategy</div>
+          <div class="card-title">Creating a Data Strategy</div>
+          <div class="card-desc">Data-driven approach with cloud-first architecture driving innovation</div>
+          <a href="./apps/dataStrategy/index.html" target="_blank" class="btn btn-filled" style="margin-top:4px; width:fit-content;">Learn more →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="./img/data_architecture.jpg" alt="Data Architecture"></div>
+        <div class="card-cat">Architecture</div>
+        <div class="card-title">Data Architecture</div>
+        <div class="card-desc">Data collection, modelling, flows, hot/cold storage, advanced analytics and reporting — end-to-end system design.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 DATA SCIENCE -->
+  <section class="section" id="science">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Data Science &amp; Analytics</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="list-card reveal">
+      <a class="list-row" href="./apps/DrivingInnovationThroughInspiration/index.html" target="_blank">
+        <div class="list-num">1</div>
+        <div>
+          <div class="list-title">Driving Innovation Through Inspiration</div>
+          <div class="list-sub">Data-led approach to sparking organisational creativity</div>
+        </div>
+        <div class="list-cat">Innovation</div>
+      </a>
+      <a class="list-row" href="https://github.com/sroh747/NLP-text-mining/blob/main/Keyword%20(n-grams)%20extraction%20with%20TF-IDF%20and%20SKlearn.ipynb" target="_blank">
+        <div class="list-num">2</div>
+        <div>
+          <div class="list-title">Unsupervised ML · NLP &amp; TF-IDF Keyword Extraction</div>
+          <div class="list-sub">Identifying systemic anomalies in a non-financial risk management tool</div>
+        </div>
+        <div class="list-cat">NLP · ML</div>
+      </a>
+      <a class="list-row" href="https://github.com/sroh747/Predictions-using-Python/blob/main/Prediction%20of%20a%20Categorical%20Variable%20(defaulting%20on%20a%20loan%20or%20not).ipynb" target="_blank">
+        <div class="list-num">3</div>
+        <div>
+          <div class="list-title">Supervised ML · Classification Models</div>
+          <div class="list-sub">Predicting inaccurate rates — feature engineering, preprocessing, model building</div>
+        </div>
+        <div class="list-cat">Classification</div>
+      </a>
+      <a class="list-row" href="./apps/strategyOfPricing/index.html" target="_blank">
+        <div class="list-num">4</div>
+        <div>
+          <div class="list-title">Statistical Modelling · Regression Analysis</div>
+          <div class="list-sub">Hotel room rates vs. GDP per capita — pricing strategy</div>
+        </div>
+        <div class="list-cat">Regression</div>
+      </a>
+      <div class="list-row" style="opacity:0.38; pointer-events:none;">
+        <div class="list-num">5</div>
+        <div>
+          <div class="list-title">Factor &amp; Cluster Analysis</div>
+          <div class="list-sub">Traveller segmentation in the Swiss market — Master thesis, HEC Lausanne</div>
+        </div>
+        <div class="list-cat">HEC Lausanne</div>
+      </div>
+      <a class="list-row" href="./apps/choiceBasedConjointAnalysis/index.html" target="_blank">
+        <div class="list-num">6</div>
+        <div>
+          <div class="list-title">Choice-Based Conjoint (CBC) Analysis</div>
+          <div class="list-sub">Identifying how respondents value combinations of product features</div>
+        </div>
+        <div class="list-cat">Business Insights</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 04 DATA ENGINEERING -->
+  <section class="section" id="engineering">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Data Engineering</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="grid-2 reveal">
+      <div class="card">
+        <div class="card-img"><img src="./img/market_data.png" alt="Market Data"></div>
+        <div class="card-cat">Market Intelligence</div>
+        <div class="card-title">Commodity Market Scraping</div>
+        <div class="card-desc">Automating web scraping of Volume, Open Interest and settlement prices. Serverless pipelines on Azure.</div>
+        <div class="card-tags">
+          <span class="card-tag">Azure DevOps</span><span class="card-tag">Azure Repos</span><span class="card-tag">Azure Pipelines</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="./img/scraper2.webp" alt="Airfare scraping"></div>
+        <div class="card-cat">Market Intelligence</div>
+        <div class="card-title">Airfare Tracking Pipeline</div>
+        <div class="card-desc">Serverless scraping of airfare data to identify trends — automated on AWS with d3.js visualisation.</div>
+        <div class="card-tags">
+          <span class="card-tag">AWS Lambda</span><span class="card-tag">S3</span><span class="card-tag">DynamoDB</span><span class="card-tag">d3.js</span>
+        </div>
+        <div style="display:flex; gap:7px; flex-wrap:wrap; margin-top:4px;">
+          <a href="./demos/index.html" target="_blank" class="btn btn-filled">Tracker →</a>
+          <a href="./demos/d3_line_chart_json_sydney_adelaide.html" target="_blank" class="btn btn-ghost">Scatter →</a>
+          <a href="https://github.com/sroh747/Web-scraping" target="_blank" class="btn btn-ghost">GitHub →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 CUSTOM APPS -->
+  <section class="section" id="apps">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">Custom Web Applications</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="grid-2 reveal">
+      <div class="card">
+        <div class="card-cat">Marketing Tool</div>
+        <div class="card-title">Commercial Action Plans &amp; RM Performance</div>
+        <div class="card-desc">Fostering commercial animation, self-analytics and reducing non-value-added activities. Monitoring RM performance across regions.</div>
+        <div class="card-tags">
+          <span class="card-tag">Data Warehouse</span><span class="card-tag">MySQL</span><span class="card-tag">PHP</span><span class="card-tag">d3.js</span>
+        </div>
+        <a href="./apps/wmByRegions/index.html" target="_blank" class="card-link">Learn more →</a>
+      </div>
+      <div class="card card-cover">
+        <div class="card-cover-bg" style="background-image: url('./img/runner1.jpg');"></div>
+        <div class="card-cover-overlay"></div>
+        <div class="card-cover-content">
+          <div class="card-cat">Knowledge Management</div>
+          <div class="card-title">Knowledge Management System</div>
+          <div class="card-desc">KMS for one of the world's largest non-governmental sports organisations — collecting, centralising and generating on-the-fly factsheets.</div>
+          <div class="card-tags">
+            <span class="card-tag" style="border-color:rgba(255,255,255,0.18); color:rgba(255,255,255,0.4);">MySQL</span>
+            <span class="card-tag" style="border-color:rgba(255,255,255,0.18); color:rgba(255,255,255,0.4);">PHP</span>
+            <span class="card-tag" style="border-color:rgba(255,255,255,0.18); color:rgba(255,255,255,0.4);">d3.js</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 REPORTING -->
+  <section class="section" id="reporting">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">Reporting</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="grid-3 reveal">
+      <div class="card">
+        <div class="card-img"><img src="./img/profit_and_loss.jpg" alt="PnL"></div>
+        <div class="card-cat">Trading</div>
+        <div class="card-title">PnL Reporting</div>
+        <div class="card-desc">Consolidating FX, commodities, FI &amp; IR derivatives by desk and region. Daily, MTD, YTD vs plan and prior year.</div>
+        <div class="card-tags"><span class="card-tag">Power BI</span></div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="./img/cornfields.jpg" alt="Commodity reports"></div>
+        <div class="card-cat">Commodity Broking</div>
+        <div class="card-title">Daily Market Reports</div>
+        <div class="card-desc">Automating daily commodity reports for SCB Group — ethanol, grains and soft commodities.</div>
+        <div style="display:flex; gap:7px; flex-wrap:wrap; margin-top:4px;">
+          <a href="https://starcb.com/arrangement/reports/" target="_blank" class="btn btn-filled" style="font-size:10px; padding:7px 13px;">Reports →</a>
+          <a href="https://starcb.com/content/uploads/2020/02/SCB_Group_Daily_International_Ethanol_Report_20230815v1.pdf" target="_blank" class="btn btn-ghost" style="font-size:10px; padding:7px 13px;">PDF →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="./img/profit_and_loss.jpg" alt="Financial statement"></div>
+        <div class="card-cat">Treasury · Finance</div>
+        <div class="card-title">Consolidated Financial Statement</div>
+        <div class="card-desc">ALM Treasury · Basel III · Liquidity Coverage Ratio (LCR) — regulatory reporting.</div>
+        <div style="margin-top:4px;">
+          <a href="https://seb-portfolio-eu.s3.eu-central-2.amazonaws.com/apps/financialStatementBasel3/index.html" target="_blank" class="btn btn-filled" style="font-size:10px; padding:7px 13px;">Live Demo →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Data &amp; <em>Markets</em></div>
+    <div class="footer-copy">Geneva, Switzerland &nbsp;·&nbsp; Data Management</div>
+    <a href="#" class="footer-top">↑ Top</a>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>
