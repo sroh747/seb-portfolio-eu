@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTI & Brent Volatility Surface — March 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #ffffff; --bg2: #f5f4f0; --bg3: #eceae4;
+  --text: #1a1a18; --text2: #6b6b66; --text3: #9a9a94;
+  --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.22);
+  --info-bg: #e6f1fb; --info-text: #0c447c; --info-border: #85b7eb;
+  --success-bg: #eaf3de; --success-text: #27500a; --success-border: #97c459;
+  --danger-bg: #fcebeb; --danger-text: #791f1f; --danger-border: #f09595;
+  --warn-bg: #faeeda; --warn-text: #633806;
+  --radius: 8px; --radius-lg: 12px;
+  --font-mono: 'JetBrains Mono', 'Fira Mono', 'Cascadia Code', ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1a; --bg2: #262624; --bg3: #2e2e2b;
+    --text: #e8e6e0; --text2: #9a9a94; --text3: #6b6b66;
+    --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.2);
+    --info-bg: #042c53; --info-text: #b5d4f4; --info-border: #185fa5;
+    --success-bg: #173404; --success-text: #c0dd97; --success-border: #3b6d11;
+    --danger-bg: #501313; --danger-text: #f7c1c1; --danger-border: #a32d2d;
+    --warn-bg: #412402; --warn-text: #fac775;
+  }
+}
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-mono); }
+body { padding: 16px 20px; min-height: 100vh; }
+.header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.badge { font-size: 11px; background: var(--bg2); padding: 2px 8px; border-radius: var(--radius); color: var(--text2); border: 0.5px solid var(--border); }
+.warn { font-size: 11px; background: var(--warn-bg); color: var(--warn-text); padding: 2px 8px; border-radius: var(--radius); }
+.metrics { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 8px; margin-bottom: 12px; }
+.metric { background: var(--bg2); border-radius: var(--radius); padding: 9px 11px; border: 0.5px solid var(--border); }
+.metric-label { font-size: 10px; color: var(--text2); margin-bottom: 3px; letter-spacing: 0.05em; }
+.metric-val { font-size: 15px; font-weight: 600; }
+.main { display: grid; grid-template-columns: minmax(0,1fr) 210px; gap: 16px; align-items: start; }
+.tabs { display: flex; }
+.tab { flex: 1; padding: 7px 4px; font-size: 11px; font-family: var(--font-mono); background: var(--bg2); border: 0.5px solid var(--border); cursor: pointer; color: var(--text2); text-align: center; transition: background 0.15s; }
+.tab:first-child { border-radius: var(--radius) 0 0 0; }
+.tab:last-child { border-radius: 0 var(--radius) 0 0; }
+.tab.active { background: var(--bg); color: var(--text); font-weight: 600; border-bottom-color: var(--bg); }
+.surface-container { border: 0.5px solid var(--border); border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 10px; background: var(--bg); }
+.surface-wrap { position: relative; border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: grab; background: var(--bg); }
+.surface-wrap:active { cursor: grabbing; }
+.surface-wrap canvas { width: 100%; display: block; }
+.zoom-hint { position: absolute; bottom: 7px; right: 10px; font-size: 10px; color: var(--text3); pointer-events: none; }
+.greek-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.greek-item label { font-size: 10px; color: var(--text2); display: block; margin-bottom: 4px; letter-spacing: 0.05em; }
+.term-wrap { margin-top: 12px; border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 10px; background: var(--bg); }
+.section-label { font-size: 10px; color: var(--text2); letter-spacing: 0.07em; margin: 10px 0 6px; text-transform: uppercase; }
+.slider-row { margin-bottom: 8px; }
+.slider-row .sl { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; }
+.slider-row .sl span { color: var(--text2); }
+.slider-row .sl b { font-weight: 600; color: var(--text); }
+input[type=range] { width: 100%; accent-color: var(--info-text); }
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.btn-grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+button { font-family: var(--font-mono); font-size: 10px; padding: 6px 4px; cursor: pointer; background: var(--bg); border: 0.5px solid var(--border2); color: var(--text); border-radius: var(--radius); transition: all 0.12s; }
+button:hover { background: var(--bg2); }
+.active-btn { background: var(--info-bg) !important; border-color: var(--info-border) !important; color: var(--info-text) !important; }
+.active-call { background: var(--success-bg) !important; border-color: var(--success-border) !important; color: var(--success-text) !important; }
+.active-put { background: var(--danger-bg) !important; border-color: var(--danger-border) !important; color: var(--danger-text) !important; }
+.preset-list { display: flex; flex-direction: column; gap: 5px; }
+.preset-list button { text-align: left; padding: 6px 8px; }
+.spread-info { font-size: 11px; color: var(--text2); margin-top: 8px; line-height: 1.5; }
+.sidebar-inner { border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 12px; background: var(--bg); }
+hr { border: none; border-top: 0.5px solid var(--border); margin: 10px 0; }
+@media (max-width: 700px) {
+  .metrics { grid-template-columns: repeat(3, 1fr); }
+  .main { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="title">Crude Oil Volatility — WTI & Brent</div>
+  <div class="badge">NYMEX / ICE</div>
+  <div class="warn">⚠ Hormuz disruption risk — record monthly rally</div>
+  <div style="margin-left:auto; font-size:10px; color:var(--text3);">March 30, 2026</div>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-label">WTI SPOT</div><div class="metric-val" id="m-wti">$100</div></div>
+  <div class="metric"><div class="metric-label">BRENT SPOT</div><div class="metric-val" id="m-brent">$113</div></div>
+  <div class="metric"><div class="metric-label">WTI-BRENT SPREAD</div><div class="metric-val" id="m-spread">-$13</div></div>
+  <div class="metric"><div class="metric-label">WTI ATM IV</div><div class="metric-val" id="m-wti-iv">58%</div></div>
+  <div class="metric"><div class="metric-label">BRENT ATM IV</div><div class="metric-val" id="m-brent-iv">54%</div></div>
+  <div class="metric"><div class="metric-label">STRUCTURE</div><div class="metric-val" style="color:var(--danger-text);">BACKW.</div></div>
+</div>
+
+<div class="main">
+<div>
+  <div class="tabs">
+    <div class="tab active" id="tab-wti" onclick="selectCrude('wti')">WTI (NYMEX)</div>
+    <div class="tab" id="tab-brent" onclick="selectCrude('brent')">Brent (ICE)</div>
+    <div class="tab" id="tab-diff" onclick="selectCrude('diff')">Spread Surface</div>
+  </div>
+  <div class="surface-container">
+    <div class="surface-wrap" id="surf-wrap">
+      <canvas id="volCanvas"></canvas>
+      <div class="zoom-hint">scroll to zoom · drag to rotate</div>
+    </div>
+  </div>
+  <div class="spread-info" id="spread-info">WTI 30D ATM IV is <b id="iv-diff-text">4 pts above</b> Brent — reflecting geopolitical risk distribution across benchmarks.</div>
+
+  <div class="greek-grid">
+    <div class="greek-item"><label>DELTA</label><div style="position:relative;height:110px;"><canvas id="cDelta"></canvas></div></div>
+    <div class="greek-item"><label>GAMMA ×1000</label><div style="position:relative;height:110px;"><canvas id="cGamma"></canvas></div></div>
+    <div class="greek-item"><label>VEGA ($/bbl)</label><div style="position:relative;height:110px;"><canvas id="cVega"></canvas></div></div>
+    <div class="greek-item"><label>THETA ($/day)</label><div style="position:relative;height:110px;"><canvas id="cTheta"></canvas></div></div>
+  </div>
+
+  <div class="term-wrap">
+    <div class="section-label" style="margin-top:0;">ATM TERM STRUCTURE — WTI vs BRENT</div>
+    <div style="position:relative;height:110px;"><canvas id="cTerm"></canvas></div>
+  </div>
+</div>
+
+<div>
+  <div class="sidebar-inner">
+    <div class="section-label" style="margin-top:0;">SURFACE METRIC</div>
+    <div class="btn-grid" style="margin-bottom:10px;">
+      <button id="bvol" class="active-btn" onclick="setMode('vol')">IV Surface</button>
+      <button id="bdelta" onclick="setMode('delta')">Delta</button>
+      <button id="bgamma" onclick="setMode('gamma')">Gamma</button>
+      <button id="bvega" onclick="setMode('vega')">Vega</button>
+    </div>
+
+    <div class="section-label">GREEKS TENOR</div>
+    <div class="btn-grid3" style="margin-bottom:10px;">
+      <button id="gt-1m" onclick="setTenor(1/12,'1M')">1M</button>
+      <button id="gt-3m" class="active-btn" onclick="setTenor(3/12,'3M')">3M</button>
+      <button id="gt-6m" onclick="setTenor(6/12,'6M')">6M</button>
+      <button id="gt-1y" onclick="setTenor(1,'1Y')">1Y</button>
+      <button id="gt-18m" onclick="setTenor(1.5,'18M')">18M</button>
+      <button id="gt-2y" onclick="setTenor(2,'2Y')">2Y</button>
+    </div>
+
+    <div class="section-label">OPTION TYPE</div>
+    <div class="btn-grid" style="margin-bottom:10px;">
+      <button id="bcall" class="active-call" onclick="setOpt('call')">Call</button>
+      <button id="bput" onclick="setOpt('put')">Put</button>
+    </div>
+
+    <hr>
+    <div class="section-label" style="margin-top:0;">PARAMETERS</div>
+    <div class="slider-row"><div class="sl"><span>WTI spot ($/bbl)</span><b id="v-wspot">$100</b></div><input type="range" id="s-wspot" min="60" max="160" value="100" step="1"></div>
+    <div class="slider-row"><div class="sl"><span>Brent spot ($/bbl)</span><b id="v-bspot">$113</b></div><input type="range" id="s-bspot" min="65" max="170" value="113" step="1"></div>
+    <div class="slider-row"><div class="sl"><span>WTI ATM IV</span><b id="v-watm">58%</b></div><input type="range" id="s-watm" min="15" max="120" value="58" step="1"></div>
+    <div class="slider-row"><div class="sl"><span>Brent ATM IV</span><b id="v-batm">54%</b></div><input type="range" id="s-batm" min="15" max="120" value="54" step="1"></div>
+    <div class="slider-row"><div class="sl"><span>Call skew (geo risk)</span><b id="v-skew">+4%</b></div><input type="range" id="s-skew" min="-10" max="15" value="4" step="0.5"></div>
+    <div class="slider-row"><div class="sl"><span>Smile convexity</span><b id="v-conv">6%</b></div><input type="range" id="s-conv" min="0" max="20" value="6" step="0.5"></div>
+    <div class="slider-row"><div class="sl"><span>Backwardation slope</span><b id="v-term">-5%</b></div><input type="range" id="s-term" min="-12" max="4" value="-5" step="0.5"></div>
+    <div class="slider-row"><div class="sl"><span>Risk-free rate</span><b id="v-rate">4.4%</b></div><input type="range" id="s-rate" min="0" max="8" value="4.4" step="0.1"></div>
+
+    <hr>
+    <div class="section-label" style="margin-top:0;">PRESETS</div>
+    <div class="preset-list">
+      <button onclick="preset('current')">↺ Current (Mar 30, 2026)</button>
+      <button onclick="preset('hormuz')">🔥 Full Hormuz closure</button>
+      <button onclick="preset('deescal')">🕊 De-escalation / ceasefire</button>
+      <button onclick="preset('glut')">📉 Supply glut (2025 lows)</button>
+      <button onclick="preset('opec')">🛢 OPEC+ surprise cut</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+let crude='wti', surfMode='vol', gTenor=3/12, optType='call';
+let wSpot=100, bSpot=113, wAtm=58, bAtm=54, skew=4, conv=6, termSlope=-5, rate=4.4;
+let zoom=1, rotX=0.38, rotY=-0.42, drag=false, lastX=0, lastY=0;
+
+const tenors=[7/365,14/365,1/12,2/12,3/12,6/12,9/12,1,1.5,2];
+const tenorLbls=['1W','2W','1M','2M','3M','6M','9M','1Y','18M','2Y'];
+
+function activeSpot(){ return crude==='brent'?bSpot:wSpot; }
+
+function getVol(K,T,isWti){
+  const S=isWti?wSpot:bSpot, atmV=(isWti?wAtm:bAtm)/100;
+  const F=S*Math.exp(rate/100*T), sqrtT=Math.sqrt(T);
+  const x=Math.log(K/F), norm=0.15*Math.max(sqrtT,0.04);
+  const skewAdj=(skew/100)*x/norm;
+  const smileAdj=(conv/100)*(x/norm)*(x/norm);
+  const termAdj=(termSlope/100)*Math.log(Math.max(T,0.01)/0.08)*0.28;
+  return Math.max(0.05,atmV+skewAdj+smileAdj+termAdj);
+}
+
+function getVolCrude(K,T){
+  if(crude==='wti') return getVol(K,T,true);
+  if(crude==='brent') return getVol(K,T,false);
+  return Math.abs(getVol(K,T,true)-getVol(K,T,false));
+}
+
+function normCDF(x){const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;const s=x<0?-1:1;x=Math.abs(x)/Math.sqrt(2);const t=1/(1+p*x);return 0.5*(1+s*(1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x)));}
+function normPDF(x){return Math.exp(-0.5*x*x)/Math.sqrt(2*Math.PI);}
+
+function bsGreeks(S,K,T,r,sig){
+  const F=S*Math.exp(r*T),sqrtT=Math.sqrt(Math.max(T,0.001));
+  const d1=(Math.log(F/K)+0.5*sig*sig*T)/(sig*sqrtT);
+  const d2=d1-sig*sqrtT, disc=Math.exp(-r*T);
+  const iC=optType==='call', phi=iC?1:-1;
+  const Nd1=normCDF(phi*d1),Nd2=normCDF(phi*d2);
+  const delta=disc*(iC?normCDF(d1):normCDF(d1)-1);
+  const gamma=disc*normPDF(d1)/(S*sig*sqrtT);
+  const vega=S*disc*normPDF(d1)*sqrtT/100;
+  const theta=(-S*disc*normPDF(d1)*sig/(2*sqrtT)-phi*r*K*disc*Nd2)/365;
+  return {delta,gamma,vega,theta};
+}
+
+function getStrikes(){const S=activeSpot();return[-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30].map(p=>Math.round(S*(1+p/100)));}
+
+function getSurfaceVal(K,T){
+  const sig=getVolCrude(K,T);
+  if(surfMode==='vol') return sig*100;
+  const g=bsGreeks(crude==='brent'?bSpot:wSpot,K,T,rate/100,sig);
+  if(surfMode==='delta') return Math.abs(g.delta)*100;
+  if(surfMode==='gamma') return g.gamma*1000;
+  if(surfMode==='vega') return g.vega;
+  return 0;
+}
+
+const canvas=document.getElementById('volCanvas');
+const dpr=window.devicePixelRatio||1;
+const BASE_W=620,BASE_H=420;
+canvas.width=BASE_W*dpr;canvas.height=BASE_H*dpr;
+canvas.style.height=BASE_H+'px';
+const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+const W=BASE_W,H=BASE_H;
+
+const wrap=document.getElementById('surf-wrap');
+wrap.addEventListener('mousedown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;e.preventDefault();});
+window.addEventListener('mouseup',()=>{drag=false;});
+window.addEventListener('mousemove',e=>{if(!drag)return;rotY+=(e.clientX-lastX)*0.008;rotX+=(e.clientY-lastY)*0.008;lastX=e.clientX;lastY=e.clientY;drawSurface();});
+wrap.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(0.3,Math.min(3.5,zoom-(e.deltaY>0?0.12:-0.12)));drawSurface();},{passive:false});
+wrap.addEventListener('touchstart',e=>{drag=true;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;},{passive:true});
+wrap.addEventListener('touchend',()=>{drag=false;});
+wrap.addEventListener('touchmove',e=>{if(!drag)return;rotY+=(e.touches[0].clientX-lastX)*0.008;rotX+=(e.touches[0].clientY-lastY)*0.008;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;drawSurface();e.preventDefault();},{passive:false});
+
+function project(x3,y3,z3){
+  const cy=Math.cos(rotY),sy=Math.sin(rotY),cx2=Math.cos(rotX),sx=Math.sin(rotX);
+  const x2=cy*x3+sy*z3,z2=-sy*x3+cy*z3;
+  const y2=cx2*y3-sx*z2,z3p=sx*y3+cx2*z2;
+  const fov=600*zoom,zd=700+z3p;
+  return [W/2+fov*x2/zd,H/2+fov*y2/zd];
+}
+
+const isDark=()=>window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+function surfColor(t){
+  if(crude==='diff'){const r=Math.round(20+t*200),g=Math.round(130-t*100),b=Math.round(220-t*180);return `rgb(${r},${g},${b})`;}
+  const isW=crude==='wti';
+  if(isDark()){
+    if(isW){return `rgb(${Math.round(30+t*210)},${Math.round(110-t*80)},${Math.round(30+t*20)})`;}
+    else{return `rgb(${Math.round(20+t*40)},${Math.round(80+t*60)},${Math.round(30+t*210)})`;}
+  }
+  if(isW){return `rgb(${Math.round(220-t*30)},${Math.round(80+t*80)},${Math.round(20+t*20)})`;}
+  else{return `rgb(${Math.round(20+t*50)},${Math.round(60+t*100)},${Math.round(200-t*50)})`;}
+}
+
+function drawSurface(){
+  ctx.clearRect(0,0,W,H);
+  const strikes=getStrikes(),NX=strikes.length,NT=tenors.length;
+  const grid=[];let gmin=Infinity,gmax=-Infinity;
+  for(let ti=0;ti<NT;ti++){grid[ti]=[];for(let ki=0;ki<NX;ki++){const v=getSurfaceVal(strikes[ki],tenors[ti]);grid[ti][ki]=v;if(v<gmin)gmin=v;if(v>gmax)gmax=v;}}
+  const xSc=115*zoom,zSc=88*zoom,ySc=105*zoom;
+  const quads=[];
+  for(let ti=0;ti<NT-1;ti++){for(let ki=0;ki<NX-1;ki++){
+    const x0=(ki/(NX-1)-0.5)*xSc,x1=((ki+1)/(NX-1)-0.5)*xSc;
+    const z0=(ti/(NT-1)-0.5)*zSc,z1=((ti+1)/(NT-1)-0.5)*zSc;
+    const yf=v=>-((v-gmin)/(gmax-gmin+0.001)-0.5)*ySc;
+    const pts=[project(x0,yf(grid[ti][ki]),z0),project(x1,yf(grid[ti][ki+1]),z0),project(x1,yf(grid[ti+1][ki+1]),z1),project(x0,yf(grid[ti+1][ki]),z1)];
+    const avgV=(grid[ti][ki]+grid[ti][ki+1]+grid[ti+1][ki]+grid[ti+1][ki+1])/4;
+    quads.push({pts,avgV,cy3:(pts[0][1]+pts[2][1])/2});
+  }}
+  quads.sort((a,b)=>a.cy3-b.cy3);
+  quads.forEach(({pts,avgV})=>{
+    const t=(avgV-gmin)/(gmax-gmin+0.001);
+    ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);
+    for(let i=1;i<4;i++)ctx.lineTo(pts[i][0],pts[i][1]);
+    ctx.closePath();ctx.fillStyle=surfColor(t);ctx.fill();
+    ctx.strokeStyle=isDark()?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.06)';
+    ctx.lineWidth=0.4;ctx.stroke();
+  });
+  const cl=isDark()?'rgba(255,255,255,0.4)':'rgba(0,0,0,0.35)';
+  ctx.fillStyle=cl;ctx.font=`10px ${getComputedStyle(document.body).fontFamily}`;
+  const s2=getStrikes();
+  const p0=project(-0.5*xSc,60,-0.5*zSc),p1=project(0.5*xSc,60,-0.5*zSc);
+  ctx.fillText('$'+s2[0],p0[0]-8,p0[1]+15);ctx.fillText('$'+s2[s2.length-1],p1[0]-12,p1[1]+15);
+  ctx.fillText('Strike →',(p0[0]+p1[0])/2-22,(p0[1]+p1[1])/2+23);
+  const pz0=project(-0.5*xSc,60,-0.5*zSc),pz1=project(-0.5*xSc,60,0.5*zSc);
+  ctx.fillText('1W',pz0[0]-24,pz0[1]+2);ctx.fillText('2Y',pz1[0]-24,pz1[1]+2);
+  ctx.fillText('Tenor →',(pz0[0]+pz1[0])/2-22,(pz0[1]+pz1[1])/2+2);
+  const lbl={'vol':'Impl. Vol (%)','delta':'|Delta|×100','gamma':'Gamma×1000','vega':'Vega ($/bbl)'}[surfMode];
+  const crudeLbl=crude==='diff'?'WTI-Brent IV diff':crude.toUpperCase();
+  ctx.fillText(crudeLbl+' — '+lbl,8,15);
+  ctx.fillStyle=isDark()?'rgba(255,255,255,0.2)':'rgba(0,0,0,0.2)';
+  ctx.fillText('zoom: '+zoom.toFixed(1)+'x',8,H-10);
+}
+
+let charts={};
+function mu(id,lbl,color,data,labels){
+  const el=document.getElementById(id);
+  if(!charts[id]){
+    charts[id]=new Chart(el,{type:'line',data:{labels,datasets:[{label:lbl,data,borderColor:color,borderWidth:1.5,pointRadius:0,fill:false,tension:0.3}]},
+      options:{responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
+      scales:{x:{ticks:{font:{size:9},color:'#888',maxTicksLimit:6},grid:{display:false},border:{display:false}},
+              y:{ticks:{font:{size:9},color:'#888',maxTicksLimit:4,callback:v=>typeof v==='number'?v.toFixed(2):v},grid:{color:'rgba(128,128,128,0.1)'},border:{display:false}}}}});
+  } else {charts[id].data.labels=labels;charts[id].data.datasets[0].data=data;charts[id].data.datasets[0].borderColor=color;charts[id].update('none');}
+}
+
+function updateGreeks(){
+  const T=gTenor,r=rate/100,strikes=getStrikes(),labels=strikes.map(k=>'$'+k);
+  const dd=[],gd=[],vd=[],td=[];
+  for(const K of strikes){
+    const sig=getVolCrude(K,T);
+    const g=bsGreeks(crude==='brent'?bSpot:wSpot,K,T,r,sig);
+    dd.push(parseFloat((g.delta*100).toFixed(2)));
+    gd.push(parseFloat((g.gamma*1000).toFixed(4)));
+    vd.push(parseFloat(g.vega.toFixed(3)));
+    td.push(parseFloat(g.theta.toFixed(3)));
+  }
+  const dk=isDark(),isB=crude==='brent';
+  const cDelta=dk?(isB?'#6fa8dc':'#e69138'):(isB?'#1a5fa8':'#b45309');
+  mu('cDelta','Delta',cDelta,dd,labels);
+  mu('cGamma','Gamma',dk?'#93c47d':'#2d6a2d',gd,labels);
+  mu('cVega','Vega',dk?'#a78bfa':'#6d28d9',vd,labels);
+  mu('cTheta','Theta',dk?'#e06666':'#a32d2d',td,labels);
+}
+
+function updateTerm(){
+  const wAtmVols=tenors.map(T=>getVol(wSpot,T,true)*100);
+  const bAtmVols=tenors.map(T=>getVol(bSpot,T,false)*100);
+  if(!charts['cTerm']){
+    charts['cTerm']=new Chart(document.getElementById('cTerm'),{
+      type:'line',
+      data:{labels:tenorLbls,datasets:[
+        {label:'WTI',data:wAtmVols,borderColor:isDark()?'#e69138':'#b45309',borderWidth:1.5,pointRadius:2,fill:false,tension:0.3},
+        {label:'Brent',data:bAtmVols,borderColor:isDark()?'#6fa8dc':'#1a5fa8',borderWidth:1.5,pointRadius:2,fill:false,tension:0.3,borderDash:[4,2]}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,animation:false,
+        plugins:{legend:{display:true,labels:{font:{size:9},color:isDark()?'#aaa':'#555',boxWidth:10,padding:8}}},
+        scales:{x:{ticks:{font:{size:9},color:'#888'},grid:{display:false},border:{display:false}},
+                y:{ticks:{font:{size:9},color:'#888',maxTicksLimit:4,callback:v=>v.toFixed(0)+'%'},grid:{color:'rgba(128,128,128,0.1)'},border:{display:false}}}}
+    });
+  } else {
+    charts['cTerm'].data.datasets[0].data=wAtmVols;
+    charts['cTerm'].data.datasets[1].data=bAtmVols;
+    charts['cTerm'].update('none');
+  }
+}
+
+function updateMetrics(){
+  document.getElementById('m-wti').textContent='$'+wSpot;
+  document.getElementById('m-brent').textContent='$'+bSpot;
+  const sp=wSpot-bSpot;
+  document.getElementById('m-spread').textContent=(sp>=0?'+':'')+sp;
+  document.getElementById('m-wti-iv').textContent=wAtm+'%';
+  document.getElementById('m-brent-iv').textContent=bAtm+'%';
+  const ivDiff=wAtm-bAtm;
+  document.getElementById('iv-diff-text').textContent=Math.abs(ivDiff)+' pts '+(ivDiff>=0?'above':'below');
+}
+
+function applySliderValues(){
+  document.getElementById('v-wspot').textContent='$'+wSpot;document.getElementById('s-wspot').value=wSpot;
+  document.getElementById('v-bspot').textContent='$'+bSpot;document.getElementById('s-bspot').value=bSpot;
+  document.getElementById('v-watm').textContent=wAtm+'%';document.getElementById('s-watm').value=wAtm;
+  document.getElementById('v-batm').textContent=bAtm+'%';document.getElementById('s-batm').value=bAtm;
+  document.getElementById('v-skew').textContent=(skew>=0?'+':'')+skew+'%';document.getElementById('s-skew').value=skew;
+  document.getElementById('v-conv').textContent=conv+'%';document.getElementById('s-conv').value=conv;
+  document.getElementById('v-term').textContent=(termSlope>=0?'+':'')+termSlope+'%';document.getElementById('s-term').value=termSlope;
+  document.getElementById('v-rate').textContent=parseFloat(rate).toFixed(1)+'%';document.getElementById('s-rate').value=rate;
+}
+
+function update(){drawSurface();updateGreeks();updateTerm();updateMetrics();}
+
+function selectCrude(c){
+  crude=c;
+  ['wti','brent','diff'].forEach(x=>{document.getElementById('tab-'+x).className='tab'+(x===c?' active':'');});
+  update();
+}
+
+function setMode(m){
+  surfMode=m;
+  ['vol','delta','gamma','vega'].forEach(x=>{document.getElementById('b'+x).className=x===m?'active-btn':'';});
+  drawSurface();
+}
+
+const tenorIds=['1m','3m','6m','1y','18m','2y'];
+const tenorVals=[1/12,3/12,6/12,1,1.5,2];
+function setTenor(t,lbl){
+  gTenor=t;
+  tenorIds.forEach((id,i)=>{document.getElementById('gt-'+id).className=Math.abs(tenorVals[i]-t)<0.001?'active-btn':'';});
+  updateGreeks();
+}
+
+function setOpt(t){
+  optType=t;
+  document.getElementById('bcall').className=t==='call'?'active-call':'';
+  document.getElementById('bput').className=t==='put'?'active-put':'';
+  updateGreeks();
+}
+
+function preset(p){
+  if(p==='current'){wSpot=100;bSpot=113;wAtm=58;bAtm=54;skew=4;conv=6;termSlope=-5;rate=4.4;}
+  else if(p==='hormuz'){wSpot=130;bSpot=150;wAtm=90;bAtm=85;skew=10;conv=9;termSlope=-9;rate=4.4;}
+  else if(p==='deescal'){wSpot=78;bSpot=83;wAtm=32;bAtm=28;skew=-2;conv=4;termSlope=1;rate=4.4;}
+  else if(p==='glut'){wSpot=62;bSpot=66;wAtm=28;bAtm=25;skew=-3;conv=3;termSlope=2;rate=4.4;}
+  else if(p==='opec'){wSpot=115;bSpot=128;wAtm=65;bAtm=60;skew=6;conv=7;termSlope=-6;rate=4.4;}
+  applySliderValues();update();
+}
+
+[['s-wspot',v=>{wSpot=+v;document.getElementById('v-wspot').textContent='$'+v;}],
+ ['s-bspot',v=>{bSpot=+v;document.getElementById('v-bspot').textContent='$'+v;}],
+ ['s-watm',v=>{wAtm=+v;document.getElementById('v-watm').textContent=v+'%';}],
+ ['s-batm',v=>{bAtm=+v;document.getElementById('v-batm').textContent=v+'%';}],
+ ['s-skew',v=>{skew=+v;document.getElementById('v-skew').textContent=(+v>=0?'+':'')+v+'%';}],
+ ['s-conv',v=>{conv=+v;document.getElementById('v-conv').textContent=v+'%';}],
+ ['s-term',v=>{termSlope=+v;document.getElementById('v-term').textContent=(+v>=0?'+':'')+v+'%';}],
+ ['s-rate',v=>{rate=+v;document.getElementById('v-rate').textContent=parseFloat(v).toFixed(1)+'%';}],
+].forEach(([id,fn])=>{document.getElementById(id).addEventListener('input',function(){fn(this.value);update();});});
+
+window.addEventListener('load',()=>setTimeout(update,100));
+</script>
+</body>
+</html>
