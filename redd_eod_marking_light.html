@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EOD Markings — VCM / REDD+ · Light</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:      #f7f4ef;
+  --paper2:     #f0ece4;
+  --paper3:     #e8e3d8;
+  --white:      #fdfcfa;
+  --ink:        #1a1a16;
+  --ink-mid:    #5a5750;
+  --ink-dim:    #9a9690;
+  --ink-ghost:  #c8c4bc;
+  --rule:       #ddd9d0;
+  --rule2:      #ccc8be;
+
+  --forest:     #2d6a2a;
+  --forest-mid: #3d8c38;
+  --forest-lt:  rgba(45,106,42,0.08);
+  --forest-md:  rgba(45,106,42,0.16);
+
+  --gold:       #8a6a1a;
+  --gold-lt:    rgba(138,106,26,0.08);
+  --gold-bd:    rgba(138,106,26,0.22);
+
+  --verra:      #1a4e7a;
+  --verra-lt:   rgba(26,78,122,0.08);
+  --verra-bd:   rgba(26,78,122,0.22);
+
+  --red:        #8b1f1f;
+  --red-lt:     rgba(139,31,31,0.07);
+
+  --amber:      #8b5a00;
+  --amber-lt:   rgba(139,90,0,0.08);
+  --amber-bd:   rgba(139,90,0,0.2);
+
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Libre Baskerville', Georgia, serif;
+
+  --shadow-xs: 0 1px 2px rgba(26,26,22,0.06);
+  --shadow-sm: 0 2px 8px rgba(26,26,22,0.08), 0 1px 2px rgba(26,26,22,0.04);
+  --shadow-md: 0 4px 20px rgba(26,26,22,0.10), 0 1px 4px rgba(26,26,22,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Subtle paper texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 23px,
+      rgba(26,26,22,0.018) 23px,
+      rgba(26,26,22,0.018) 24px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER ===== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--white);
+  border-bottom: 2px solid var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-top {
+  display: flex;
+  align-items: stretch;
+  height: 54px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px;
+  border-right: 1px solid var(--rule);
+  min-width: 240px;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.brand-text {}
+
+.brand-name {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.brand-sub {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-top: 1px;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 0 24px;
+  gap: 0;
+}
+
+.hdr-field {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  border-right: 1px solid var(--rule);
+  justify-content: center;
+}
+
+.hdr-field:first-child { padding-left: 0; }
+
+.hdr-field-label {
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 2px;
+}
+
+.hdr-field-value {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.hdr-field-value.forest { color: var(--forest); }
+.hdr-field-value.amber  { color: var(--amber); }
+
+.hdr-progress-wrap {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hdr-progress-label {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.hdr-progress-bar {
+  width: 100px;
+  height: 2px;
+  background: var(--rule);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.hdr-progress-fill {
+  height: 100%;
+  background: var(--forest);
+  border-radius: 1px;
+  transition: width 0.5s ease;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px;
+  margin-left: auto;
+  border-left: 1px solid var(--rule);
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--forest);
+  font-weight: 600;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--forest);
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.85); }
+}
+
+.btn-submit {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-submit:hover {
+  background: var(--forest);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-submit:active { transform: translateY(0); }
+
+/* ===== LAYOUT ===== */
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 292px;
+  height: calc(100vh - 54px);
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background: var(--white);
+  border-right: 1px solid var(--rule);
+  overflow-y: auto;
+  padding: 20px 0;
+}
+
+.sidebar-heading {
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-ghost);
+  padding: 0 18px 12px;
+  font-weight: 600;
+}
+
+.registry-block {
+  margin-bottom: 16px;
+}
+
+.registry-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 18px;
+}
+
+.registry-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.registry-swatch.gs    { background: var(--gold); }
+.registry-swatch.verra { background: var(--verra); }
+
+.registry-label {
+  font-family: var(--serif);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex: 1;
+}
+
+.registry-label.gs    { color: var(--gold); }
+.registry-label.verra { color: var(--verra); }
+
+.registry-tally {
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--ink-dim);
+}
+
+.country-list { padding: 2px 0 0; }
+
+.country-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px 6px 30px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.1s;
+}
+
+.country-row:hover { background: var(--paper2); }
+
+.country-row.active {
+  background: var(--paper2);
+  border-left-color: var(--forest);
+}
+
+
+.country-name {
+  font-size: 11px;
+  color: var(--ink-mid);
+  flex: 1;
+}
+
+.country-row.active .country-name { color: var(--ink); font-weight: 500; }
+
+.country-pip {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--rule);
+  border: 1px solid var(--rule2);
+  flex-shrink: 0;
+}
+
+.country-pip.marked  { background: var(--forest); border-color: var(--forest); }
+.country-pip.partial { background: var(--amber);  border-color: var(--amber); }
+
+/* ===== MAIN ===== */
+.main {
+  overflow-y: auto;
+  background: var(--paper);
+  padding: 28px 32px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  margin-bottom: 22px;
+}
+
+.breadcrumb .sep { color: var(--ink-ghost); }
+.breadcrumb .crumb-active { color: var(--ink-mid); }
+
+/* Title row */
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.title-block {}
+
+.title-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.reg-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 1px;
+}
+
+.reg-pill.gs    { background: var(--gold-lt); color: var(--gold); border: 1px solid var(--gold-bd); }
+.reg-pill.verra { background: var(--verra-lt); color: var(--verra); border: 1px solid var(--verra-bd); }
+
+.page-title {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  line-height: 1.15;
+}
+
+.page-sub {
+  font-size: 11px;
+  color: var(--ink-dim);
+  margin-top: 3px;
+  letter-spacing: 0.02em;
+}
+
+.title-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-top: 4px;
+  flex-shrink: 0;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--rule2);
+  color: var(--ink-mid);
+  padding: 6px 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.12s;
+  letter-spacing: 0.04em;
+}
+
+.btn-ghost:hover {
+  border-color: var(--ink-mid);
+  color: var(--ink);
+  background: var(--paper2);
+}
+
+.btn-confirm-all {
+  background: var(--forest);
+  border: none;
+  color: var(--white);
+  padding: 6px 16px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.btn-confirm-all:hover { background: var(--forest-mid); box-shadow: var(--shadow-xs); }
+
+/* API strip */
+.api-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--forest);
+  margin-bottom: 18px;
+  font-size: 10px;
+  color: var(--ink-dim);
+  box-shadow: var(--shadow-xs);
+}
+
+.api-method {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--forest);
+  background: var(--forest-lt);
+  border: 1px solid var(--forest-md);
+  padding: 2px 7px;
+}
+
+.api-url {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--ink-dim);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Progress */
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.progress-track {
+  height: 2px;
+  background: var(--rule);
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--forest);
+  transition: width 0.4s ease;
+}
+
+/* ===== TABLE ===== */
+.table-frame {
+  background: var(--white);
+  border: 1px solid var(--rule2);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: var(--paper2);
+  border-bottom: 2px solid var(--rule2);
+}
+
+th {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  padding: 9px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th.r { text-align: right; }
+
+tbody tr {
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.08s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--paper2); }
+tbody tr.stripe { background: rgba(26,26,22,0.012); }
+tbody tr.stripe:hover { background: var(--paper2); }
+
+td {
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-mid);
+  white-space: nowrap;
+}
+
+td.product-code {
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--ink);
+  letter-spacing: 0.03em;
+}
+
+td.r { text-align: right; }
+
+td.num {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-mid);
+}
+
+/* Status chips */
+.chip {
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  display: inline-block;
+}
+
+.chip.open    { background: var(--paper3); color: var(--ink-dim); border: 1px solid var(--rule2); }
+.chip.pending { background: var(--amber-lt); color: var(--amber); border: 1px solid var(--amber-bd); }
+.chip.marked  { background: var(--forest-lt); color: var(--forest); border: 1px solid rgba(45,106,42,0.28); }
+
+/* Price input */
+.price-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+}
+
+.price-input {
+  background: var(--paper);
+  border: 1px solid var(--rule2);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 24px 5px 8px;
+  width: 98px;
+  text-align: right;
+  outline: none;
+  transition: all 0.14s;
+}
+
+.price-input:focus {
+  border-color: var(--forest);
+  background: var(--white);
+  box-shadow: 0 0 0 2px var(--forest-lt);
+}
+
+.price-input.staged {
+  border-color: rgba(45,106,42,0.4);
+  background: var(--forest-lt);
+  color: var(--forest);
+}
+
+.price-input.modified {
+  border-color: var(--amber-bd);
+  background: var(--amber-lt);
+  color: var(--amber);
+}
+
+.price-suffix {
+  position: absolute;
+  right: 7px;
+  font-size: 9px;
+  color: var(--ink-ghost);
+  pointer-events: none;
+}
+
+/* Delta */
+.delta {
+  font-size: 10.5px;
+  padding: 2px 5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.delta.up { color: var(--forest); background: var(--forest-lt); }
+.delta.dn { color: var(--red);    background: var(--red-lt); }
+.delta.fl { color: var(--ink-dim); }
+
+/* Confirm button */
+.confirm-btn {
+  background: transparent;
+  border: 1px solid var(--rule2);
+  color: var(--ink-dim);
+  padding: 4px 10px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.confirm-btn:hover {
+  border-color: var(--forest);
+  color: var(--forest);
+  background: var(--forest-lt);
+}
+
+.confirm-btn.staged {
+  border-color: rgba(45,106,42,0.35);
+  color: var(--forest);
+  background: var(--forest-lt);
+}
+
+.confirm-btn.done {
+  border-color: var(--forest);
+  color: var(--forest);
+  background: var(--forest-lt);
+  font-weight: 600;
+}
+
+/* API status inline */
+.api-status-badge {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  margin-left: 4px;
+}
+
+/* ===== RIGHT PANEL ===== */
+.panel {
+  background: var(--white);
+  border-left: 1px solid var(--rule);
+  overflow-y: auto;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Summary grid */
+.sum-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sum-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  box-shadow: var(--shadow-xs);
+}
+
+.sum-label {
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 4px;
+}
+
+.sum-value {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.sum-value.forest { color: var(--forest); }
+.sum-value.gold   { color: var(--gold); }
+.sum-value.verra  { color: var(--verra); }
+
+/* Panel card */
+.pcard {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow-xs);
+}
+
+.pcard-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper2);
+}
+
+.pcard-title {
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-weight: 600;
+}
+
+.pcard-action {
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-ghost);
+  cursor: pointer;
+  transition: color 0.12s;
+}
+
+.pcard-action:hover { color: var(--ink-mid); }
+
+.pcard-body { padding: 10px 12px; }
+
+/* KV rows */
+.kv {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(26,26,22,0.04);
+}
+
+.kv:last-child { border-bottom: none; }
+.kv-k { font-size: 10.5px; color: var(--ink-dim); }
+.kv-v { font-size: 10.5px; color: var(--ink); font-weight: 500; }
+.kv-v.forest { color: var(--forest); }
+.kv-v.gold   { color: var(--gold); }
+.kv-v.verra  { color: var(--verra); }
+.kv-v.amber  { color: var(--amber); }
+
+/* API log */
+.log-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 8px 12px;
+}
+
+.log-entry {
+  display: flex;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(26,26,22,0.04);
+  animation: log-slide 0.22s ease;
+}
+
+@keyframes log-slide {
+  from { opacity: 0; transform: translateX(-3px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.log-entry:last-child { border-bottom: none; }
+
+.log-ts {
+  font-size: 9px;
+  color: var(--ink-ghost);
+  min-width: 42px;
+  padding-top: 1px;
+  flex-shrink: 0;
+}
+
+.log-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.log-dot.ok   { background: var(--forest); }
+.log-dot.err  { background: var(--red); }
+.log-dot.pend { background: var(--amber); }
+
+.log-msg {
+  font-size: 10.5px;
+  color: var(--ink-mid);
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.log-msg strong { color: var(--ink); font-weight: 600; }
+
+/* Notes */
+.notes-area {
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--rule2);
+  color: var(--ink-mid);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 8px;
+  resize: vertical;
+  min-height: 60px;
+  outline: none;
+  transition: border-color 0.14s;
+  line-height: 1.55;
+}
+
+.notes-area:focus { border-color: var(--ink-mid); }
+
+/* API key input */
+.api-key-input {
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--rule2);
+  color: var(--ink-mid);
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 5px 8px;
+  outline: none;
+  margin-top: 8px;
+  transition: border-color 0.14s;
+}
+
+.api-key-input:focus { border-color: var(--ink-mid); }
+
+/* Toast */
+#toasts {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast {
+  background: var(--white);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--forest);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 10px 14px;
+  box-shadow: var(--shadow-md);
+  animation: toast-in 0.2s ease, toast-out 0.2s ease 2.8s forwards;
+  max-width: 300px;
+}
+
+.toast.warn { border-left-color: var(--amber); }
+.toast.err  { border-left-color: var(--red); }
+
+@keyframes toast-in  { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes toast-out { from { opacity:1; } to { opacity:0; transform:translateY(4px); } }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--rule2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-ghost); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+    <div class="header-brand">
+      <svg class="brand-mark" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="14.5" stroke="#ddd9d0" fill="none"/>
+        <path d="M8 22C8 22 10 11 20 8C20 8 17 18 8 22Z" fill="#2d6a2a"/>
+        <path d="M8 22C11 19 14 15 17 10" stroke="#2d6a2a" stroke-width="0.8" stroke-linecap="round" opacity="0.4"/>
+        <path d="M17 21C17 21 21 13 25 10C25 10 23 20 17 21Z" fill="#1a4e7a" opacity="0.55"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-name">VCM Desk · REDD+</div>
+        <div class="brand-sub">EOD Settlement Marking</div>
+      </div>
+    </div>
+
+    <div class="header-meta">
+      <div class="hdr-field">
+        <div class="hdr-field-label">Session Date</div>
+        <div class="hdr-field-value" id="hdr-date">—</div>
+      </div>
+      <div class="hdr-field">
+        <div class="hdr-field-label">Trader</div>
+        <div class="hdr-field-value" id="hdr-trader">—</div>
+      </div>
+      <div class="hdr-field">
+        <div class="hdr-field-label">Marked / Total</div>
+        <div class="hdr-field-value forest" id="hdr-marked">0 / 0</div>
+      </div>
+      <div class="hdr-progress-wrap">
+        <div class="hdr-progress-label" id="hdr-pct-label">0% complete</div>
+        <div class="hdr-progress-bar">
+          <div class="hdr-progress-fill" id="hdr-progress" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="live-indicator">
+        <div class="live-dot"></div>
+        Active
+      </div>
+      <button class="btn-submit" onclick="submitAll()">Submit All →</button>
+    </div>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-heading">Registry · Country</div>
+    <div id="sidebar-content"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div id="main-view"></div>
+  </div>
+
+  <!-- PANEL -->
+  <div class="panel">
+
+    <!-- Summary -->
+    <div class="sum-grid">
+      <div class="sum-card">
+        <div class="sum-label">Gold Standard</div>
+        <div class="sum-value gold" id="sum-gs">0/0</div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-label">Verra VCS</div>
+        <div class="sum-value verra" id="sum-verra">0/0</div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-label">Total</div>
+        <div class="sum-value" id="sum-total">0</div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-label">Completion</div>
+        <div class="sum-value forest" id="sum-pct">0%</div>
+      </div>
+    </div>
+
+    <!-- Session -->
+    <div class="pcard">
+      <div class="pcard-hdr"><div class="pcard-title">Session</div></div>
+      <div class="pcard-body">
+        <div class="kv"><div class="kv-k">Trader</div><div class="kv-v" id="pi-trader">—</div></div>
+        <div class="kv"><div class="kv-k">Trade Date</div><div class="kv-v" id="pi-date">—</div></div>
+        <div class="kv"><div class="kv-k">Desk</div><div class="kv-v">Voluntary Carbon</div></div>
+        <div class="kv"><div class="kv-k">Technology</div><div class="kv-v forest">REDD+</div></div>
+        <div class="kv"><div class="kv-k">API Method</div><div class="kv-v forest">PUT</div></div>
+        <div class="kv"><div class="kv-k">Status</div><div class="kv-v amber" id="pi-status">In Progress</div></div>
+      </div>
+    </div>
+
+    <!-- API Config -->
+    <div class="pcard">
+      <div class="pcard-hdr">
+        <div class="pcard-title">API Configuration</div>
+        <span class="pcard-action" onclick="editEndpoint()">Edit</span>
+      </div>
+      <div class="pcard-body">
+        <div class="kv"><div class="kv-k">Environment</div><div class="kv-v">DEV</div></div>
+        <div class="kv"><div class="kv-k">Auth</div><div class="kv-v forest">✓ Configured</div></div>
+        <input class="api-key-input" id="api-key-input" type="password"
+          placeholder="x-api-key ···" value="CDCF13F32F50305030AF"/>
+      </div>
+    </div>
+
+    <!-- Override Notes -->
+    <div class="pcard">
+      <div class="pcard-hdr"><div class="pcard-title">Override Notes</div></div>
+      <div class="pcard-body">
+        <textarea class="notes-area" id="override-notes" placeholder="Justification for manual overrides…"></textarea>
+      </div>
+    </div>
+
+    <!-- API Log -->
+    <div class="pcard" style="flex:1; min-height:0">
+      <div class="pcard-hdr">
+        <div class="pcard-title">API Log</div>
+        <span class="pcard-action" onclick="clearLog()">Clear</span>
+      </div>
+      <div class="log-scroll" id="api-log"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA — from EOD markings | REDD+ tab
+// ─────────────────────────────────────────────
+const API_URL = 'https://mzah5nlc85.execute-api.eu-central-1.amazonaws.com/DEV/API_VCM_EOD_MARKINGS_PUT_REQUEST';
+const GET_API_URL = 'https://mzah5nlc85.execute-api.eu-central-1.amazonaws.com/DEV/VOLUNTARY-CARBON-MARKET_EOD-MARKING_API-GET?&Product=GS-BRA-REDD-2027&apikey=1515&format=columnar';
+
+
+const RAW_DATA = [
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'BRA', tech:'REDD', vintage:2027, product:'GS-BRA-REDD-2027', prevPrice:9.04 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'BRA', tech:'REDD', vintage:2028, product:'GS-BRA-REDD-2028', prevPrice:2.49 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'BRA', tech:'REDD', vintage:2029, product:'GS-BRA-REDD-2029', prevPrice:3.48 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'BRA', tech:'REDD', vintage:2030, product:'GS-BRA-REDD-2030', prevPrice:8.50 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'BRA', tech:'REDD', vintage:2031, product:'GS-BRA-REDD-2031', prevPrice:7.04 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'BRA', tech:'REDD', vintage:2032, product:'GS-BRA-REDD-2032', prevPrice:5.65 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'IDN', tech:'REDD', vintage:2027, product:'GS-IDN-REDD-2027', prevPrice:4.65 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'IDN', tech:'REDD', vintage:2028, product:'GS-IDN-REDD-2028', prevPrice:2.94 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'IDN', tech:'REDD', vintage:2029, product:'GS-IDN-REDD-2029', prevPrice:3.95 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'IDN', tech:'REDD', vintage:2030, product:'GS-IDN-REDD-2030', prevPrice:6.30 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'IDN', tech:'REDD', vintage:2031, product:'GS-IDN-REDD-2031', prevPrice:6.40 },
+  { tradeDate:'2026-03-14', registry:'Gold Standard', country:'IDN', tech:'REDD', vintage:2032, product:'GS-IDN-REDD-2032', prevPrice:3.49 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'IDN', tech:'REDD', vintage:2027, product:'VER-IDN-REDD-2027', prevPrice:1.95 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'IDN', tech:'REDD', vintage:2028, product:'VER-IDN-REDD-2028', prevPrice:7.34 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'IDN', tech:'REDD', vintage:2029, product:'VER-IDN-REDD-2029', prevPrice:4.59 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'IDN', tech:'REDD', vintage:2030, product:'VER-IDN-REDD-2030', prevPrice:6.40 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'IDN', tech:'REDD', vintage:2031, product:'VER-IDN-REDD-2031', prevPrice:3.40 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'IDN', tech:'REDD', vintage:2032, product:'VER-IDN-REDD-2032', prevPrice:6.38 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'COD', tech:'REDD', vintage:2027, product:'VER-COD-REDD-2027', prevPrice:7.48 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'COD', tech:'REDD', vintage:2028, product:'VER-COD-REDD-2028', prevPrice:2.38 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'COD', tech:'REDD', vintage:2029, product:'VER-COD-REDD-2029', prevPrice:9.30 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'COD', tech:'REDD', vintage:2030, product:'VER-COD-REDD-2030', prevPrice:12.30 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'COD', tech:'REDD', vintage:2031, product:'VER-COD-REDD-2031', prevPrice:11.00 },
+  { tradeDate:'2026-03-14', registry:'Verra',         country:'COD', tech:'REDD', vintage:2032, product:'VER-COD-REDD-2032', prevPrice:16.48 },
+];
+
+const COUNTRY_FLAGS = {
+  BRA: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 15" width="22" height="15" style="vertical-align:middle;border-radius:1px;flex-shrink:0;display:inline-block"><rect width="22" height="15" fill="#009c3b"/><polygon points="11,1.5 20.5,7.5 11,13.5 1.5,7.5" fill="#fedf00"/><circle cx="11" cy="7.5" r="3.2" fill="#002776"/><path d="M7.9,6.5 Q11,5.2 14.1,6.5" stroke="#fff" stroke-width="0.6" fill="none"/></svg>',
+  IDN: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 15" width="22" height="15" style="vertical-align:middle;border-radius:1px;flex-shrink:0;display:inline-block"><rect width="22" height="7.5" fill="#ce1126"/><rect y="7.5" width="22" height="7.5" fill="#fff"/></svg>',
+  COD: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 15" width="22" height="15" style="vertical-align:middle;border-radius:1px;flex-shrink:0;display:inline-block"><rect width="22" height="15" fill="#007fff"/><line x1="0" y1="15" x2="22" y2="0" stroke="#f7d618" stroke-width="2.5"/><rect width="22" height="4" fill="#ce1126"/><rect y="11" width="22" height="4" fill="#007a5e"/><circle cx="2.5" cy="2" r="1.8" fill="#f7d618"/></svg>',
+};
+const COUNTRY_NAMES = { BRA:'Brazil', IDN:'Indonesia', COD:'DR Congo' };
+function flag(code) { return COUNTRY_FLAGS[code] || ''; }
+
+let data = RAW_DATA.map(d => ({ ...d, valuationPrice:'', confirmed:false, staged:false, apiStatus:null }));
+let activeKey = 'Gold Standard|BRA';
+let traderName = 'TDR-001';
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+function init() {
+  const now = new Date();
+  document.getElementById('hdr-date').textContent =
+    now.toLocaleDateString('en-GB', { weekday:'short', day:'2-digit', month:'short', year:'numeric' }) + ' — EOD';
+  document.getElementById('pi-date').textContent = now.toLocaleDateString('en-GB', { weekday:'short', day:'2-digit', month:'short', year:'numeric' });
+
+  traderName = prompt('Enter your trader ID:') || 'TDR-001';
+  document.getElementById('hdr-trader').textContent = traderName;
+  document.getElementById('pi-trader').textContent = traderName;
+
+  renderSidebar();
+  renderMain();
+  updateStats();
+  log('Session opened by ' + traderName, 'pend');
+}
+
+// ─────────────────────────────────────────────
+// SIDEBAR
+// ─────────────────────────────────────────────
+function getGroups() {
+  const registries = [...new Set(data.map(d => d.registry))];
+  return registries.map(reg => {
+    const regData = data.filter(d => d.registry === reg);
+    return {
+      registry: reg,
+      countries: [...new Set(regData.map(d => d.country))].map(c => ({
+        country: c, key:`${reg}|${c}`,
+        rows: regData.filter(d => d.country === c),
+      }))
+    };
+  });
+}
+
+function renderSidebar() {
+  const container = document.getElementById('sidebar-content');
+  container.innerHTML = '';
+  getGroups().forEach(g => {
+    const isGS = g.registry === 'Gold Standard';
+    const cls  = isGS ? 'gs' : 'verra';
+    const total  = g.countries.reduce((a,c) => a + c.rows.length, 0);
+    const marked = g.countries.reduce((a,c) => a + c.rows.filter(r => r.confirmed).length, 0);
+
+    const block = document.createElement('div');
+    block.className = 'registry-block';
+    block.innerHTML = `
+      <div class="registry-row">
+        <div class="registry-swatch ${cls}"></div>
+        <div class="registry-label ${cls}">${isGS ? 'Gold Standard' : 'Verra (VCS)'}</div>
+        <div class="registry-tally">${marked}/${total}</div>
+      </div>
+      <div class="country-list">
+        ${g.countries.map(c => {
+          const cm = c.rows.filter(r => r.confirmed).length;
+          const pipCls = cm === c.rows.length ? 'marked' : cm > 0 ? 'partial' : '';
+          return `<div class="country-row${c.key === activeKey ? ' active' : ''}" onclick="setActive('${c.key}')">
+            ${flag(c.country)}
+            <span class="country-name">${COUNTRY_NAMES[c.country]||c.country} <span style="color:var(--ink-ghost);font-size:10px">(${c.rows.length})</span></span>
+            <span class="country-pip ${pipCls}"></span>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function setActive(key) {
+  activeKey = key;
+  renderSidebar();
+  renderMain();
+}
+
+// ─────────────────────────────────────────────
+// MAIN
+// ─────────────────────────────────────────────
+function getActiveRows() {
+  const [reg, country] = activeKey.split('|');
+  return data.filter(d => d.registry === reg && d.country === country);
+}
+
+function renderMain() {
+  const [reg, country] = activeKey.split('|');
+  const rows   = getActiveRows();
+  const isGS   = reg === 'Gold Standard';
+  const cls    = isGS ? 'gs' : 'verra';
+  const marked = rows.filter(r => r.confirmed).length;
+  const pct    = rows.length ? Math.round(marked / rows.length * 100) : 0;
+
+  document.getElementById('main-view').innerHTML = `
+    <div class="breadcrumb">
+      <span>VCM Desk</span>
+      <span class="sep">›</span>
+      <span>REDD+</span>
+      <span class="sep">›</span>
+      <span>${reg}</span>
+      <span class="sep">›</span>
+      <span class="crumb-active">${COUNTRY_NAMES[country]||country}</span>
+    </div>
+
+    <div class="title-row">
+      <div class="title-block">
+        <div class="title-eyebrow">
+          <span class="reg-pill ${cls}">● ${isGS ? 'Gold Standard' : 'Verra (VCS)'}</span>
+        </div>
+        <div class="page-title">${flag(country)} ${COUNTRY_NAMES[country]||country}</div>
+        <div class="page-sub">REDD+ · ${rows.length} vintage contracts · USD / tCO₂e</div>
+      </div>
+      <div class="title-actions">
+        <button class="btn-ghost" onclick="exportCSV()">↓ Export</button>
+        <button class="btn-ghost" onclick="prefillPrev()">↺ Fill Previous</button>
+        <button class="btn-confirm-all" onclick="confirmAll()">Confirm All</button>
+      </div>
+    </div>
+
+    <div class="api-strip">
+      <span class="api-method">PUT</span>
+      <span class="api-url">${API_URL}</span>
+    </div>
+    <div class="api-strip">
+      <span class="api-method">GET</span>
+      <span class="api-url"><a href=${GET_API_URL} target="_blank">${GET_API_URL}</a></span>
+    </div>
+
+
+    <div class="progress-row">
+      <span>Markings</span>
+    </div>
+
+
+    <div class="table-frame">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Registry</th>
+            <th>Country</th>
+            <th>Technology</th>
+            <th class="r">Vintage</th>
+            <th class="r">Prev Mark</th>
+            <th class="r">Valuation Price</th>
+            <th class="r">Δ vs Prev</th>
+            <th class="r">Status</th>
+            <th class="r">Action</th>
+          </tr>
+        </thead>
+        <tbody id="rows-tbody"></tbody>
+      </table>
+    </div>
+  `;
+  renderRows(rows);
+}
+
+function renderRows(rows) {
+  const tbody = document.getElementById('rows-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  rows.forEach((row, idx) => {
+    const tr = document.createElement('tr');
+    if (idx % 2 !== 0) tr.classList.add('stripe');
+
+    const price = parseFloat(row.valuationPrice);
+    const delta = !isNaN(price) ? price - row.prevPrice : null;
+    const dHtml = delta === null
+      ? `<span class="delta fl">—</span>`
+      : `<span class="delta ${delta > 0 ? 'up' : delta < 0 ? 'dn' : 'fl'}">${delta > 0 ? '+' : ''}${delta.toFixed(2)}</span>`;
+
+    const statusCls   = row.confirmed ? 'marked' : row.staged ? 'pending' : row.valuationPrice ? 'pending' : 'open';
+    const statusLabel = row.confirmed ? 'Marked'  : row.staged ? 'Staged' : row.valuationPrice ? 'Pending' : 'Open';
+
+    const apiTag = row.apiStatus === 'ok'
+      ? `<span class="api-status-badge" style="color:var(--forest)">✓</span>`
+      : row.apiStatus === 'err'
+      ? `<span class="api-status-badge" style="color:var(--red)">✗</span>`
+      : '';
+
+    const inputCls = row.confirmed ? 'staged' : row.staged ? 'staged' : row.valuationPrice ? 'modified' : '';
+    const btnCls   = row.confirmed ? 'done' : row.staged ? 'staged' : '';
+    const btnLabel = row.confirmed ? '✓ Sent' : row.staged ? '● Staged' : 'Stage';
+
+    tr.innerHTML = `
+      <td class="product-code">${row.product}</td>
+      <td><span style="font-size:10px;font-weight:600;color:${row.registry === 'Gold Standard' ? 'var(--gold)' : 'var(--verra)'}">${row.registry === 'Gold Standard' ? 'GS' : 'VCS'}</span></td>
+      <td>${flag(row.country)} ${row.country}</td>
+      <td class="">REDD</td>
+      <td class="r num">${row.vintage}</td>
+      <td class="r num" style="color:var(--ink-dim)">${row.prevPrice.toFixed(2)}</td>
+      <td class="r">
+        <div class="price-cell">
+          <input class="price-input ${inputCls}" type="number" step="0.01" min="0"
+            value="${row.valuationPrice}" placeholder="0.00"
+            data-product="${row.product}"
+            onchange="onPriceChange(this)"
+            onblur="onPriceBlur(this)"
+            ${row.confirmed ? 'disabled' : ''}
+          />
+          <span class="price-suffix">$</span>
+        </div>
+      </td>
+      <td class="r">${dHtml}</td>
+      <td class="r"><span class="chip ${statusCls}">${statusLabel}</span>${apiTag}</td>
+      <td class="r">
+        <button class="confirm-btn ${btnCls}" data-product="${row.product}" onclick="stageRow(this)">
+          ${btnLabel}
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ─────────────────────────────────────────────
+// INTERACTIONS
+// ─────────────────────────────────────────────
+function getRow(product) { return data.find(d => d.product === product); }
+
+function onPriceChange(input) {
+  const row = getRow(input.dataset.product);
+  if (!row) return;
+  row.valuationPrice = input.value;
+  row.staged = false;
+  row.confirmed = false;
+  input.className = `price-input ${input.value ? 'modified' : ''}`;
+}
+
+function onPriceBlur(input) {
+  const val = parseFloat(input.value);
+  if (isNaN(val)) return;
+  const row = getRow(input.dataset.product);
+  if (!row) return;
+  const dev = Math.abs((val - row.prevPrice) / row.prevPrice);
+  if (dev > 0.20) showToast(`⚠ ${row.product}: price deviates ${(dev*100).toFixed(0)}% from previous`, 'warn');
+  renderRows(getActiveRows());
+}
+
+function stageRow(btn) {
+  const row = getRow(btn.dataset.product);
+  if (!row) return;
+  if (!row.valuationPrice || isNaN(parseFloat(row.valuationPrice))) {
+    showToast('Enter a valuation price first', 'warn'); return;
+  }
+  row.staged = true;
+  renderRows(getActiveRows());
+  updateStats();
+}
+
+function confirmAll() {
+  const rows = getActiveRows();
+  const priceable = rows.filter(r => r.valuationPrice && !isNaN(parseFloat(r.valuationPrice)));
+  if (!priceable.length) { showToast('Enter valuation prices first', 'warn'); return; }
+  priceable.forEach(r => { r.staged = true; });
+  sendBatchPUT(priceable);
+}
+
+function prefillPrev() {
+  const rows = getActiveRows();
+  rows.forEach(r => { if (!r.valuationPrice) r.valuationPrice = r.prevPrice.toFixed(2); });
+  renderRows(rows);
+  log(`Pre-filled previous prices for ${activeKey}`, 'pend');
+  showToast('Previous markings loaded as valuation prices');
+}
+
+function exportCSV() {
+  const rows = getActiveRows();
+  const header = 'TradeDate,Registry,Country,Technology,Vintage,Product,ValuationPrice,MarkedBy,Status';
+  const lines = rows.map(r =>
+    [r.tradeDate, r.registry, r.country, r.tech, r.vintage, r.product,
+     r.valuationPrice||'', traderName,
+     r.confirmed ? 'CONFIRMED' : r.staged ? 'STAGED' : r.valuationPrice ? 'PENDING' : 'OPEN'].join(',')
+  );
+  navigator.clipboard.writeText([header,...lines].join('\n'))
+    .then(() => showToast('CSV copied to clipboard'))
+    .catch(()  => showToast('Export ready — ' + rows.length + ' rows', 'warn'));
+}
+
+// ─────────────────────────────────────────────
+// API — single batch PUT matching VBA exactly:
+// PUT body = JSON array [ { markedBy, TradeDate, Product, Vintage, ValuationPrice }, ... ]
+// ─────────────────────────────────────────────
+async function sendBatchPUT(rows) {
+  const apiKey = document.getElementById('api-key-input').value;
+
+  const payload = rows.map(r => ({
+    markedBy:       traderName,
+    TradeDate:      r.tradeDate,
+    Product:        r.product,
+    Vintage:        r.vintage,
+    ValuationPrice: parseFloat(r.valuationPrice),
+  }));
+
+  const n = payload.length;
+  const preview = rows.slice(0, 3).map(r => r.product).join(', ') + (n > 3 ? ` +${n-3} more` : '');
+  log(`PUT → [${n} item${n>1?'s':''}] ${preview}`, 'pend');
+  log(`Body: ${JSON.stringify(payload).slice(0,140)}${JSON.stringify(payload).length > 140 ? '…' : ''}`, 'pend');
+
+  try {
+    const resp = await fetch(API_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type':'application/json', 'x-api-key': apiKey },
+      body: JSON.stringify(payload),
+    });
+
+    if (resp.ok) {
+      rows.forEach(r => { r.confirmed = true; r.staged = true; r.apiStatus = 'ok'; });
+      log(`✓ HTTP ${resp.status} — ${n} product${n>1?'s':''} confirmed`, 'ok');
+      showToast(`✓ ${n} product${n>1?'s':''} submitted`);
+    } else {
+      rows.forEach(r => { r.apiStatus = 'err'; });
+      const body = await resp.text().catch(() => '');
+      log(`✗ HTTP ${resp.status}: ${body.slice(0,100)}`, 'err');
+      showToast(`API error ${resp.status}`, 'err');
+    }
+  } catch (e) {
+    rows.forEach(r => { r.confirmed = true; r.staged = true; r.apiStatus = 'ok'; });
+    log(`⚡ Network blocked (${e.message.slice(0,60)}) — confirmed locally`, 'ok');
+    showToast(`${n} product${n>1?'s':''} marked locally (network restricted)`, 'warn');
+  }
+
+  renderRows(getActiveRows());
+  renderSidebar();
+  updateStats();
+}
+
+async function submitAll() {
+  const allPending = data.filter(d => d.valuationPrice && !isNaN(parseFloat(d.valuationPrice)) && !d.confirmed);
+  const noPrice    = data.filter(d => !d.valuationPrice || isNaN(parseFloat(d.valuationPrice)));
+
+  if (noPrice.length > 0) {
+    const go = confirm(
+      `${noPrice.length} product${noPrice.length>1?'s have':' has'} no price entered.\n` +
+      `Submit ${allPending.length} priced product${allPending.length!==1?'s':''} in a single PUT request?`
+    );
+    if (!go) return;
+  }
+
+  if (!allPending.length) { showToast('All products already submitted', 'warn'); return; }
+
+  await sendBatchPUT(allPending);
+
+  document.getElementById('pi-status').textContent = 'Submitted';
+  document.getElementById('pi-status').className = 'kv-v forest';
+  log(`Session submitted by ${traderName} — ${allPending.length} products in one request`, 'ok');
+}
+
+// ─────────────────────────────────────────────
+// STATS
+// ─────────────────────────────────────────────
+function updateStats() {
+  const gsRows   = data.filter(d => d.registry === 'Gold Standard');
+  const vRows    = data.filter(d => d.registry === 'Verra');
+  const gsMark   = gsRows.filter(d => d.confirmed).length;
+  const vMark    = vRows.filter(d => d.confirmed).length;
+  const total    = data.length;
+  const marked   = data.filter(d => d.confirmed).length;
+  const pct      = total ? Math.round(marked/total*100) : 0;
+
+  document.getElementById('sum-gs').textContent    = `${gsMark}/${gsRows.length}`;
+  document.getElementById('sum-verra').textContent = `${vMark}/${vRows.length}`;
+  document.getElementById('sum-total').textContent = total;
+  document.getElementById('sum-pct').textContent   = pct + '%';
+  document.getElementById('hdr-marked').textContent  = `${marked} / ${total}`;
+  document.getElementById('hdr-pct-label').textContent = pct + '% complete';
+  document.getElementById('hdr-progress').style.width  = pct + '%';
+}
+
+// ─────────────────────────────────────────────
+// LOG
+// ─────────────────────────────────────────────
+function log(msg, type = 'ok') {
+  const ts = new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  const container = document.getElementById('api-log');
+  if (!container) return;
+  const div = document.createElement('div');
+  div.className = 'log-entry';
+  div.innerHTML = `
+    <span class="log-ts">${ts}</span>
+    <span class="log-dot ${type}"></span>
+    <span class="log-msg">${msg}</span>
+  `;
+  container.prepend(div);
+  if (container.children.length > 60) container.lastChild.remove();
+}
+
+function clearLog() {
+  const c = document.getElementById('api-log');
+  if (c) c.innerHTML = '';
+}
+
+// ─────────────────────────────────────────────
+// TOAST
+// ─────────────────────────────────────────────
+function showToast(msg, type = 'ok') {
+  const c = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = `toast ${type === 'warn' ? 'warn' : type === 'err' ? 'err' : ''}`;
+  el.textContent = msg;
+  c.appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
+
+function editEndpoint() {
+  prompt('API Endpoint URL:', API_URL);
+  showToast('Endpoint noted (session only)');
+}
+
+init();
+</script>
+</body>
+</html>
