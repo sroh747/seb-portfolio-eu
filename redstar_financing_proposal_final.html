@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RedStar Bank — USD 150M Structured Finance Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8102E;
+    --red-dark: #8B0C21;
+    --red-light: #E8334A;
+    --gold: #B8963E;
+    --gold-light: #D4AF6A;
+    --cream: #FAF7F2;
+    --ink: #1A1208;
+    --ink-mid: #3D2E18;
+    --ink-light: #6B5A44;
+    --steel: #E8E2D9;
+    --steel-dark: #C8BFB0;
+    --green: #1A6B3A;
+    --green-light: #E8F5EE;
+    --amber: #C87415;
+    --amber-light: #FEF3E2;
+    --shadow: 0 4px 32px rgba(26,18,8,0.12);
+    --shadow-deep: 0 8px 48px rgba(26,18,8,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px;
+    height: 56px;
+    border-bottom: 2px solid var(--red);
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.02em;
+  }
+  .nav-brand span { color: var(--red); }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab {
+    padding: 6px 16px; border: none; background: transparent;
+    color: var(--steel-dark); font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer; border-radius: 4px; transition: all 0.2s;
+  }
+  .nav-tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .nav-tab.active { color: var(--red-light); background: rgba(200,16,46,0.15); }
+  .nav-badge {
+    background: var(--red); color: #fff; font-family: 'DM Mono', monospace;
+    font-size: 10px; padding: 2px 8px; border-radius: 2px; letter-spacing: 0.05em;
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; animation: fadeIn 0.3s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    padding: 64px 48px 48px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 50%;
+    background: linear-gradient(135deg, transparent 40%, rgba(200,16,46,0.06) 100%);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px; font-weight: 900;
+    color: #fff; line-height: 1.1;
+    max-width: 700px; margin-bottom: 24px;
+  }
+  .hero h1 em { color: var(--red-light); font-style: normal; }
+  .hero-meta {
+    display: flex; gap: 32px; flex-wrap: wrap;
+  }
+  .hero-kpi {
+    border-left: 3px solid var(--red);
+    padding-left: 16px;
+  }
+  .hero-kpi .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700;
+    color: #fff;
+  }
+  .hero-kpi .lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-light);
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 40px 32px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: #fff;
+    border: 1px solid var(--steel);
+    border-radius: 6px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+  }
+  .card-red {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red-dark);
+  }
+  .card-dark {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink-mid);
+  }
+  .card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .card h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 8px;
+  }
+  .card-red h3, .card-dark h3 { color: var(--gold-light); }
+
+  /* ── TERM SHEET ── */
+  .ts-table { width: 100%; border-collapse: collapse; }
+  .ts-table tr { border-bottom: 1px solid var(--steel); }
+  .ts-table tr:last-child { border-bottom: none; }
+  .ts-table td {
+    padding: 12px 16px; vertical-align: top;
+    font-size: 13px; line-height: 1.5;
+  }
+  .ts-table td:first-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--red); width: 220px; font-weight: 500;
+    white-space: nowrap;
+  }
+  .ts-section-header {
+    background: var(--ink);
+    color: var(--gold-light) !important;
+    font-family: 'Playfair Display', serif !important;
+    font-size: 13px !important; text-transform: none !important;
+    letter-spacing: 0 !important; font-weight: 700 !important;
+    padding: 10px 16px !important;
+  }
+  .ts-section-header td { color: var(--gold-light) !important; }
+
+  /* ── SCENARIO ENGINE ── */
+  .scenario-grid { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start; }
+  .control-group { margin-bottom: 20px; }
+  .control-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-light); margin-bottom: 6px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .control-label .val-display {
+    font-size: 13px; color: var(--red); font-weight: 600;
+    font-family: 'DM Mono', monospace;
+  }
+  input[type=range] {
+    width: 100%; -webkit-appearance: none;
+    height: 4px; background: var(--steel-dark); border-radius: 2px; outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--red); cursor: pointer;
+    box-shadow: 0 2px 8px rgba(200,16,46,0.4);
+  }
+  .select-control {
+    width: 100%; padding: 8px 12px;
+    border: 1px solid var(--steel-dark); border-radius: 4px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    background: #fff; color: var(--ink);
+    outline: none; cursor: pointer;
+  }
+  .select-control:focus { border-color: var(--red); }
+
+  /* ── METRICS ── */
+  .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .metric {
+    background: #fff; border: 1px solid var(--steel);
+    border-radius: 6px; padding: 16px;
+    text-align: center;
+  }
+  .metric .m-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--ink); display: block;
+  }
+  .metric .m-lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-light); margin-top: 4px;
+  }
+  .metric.good .m-val { color: var(--green); }
+  .metric.warn .m-val { color: var(--amber); }
+  .metric.bad .m-val { color: var(--red); }
+
+  /* ── STATUS BADGE ── */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: 3px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 500;
+  }
+  .status-badge.pass { background: var(--green-light); color: var(--green); }
+  .status-badge.warn { background: var(--amber-light); color: var(--amber); }
+  .status-badge.fail { background: #FEE8EB; color: var(--red); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .pass .status-dot { background: var(--green); }
+  .warn .status-dot { background: var(--amber); }
+  .fail .status-dot { background: var(--red); }
+
+  /* ── CHART-LIKE BARS ── */
+  .bar-chart { margin-top: 8px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .bar-lbl { width: 110px; font-size: 12px; color: var(--ink-light); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 12px; background: var(--steel); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+  .bar-val { width: 70px; text-align: right; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink-mid); }
+
+  /* ── CASHFLOW TABLE ── */
+  .cf-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .cf-table th {
+    background: var(--ink); color: var(--gold-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 8px 10px; text-align: right;
+  }
+  .cf-table th:first-child { text-align: left; }
+  .cf-table td {
+    padding: 7px 10px; border-bottom: 1px solid var(--steel);
+    text-align: right; font-family: 'DM Mono', monospace; font-size: 12px;
+  }
+  .cf-table td:first-child { text-align: left; font-family: 'DM Sans', sans-serif; font-size: 12px; }
+  .cf-table tr.subtotal td { background: var(--cream); font-weight: 600; }
+  .cf-table tr.total td { background: var(--ink); color: var(--gold-light); font-weight: 600; }
+  .cf-table tr.total td:first-child { color: #fff; }
+  .cf-table .neg { color: var(--red); }
+  .cf-table .pos { color: var(--green); }
+
+  /* ── SECURITY WATERFALL ── */
+  .waterfall { display: flex; flex-direction: column; gap: 2px; }
+  .wf-layer {
+    display: flex; align-items: center;
+    padding: 10px 16px; border-radius: 3px;
+    font-size: 13px;
+  }
+  .wf-layer .wf-rank {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; width: 24px; color: rgba(255,255,255,0.6);
+  }
+  .wf-layer .wf-name { flex: 1; font-weight: 500; }
+  .wf-layer .wf-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+  .wf-1 { background: #7B1A2A; color: #fff; }
+  .wf-2 { background: var(--red); color: #fff; }
+  .wf-3 { background: var(--red-light); color: #fff; }
+  .wf-4 { background: var(--gold); color: #fff; }
+  .wf-5 { background: var(--gold-light); color: var(--ink); }
+
+  /* ── DIVIDER ── */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--ink); margin-bottom: 8px;
+  }
+  .section-sub {
+    font-size: 14px; color: var(--ink-light);
+    margin-bottom: 28px; max-width: 640px;
+  }
+  .divider { height: 1px; background: var(--steel); margin: 32px 0; }
+  .tag {
+    display: inline-block; padding: 2px 10px;
+    border: 1px solid currentColor; border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    margin-right: 6px; margin-bottom: 4px;
+  }
+  .tag-red { color: var(--red); }
+  .tag-gold { color: var(--gold); }
+  .tag-green { color: var(--green); }
+
+  /* ── APPROVAL CHECKLIST ── */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--steel); font-size: 13px;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-icon { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; margin-top: 1px; }
+  .check-pass { background: var(--green-light); color: var(--green); }
+  .check-warn { background: var(--amber-light); color: var(--amber); }
+  .check-fail { background: #FEE8EB; color: var(--red); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .grid-2, .grid-3, .scenario-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 28px; }
+    .metric-row { grid-template-columns: 1fr 1fr; }
+    nav { padding: 0 16px; }
+    .container { padding: 24px 16px; }
+  }
+
+  /* ── PRINT STYLES ── */
+  .no-print { }
+  
+  /* ── SCENARIO VERDICT ── */
+  #verdict-box {
+    padding: 20px 24px;
+    border-radius: 6px;
+    border-left: 4px solid var(--green);
+    background: var(--green-light);
+    margin-top: 20px;
+    transition: all 0.3s;
+  }
+  #verdict-box.warn { border-color: var(--amber); background: var(--amber-light); }
+  #verdict-box.bad { border-color: var(--red); background: #FEE8EB; }
+  #verdict-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700; margin-bottom: 4px;
+  }
+  #verdict-body { font-size: 13px; color: var(--ink-mid); }
+
+  /* ── footnote ── */
+  .footnote { font-size: 11px; color: var(--ink-light); font-style: italic; margin-top: 12px; }
+
+  /* mini tabs for sub-sections */
+  .sub-tabs { display: flex; gap: 2px; margin-bottom: 20px; border-bottom: 2px solid var(--steel); }
+  .sub-tab {
+    padding: 8px 18px; background: transparent; border: none;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-light); cursor: pointer; transition: all 0.2s;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+  }
+  .sub-tab.active { color: var(--red); border-bottom-color: var(--red); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">RED<span>★</span>STAR BANK</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPanel('overview')">Overview</button>
+    <button class="nav-tab" onclick="showPanel('termsheet')">Term Sheet</button>
+    <button class="nav-tab" onclick="showPanel('scenario')">Scenario Engine</button>
+    <button class="nav-tab" onclick="showPanel('hedging')">Hedging</button>
+    <button class="nav-tab" onclick="showPanel('approval')">Credit Memo</button>
+  </div>
+  <div class="nav-badge">CONFIDENTIAL</div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     PANEL 1: OVERVIEW
+═══════════════════════════════════════════ -->
+<div id="panel-overview" class="panel active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">RedStar Bank · Structured Commodity Finance · March 2026</div>
+    <h1>Structured Pre-Export Finance<br>& Offtake Enhancement Facility<br><em>USD 150 Million</em></h1>
+    <div class="hero-meta">
+      <div class="hero-kpi"><div class="val">USD 150M</div><div class="lbl">Facility Size</div></div>
+      <div class="hero-kpi"><div class="val">5 Years</div><div class="lbl">Tenor</div></div>
+      <div class="hero-kpi"><div class="val">SOFR + 4.25%</div><div class="lbl">All-in Pricing</div></div>
+      <div class="hero-kpi"><div class="val">2.5 Mt/yr</div><div class="lbl">Seb Trading Offtake</div></div>
+      <div class="hero-kpi"><div class="val">5 Mt/yr</div><div class="lbl">Target OCR Production</div></div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- EXECUTIVE SUMMARY -->
+    <div class="section-title">Executive Summary</div>
+    <div class="section-sub">A dual-purpose reserve-based lending / pre-export finance structure that simultaneously funds Outback Creek Resources' USD 150M production expansion and secures Seb Trading Corp.'s doubled coal offtake, creating a self-liquidating, commodity-secured facility with multiple layers of protection for RedStar Bank.</div>
+
+    <div class="grid-3" style="margin-bottom:28px">
+      <div class="card card-red">
+        <h3>Facility Type</h3>
+        <div style="font-size:18px;font-weight:700;margin-bottom:8px">Reserve-Based Pre-Export Finance</div>
+        <div style="font-size:13px;opacity:0.9">Hybrid RBL + structured prepayment facility secured by coal reserves, offtake receipts, and equipment pledge. Self-liquidating via export flows routed through a RedStar-controlled collection account.</div>
+      </div>
+      <div class="card card-dark">
+        <h3>Dual Beneficiary</h3>
+        <div style="font-size:18px;font-weight:700;margin-bottom:8px">OCR + Seb Trading</div>
+        <div style="font-size:13px;opacity:0.8">OCR receives the USD 150M capex facility. Seb Trading benefits via a committed offtake enhancement clause giving them priority access to 2.5 Mt/yr of OCR's expanded production — up from 1.5 Mt/yr.</div>
+      </div>
+      <div class="card">
+        <h3>Security Package</h3>
+        <div style="font-size:13px;color:var(--ink-mid);line-height:1.8">
+          ✦ First-ranking charge on PDNP → PDP reserves<br>
+          ✦ Assignment of offtake contract (Seb Trading)<br>
+          ✦ Pledge of mine equipment (longwall + miners)<br>
+          ✦ Charge over Port of Newcastle stockpiles<br>
+          ✦ Collection account control (RedStar as bank)<br>
+          ✦ Corporate guarantee — Seb Trading Corp.
+        </div>
+      </div>
+    </div>
+
+    <!-- DEAL RATIONALE -->
+    <div class="divider"></div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Why This Structure Works for OCR</h3>
+        <h2>Production Expansion Financing</h2>
+        <ul style="font-size:13px;line-height:2;color:var(--ink-mid);list-style:none">
+          <li>→ Full USD 150M capex funded in a single drawdown before Dec 2026</li>
+          <li>→ Repayment aligned to production ramp-up (2027–2031)</li>
+          <li>→ No new equity dilution; pure debt instrument</li>
+          <li>→ Pricing competitive vs. existing 13% AUD bonds</li>
+          <li>→ Embedded offtake guarantee from Seb Trading de-risks sales</li>
+          <li>→ Flexibility: prepayment allowed after Year 2 without penalty</li>
+        </ul>
+        <div class="tag tag-red">Capex Funded</div>
+        <div class="tag tag-gold">Production Ramp</div>
+        <div class="tag tag-green">No Dilution</div>
+      </div>
+      <div class="card">
+        <h3>Why This Structure Works for Seb Trading</h3>
+        <h2>Offtake Security & Working Capital</h2>
+        <ul style="font-size:13px;line-height:2;color:var(--ink-mid);list-style:none">
+          <li>→ Locked-in 2.5 Mt/yr offtake at preferential pricing terms</li>
+          <li>→ Existing USD 500M credit facility fully preserved</li>
+          <li>→ Pre-financing of up to 80% of cargo value continues</li>
+          <li>→ Seb Trading's guarantee provides credit enhancement — not balance sheet draw</li>
+          <li>→ Strengthened supplier relationship reduces counterparty risk</li>
+          <li>→ First-mover advantage vs. rival traders</li>
+        </ul>
+        <div class="tag tag-red">2.5 Mt Secured</div>
+        <div class="tag tag-gold">Existing Lines Intact</div>
+        <div class="tag tag-green">Strategic Edge</div>
+      </div>
+    </div>
+
+    <!-- STRUCTURE DIAGRAM -->
+    <div class="divider"></div>
+    <div class="section-title">Transaction Architecture</div>
+    <div class="section-sub">Cash flows, security interests, and guarantee structure</div>
+
+    <div class="card" style="padding:32px">
+      <!-- Simple ASCII-art style flow -->
+      <div style="display:grid;grid-template-columns:1fr 80px 1fr 80px 1fr;gap:0;align-items:center;text-align:center;font-size:13px">
+        
+        <div style="background:var(--ink);color:#fff;border-radius:6px;padding:16px">
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:6px">RedStar Bank</div>
+          <div style="font-size:11px;color:var(--gold-light)">Valais, Switzerland</div>
+          <div style="margin-top:10px;font-size:11px;background:rgba(255,255,255,0.1);border-radius:3px;padding:6px">
+            Lender · Security Trustee<br>Collection Account Controller
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="height:2px;width:60px;background:var(--red)"></div>
+          <div style="font-size:10px;color:var(--red);font-family:'DM Mono',monospace;white-space:nowrap">USD 150M ↔ Security</div>
+          <div style="height:2px;width:60px;background:var(--red)"></div>
+        </div>
+
+        <div style="background:var(--red);color:#fff;border-radius:6px;padding:16px">
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:6px">Outback Creek Resources</div>
+          <div style="font-size:11px;opacity:0.8">Hunter Valley, NSW</div>
+          <div style="margin-top:10px;font-size:11px;background:rgba(255,255,255,0.15);border-radius:3px;padding:6px">
+            Borrower · Mine Operator<br>Reserve Pledge
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="height:2px;width:60px;background:var(--gold)"></div>
+          <div style="font-size:10px;color:var(--gold);font-family:'DM Mono',monospace;white-space:nowrap">Coal Supply ↔ Prepay</div>
+          <div style="height:2px;width:60px;background:var(--gold)"></div>
+        </div>
+
+        <div style="background:var(--ink-mid);color:#fff;border-radius:6px;padding:16px">
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:6px">Seb Trading Corp.</div>
+          <div style="font-size:11px;opacity:0.7">Zug, Switzerland</div>
+          <div style="margin-top:10px;font-size:11px;background:rgba(255,255,255,0.1);border-radius:3px;padding:6px">
+            Offtaker · Guarantor<br>2.5 Mt/yr Committed
+          </div>
+        </div>
+
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 80px 1fr;gap:0;align-items:center;text-align:center;margin-top:20px">
+        <div></div>
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div style="width:2px;height:30px;background:var(--steel-dark)"></div>
+        </div>
+        <div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 80px 1fr;gap:0;align-items:start;text-align:center;margin-top:0">
+        <div></div>
+        <div></div>
+        <div style="background:var(--cream);border:2px dashed var(--gold);border-radius:6px;padding:12px;font-size:12px;color:var(--ink-mid);max-width:260px;margin:0 auto">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">Collection Account</div>
+          Export sale proceeds routed through RedStar-controlled account in Singapore before release to OCR
+        </div>
+      </div>
+
+      <div class="footnote" style="margin-top:16px;text-align:center">
+        ★ B/Ls issued to order of RedStar Bank on all Seb Trading shipments · Independent inspector monitoring of port stockpiles · Monthly reserve certification required
+      </div>
+    </div>
+
+    <!-- COMPETITIVE PITCH -->
+    <div class="divider"></div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Why RedStar Wins This Mandate</h3>
+        <h2>Our Competitive Edge</h2>
+        <div style="font-size:13px;color:var(--ink-mid);line-height:1.9">
+          <p style="margin-bottom:8px"><strong style="color:var(--red)">3-year relationship with OCR</strong> — our Structured Finance team already knows the asset, the management, and the reserve base. No ramp-up time for due diligence.</p>
+          <p style="margin-bottom:8px"><strong style="color:var(--red)">5-year track record with Seb Trading</strong> — clean performance history, deep understanding of their trade flows. Guarantee is meaningful.</p>
+          <p style="margin-bottom:8px"><strong style="color:var(--red)">Met coal expertise</strong> — unlike banks exiting the sector, RedStar actively finances coking coal. We understand the market and can move quickly.</p>
+          <p><strong style="color:var(--red)">One-stop shop</strong> — we can fund OCR's capex, pre-finance Seb Trading's purchases, and serve as collection account bank. No syndication required at this size.</p>
+        </div>
+      </div>
+      <div class="card card-dark">
+        <h3>Key Risks & Mitigants</h3>
+        <h2 style="color:#fff">Risk Matrix</h2>
+        <div style="font-size:13px">
+          <div style="border-bottom:1px solid rgba(255,255,255,0.1);padding:8px 0;display:flex;justify-content:space-between;align-items:center">
+            <span style="opacity:0.9">Coal Price ↓</span>
+            <span class="status-badge warn"><span class="status-dot"></span>Mitigated</span>
+          </div>
+          <div style="font-size:11px;opacity:0.6;padding:4px 0 8px;border-bottom:1px solid rgba(255,255,255,0.1)">Bank price deck USD 220/mt vs. current 223. LTV coverage at 220/mt still solid.</div>
+          <div style="border-bottom:1px solid rgba(255,255,255,0.1);padding:8px 0;display:flex;justify-content:space-between;align-items:center">
+            <span style="opacity:0.9">Production Underperformance</span>
+            <span class="status-badge warn"><span class="status-dot"></span>Mitigated</span>
+          </div>
+          <div style="font-size:11px;opacity:0.6;padding:4px 0 8px;border-bottom:1px solid rgba(255,255,255,0.1)">PDNP → PDP conversion schedule contractualized; reserve tail covers 2.0x facility.</div>
+          <div style="border-bottom:1px solid rgba(255,255,255,0.1);padding:8px 0;display:flex;justify-content:space-between;align-items:center">
+            <span style="opacity:0.9">Seb Trading Default</span>
+            <span class="status-badge pass"><span class="status-dot"></span>Low Risk</span>
+          </div>
+          <div style="font-size:11px;opacity:0.6;padding:4px 0 8px;border-bottom:1px solid rgba(255,255,255,0.1)">5yr clean track record; TNW USD 200M; guaranteed only, not direct borrower.</div>
+          <div style="padding:8px 0;display:flex;justify-content:space-between;align-items:center">
+            <span style="opacity:0.9">ESG / Thermal Coal Creep</span>
+            <span class="status-badge pass"><span class="status-dot"></span>Clear</span>
+          </div>
+          <div style="font-size:11px;opacity:0.6;padding:4px 0">100% metallurgical (coking) coal — within RedStar policy; thermal coal excluded.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PANEL 2: TERM SHEET
+═══════════════════════════════════════════ -->
+<div id="panel-termsheet" class="panel">
+  <div style="background:var(--ink);padding:32px 48px;border-bottom:3px solid var(--gold)">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">RedStar Bank · Structured Commodity Finance</div>
+    <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:#fff;margin-bottom:4px">Term Sheet — Indicative & Confidential</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5)">Subject to internal credit approval, satisfactory due diligence and documentation · March 2026</div>
+  </div>
+
+  <div class="container">
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="ts-table">
+        <tr><td colspan="2" class="ts-section-header" style="color:var(--gold-light);font-family:'Playfair Display',serif;font-size:14px;font-weight:700;padding:12px 16px;background:var(--ink)">I. PARTIES</td></tr>
+        <tr><td>Borrower</td><td><strong>Outback Creek Resources Pty Ltd</strong>, a mining company incorporated in New South Wales, Australia, operating the Outback Creek metallurgical coal mine in the Hunter Valley.</td></tr>
+        <tr><td>Guarantor</td><td><strong>Seb Trading Corp.</strong>, a commodity trading house incorporated in Zug, Switzerland, with a Tangible Net Worth of USD 200 million, providing a corporate guarantee for all obligations under this facility.</td></tr>
+        <tr><td>Offtaker</td><td><strong>Seb Trading Corp.</strong> (same entity as Guarantor), committed to purchase minimum 2,500,000 MT/year of metallurgical coal FOB Port of Newcastle from Borrower over the Facility term.</td></tr>
+        <tr><td>Lender / Agent</td><td><strong>RedStar Bank</strong>, Valais, Switzerland, acting as sole lender, facility agent, security trustee, and collection account bank.</td></tr>
+
+        <tr><td colspan="2" class="ts-section-header" style="color:var(--gold-light);font-family:'Playfair Display',serif;font-size:14px;font-weight:700;padding:12px 16px;background:var(--ink)">II. FACILITY TERMS</td></tr>
+        <tr><td>Facility Type</td><td>Reserve-Based Pre-Export Finance Facility ("RPEF") — a hybrid reserve-based lending / structured pre-export finance instrument secured by proved coal reserves, offtake cash flows, and mine equipment.</td></tr>
+        <tr><td>Facility Amount</td><td><strong>USD 150,000,000</strong> (United States Dollars one hundred and fifty million)</td></tr>
+        <tr><td>Currency</td><td>USD (United States Dollars)</td></tr>
+        <tr><td>Purpose</td><td>Exclusively for: (a) development of the adjacent PDNP coal field, including construction of necessary production infrastructure; (b) purchase of one (1) longwall mining system and two (2) continuous miners; (c) ancillary capex directly related to the production expansion. No use for general corporate purposes, dividend payments, or refinancing of existing debt without prior written consent of Lender.</td></tr>
+        <tr><td>Availability Period</td><td>Single drawdown on or before <strong>31 December 2026</strong>. If not drawn by that date, the facility shall lapse unless extended by written agreement.</td></tr>
+        <tr><td>Tenor</td><td><strong>5 years</strong> from the date of drawdown, with final maturity no later than 31 December 2031.</td></tr>
+        <tr><td>Repayment Profile</td><td>
+          Semi-annual repayments beginning 6 months after drawdown, following a sculpted amortisation schedule based on production ramp-up:<br><br>
+          <table style="font-size:12px;font-family:'DM Mono',monospace;border-collapse:collapse;width:100%">
+            <tr style="background:var(--cream)"><th style="padding:6px;text-align:left;border:1px solid var(--steel)">Year</th><th style="padding:6px;text-align:right;border:1px solid var(--steel)">H1 Repayment</th><th style="padding:6px;text-align:right;border:1px solid var(--steel)">H2 Repayment</th><th style="padding:6px;text-align:right;border:1px solid var(--steel)">Annual Total</th></tr>
+            <tr><td style="padding:6px;border:1px solid var(--steel)">2027</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">7,500,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">7,500,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">15,000,000</td></tr>
+            <tr><td style="padding:6px;border:1px solid var(--steel)">2028</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">10,000,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">10,000,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">20,000,000</td></tr>
+            <tr><td style="padding:6px;border:1px solid var(--steel)">2029</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">15,000,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">15,000,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">30,000,000</td></tr>
+            <tr><td style="padding:6px;border:1px solid var(--steel)">2030</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">20,000,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">20,000,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">40,000,000</td></tr>
+            <tr style="background:var(--cream);font-weight:600"><td style="padding:6px;border:1px solid var(--steel)">2031 (Balloon)</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">22,500,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">22,500,000</td><td style="padding:6px;border:1px solid var(--steel);text-align:right">45,000,000</td></tr>
+          </table>
+        </td></tr>
+
+        <tr><td colspan="2" class="ts-section-header" style="color:var(--gold-light);font-family:'Playfair Display',serif;font-size:14px;font-weight:700;padding:12px 16px;background:var(--ink)">III. PRICING & FEES</td></tr>
+        <tr><td>Interest Rate</td><td><strong>SOFR + 4.25% per annum</strong>, payable semi-annually in arrears, calculated on actual/360 basis.</td></tr>
+        <tr><td>Rate Rationale</td><td>SOFR + 4.25% reflects: (a) RBL commodity complexity premium (+1.25%); (b) emerging market / single-mine concentration (+0.75%); (c) junior creditor position vs. existing bonds (+0.50%); (d) base commodity spread (+1.75%). Compares favourably to OCR's existing 13% fixed-rate AUD bonds at current SOFR ≈ 4.3% (all-in ≈ 8.55% vs. existing 13%).</td></tr>
+        <tr><td>Arrangement Fee</td><td>1.50% flat on facility amount (USD 2,250,000), payable on drawdown, non-refundable.</td></tr>
+        <tr><td>Commitment Fee</td><td>0.75% per annum on undrawn amounts during the Availability Period, accruing from signing.</td></tr>
+        <tr><td>Agency Fee</td><td>USD 75,000 per annum, payable annually in advance from drawdown.</td></tr>
+        <tr><td>Prepayment</td><td>Allowed after 24 months from drawdown with 1.0% prepayment premium (declining to nil in Year 5). Mandatory prepayment upon asset disposal, change of control, or excess cash flow (50% cash sweep if DSCR > 2.5x).</td></tr>
+
+        <tr><td colspan="2" class="ts-section-header" style="color:var(--gold-light);font-family:'Playfair Display',serif;font-size:14px;font-weight:700;padding:12px 16px;background:var(--ink)">IV. SECURITY PACKAGE</td></tr>
+        <tr><td>Reserve Charge</td><td>First-ranking security interest over all PDNP reserves (20 Mt as of FY2025) and the PUD reserves to be converted to PDNP/PDP, governed by a Reserve Pledge Agreement with quarterly independent reserve certification.</td></tr>
+        <tr><td>Offtake Assignment</td><td>Assignment of all rights, title and interest in the Seb Trading Corp. long-term offtake agreement, including the right to direct payment of all cargo proceeds to the Collection Account.</td></tr>
+        <tr><td>Equipment Pledge</td><td>First-ranking security interest over the longwall mining system and two continuous miners financed with proceeds, plus any existing mining equipment free of prior security.</td></tr>
+        <tr><td>Stockpile Charge</td><td>First-ranking charge over all coal stockpiles at Port of Newcastle and at the mine premises, monitored by a third-party independent inspector (to be agreed).</td></tr>
+        <tr><td>Collection Account</td><td>Borrower to maintain a USD-denominated collection account with RedStar Bank Singapore Branch. All proceeds from coal sales to Seb Trading (and any substitute offtaker) must be remitted to this account. Waterfall: (1) debt service, (2) reserve account funding, (3) permitted operating expenses, (4) free cash to Borrower.</td></tr>
+        <tr><td>Corporate Guarantee</td><td>Unconditional, irrevocable corporate guarantee from Seb Trading Corp. covering all payment obligations under the facility (principal, interest, fees). Guarantee remains in full force until full repayment.</td></tr>
+        <tr><td>Debt Service Reserve</td><td>Borrower to maintain a Debt Service Reserve Account (DSRA) funded to 6 months of projected debt service, established from first drawdown.</td></tr>
+
+        <tr><td colspan="2" class="ts-section-header" style="color:var(--gold-light);font-family:'Playfair Display',serif;font-size:14px;font-weight:700;padding:12px 16px;background:var(--ink)">V. FINANCIAL COVENANTS</td></tr>
+        <tr><td>DSCR</td><td>Minimum Debt Service Coverage Ratio of <strong>1.20x</strong>, tested semi-annually on a trailing 12-month basis. DSCR = (EBITDA – Taxes – Capex) / (Debt Service). Breach triggers cash sweep; second consecutive breach constitutes an Event of Default.</td></tr>
+        <tr><td>Leverage</td><td>Net Debt / EBITDA ≤ 3.0x, tested semi-annually.</td></tr>
+        <tr><td>Reserve Coverage</td><td>Proved Developed Reserves Value (at bank price deck USD 220/mt net of production costs) to outstanding facility balance ≥ 1.50x at all times.</td></tr>
+        <tr><td>Minimum Production</td><td>Borrower to achieve minimum production of 3.0 Mt/year from 2028 onwards (≥ 60% of target). Shortfall in any two consecutive semi-annual periods constitutes a Review Event.</td></tr>
+        <tr><td>Liquidity</td><td>Minimum unrestricted cash of USD 10 million at all times.</td></tr>
+        <tr><td>Offtake Obligation</td><td>Seb Trading Corp. to maintain its committed offtake of minimum 2.5 Mt/year throughout the facility term. Reduction below 1.5 Mt/year without Lender consent constitutes an Event of Default.</td></tr>
+
+        <tr><td colspan="2" class="ts-section-header" style="color:var(--gold-light);font-family:'Playfair Display',serif;font-size:14px;font-weight:700;padding:12px 16px;background:var(--ink)">VI. CONDITIONS PRECEDENT & GENERAL</td></tr>
+        <tr><td>Conditions Precedent</td><td>Satisfactory completion of: (a) technical due diligence on reserves (independent reserve engineer); (b) legal due diligence; (c) environmental & social review (ESRS); (d) audited FY2025 financial statements of both OCR and Seb Trading; (e) execution of all security documents; (f) receipt of all regulatory approvals; (g) establishment of Collection Account and DSRA.</td></tr>
+        <tr><td>Governing Law</td><td>English law. Jurisdiction: English courts (non-exclusive). Security documents governed by applicable NSW/Australian law where required for enforceability.</td></tr>
+        <tr><td>Exclusivity</td><td>RedStar Bank requests 45-day exclusivity from mandate award to allow completion of due diligence and documentation.</td></tr>
+        <tr><td>Expiry</td><td>This indicative term sheet expires 30 days from date of issue unless countersigned by the Borrower and Guarantor.</td></tr>
+      </table>
+    </div>
+
+    <div class="footnote" style="margin-top:16px">
+      This term sheet is indicative only and does not constitute a binding commitment. All terms subject to satisfactory due diligence, credit committee approval, and final documentation. RedStar Bank reserves all rights.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PANEL 3: SCENARIO ENGINE
+═══════════════════════════════════════════ -->
+<div id="panel-scenario" class="panel">
+  <div style="background:var(--ink);padding:24px 48px;border-bottom:2px solid var(--red)">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Interactive Credit Committee Tool</div>
+    <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:#fff">Scenario & Sensitivity Engine</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px">Adjust assumptions to test covenant compliance, debt capacity and returns under stress scenarios</div>
+  </div>
+
+  <div class="container">
+    <div class="scenario-grid">
+
+      <!-- CONTROLS -->
+      <div class="card">
+        <h3>Scenario Assumptions</h3>
+        <h2 style="margin-bottom:24px">Input Parameters</h2>
+
+        <!-- Preset Scenarios -->
+        <div class="control-group">
+          <div class="control-label">Quick Scenario Presets</div>
+          <select class="select-control" id="preset-select" onchange="applyPreset(this.value)">
+            <option value="base">Base Case</option>
+            <option value="bull">Bull Case (High Production)</option>
+            <option value="bear">Bear Case (Low Price)</option>
+            <option value="stress">Stress Test (Price + Production)</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">Coal Price (FOB Newcastle, $/mt) <span class="val-display" id="v-price">$223</span></div>
+          <input type="range" id="s-price" min="120" max="300" value="223" oninput="updateVal('v-price','$'+this.value);calcScenario()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">Production Year 1 (2027, Mt) <span class="val-display" id="v-prod1">3.0</span></div>
+          <input type="range" id="s-prod1" min="1.5" max="5.0" step="0.1" value="3.0" oninput="updateVal('v-prod1',parseFloat(this.value).toFixed(1));calcScenario()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">Production Year 2-3 (Mt) <span class="val-display" id="v-prod2">4.0</span></div>
+          <input type="range" id="s-prod2" min="2.0" max="5.0" step="0.1" value="4.0" oninput="updateVal('v-prod2',parseFloat(this.value).toFixed(1));calcScenario()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">Production Year 4-5 (Mt) <span class="val-display" id="v-prod3">5.0</span></div>
+          <input type="range" id="s-prod3" min="2.5" max="5.0" step="0.1" value="5.0" oninput="updateVal('v-prod3',parseFloat(this.value).toFixed(1));calcScenario()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">Cost of Production ($/mt) <span class="val-display" id="v-cost">$125</span></div>
+          <input type="range" id="s-cost" min="90" max="170" value="125" oninput="updateVal('v-cost','$'+this.value);calcScenario()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">Transport Cost ($/mt) <span class="val-display" id="v-trans">$20</span></div>
+          <input type="range" id="s-trans" min="15" max="35" value="20" oninput="updateVal('v-trans','$'+this.value);calcScenario()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">SOFR Rate (%) <span class="val-display" id="v-sofr">4.30%</span></div>
+          <input type="range" id="s-sofr" min="1" max="8" step="0.1" value="4.3" oninput="updateVal('v-sofr',parseFloat(this.value).toFixed(2)+'%');calcScenario()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">Facility Amount (USD M) <span class="val-display" id="v-facility">$150M</span></div>
+          <input type="range" id="s-facility" min="100" max="200" value="150" oninput="updateVal('v-facility','$'+this.value+'M');calcScenario()">
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div>
+        <!-- KPI Row -->
+        <div class="metric-row" id="metric-row">
+          <div class="metric" id="m-dscr">
+            <span class="m-val" id="mv-dscr">—</span>
+            <div class="m-lbl">Avg DSCR (5yr)</div>
+          </div>
+          <div class="metric" id="m-cov">
+            <span class="m-val" id="mv-cov">—</span>
+            <div class="m-lbl">Reserve Coverage</div>
+          </div>
+          <div class="metric" id="m-irr">
+            <span class="m-val" id="mv-irr">—</span>
+            <div class="m-lbl">Bank IRR (est.)</div>
+          </div>
+        </div>
+
+        <!-- Cashflow Table -->
+        <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px">
+          <div style="padding:16px 20px;background:var(--cream);border-bottom:1px solid var(--steel);font-family:'Playfair Display',serif;font-weight:700;font-size:16px">5-Year Cash Flow Model (USD 000s)</div>
+          <div style="overflow-x:auto">
+          <table class="cf-table" id="cf-table">
+            <thead>
+              <tr>
+                <th style="text-align:left">Line Item</th>
+                <th>2027</th><th>2028</th><th>2029</th><th>2030</th><th>2031</th>
+              </tr>
+            </thead>
+            <tbody id="cf-body"></tbody>
+          </table>
+          </div>
+        </div>
+
+        <!-- Covenant Bars -->
+        <div class="card" style="margin-bottom:20px">
+          <h3>Covenant Compliance</h3>
+          <div class="bar-chart" id="covenant-bars"></div>
+        </div>
+
+        <!-- Verdict -->
+        <div id="verdict-box">
+          <div id="verdict-title">✓ Credit Committee Verdict</div>
+          <div id="verdict-body"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PANEL 4: CREDIT MEMO / APPROVAL
+═══════════════════════════════════════════ -->
+<div id="panel-approval" class="panel">
+  <div style="background:var(--ink);padding:24px 48px;border-bottom:2px solid var(--gold)">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Internal — Credit Committee Memorandum</div>
+    <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:#fff">Credit Approval Summary</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px">Outback Creek Resources / Seb Trading Corp. · USD 150M RPEF · March 2026</div>
+  </div>
+
+  <div class="container">
+
+    <div class="grid-2" style="margin-bottom:24px">
+      <!-- Balance Sheet Analysis -->
+      <div class="card">
+        <h3>OCR Balance Sheet Analysis (FY2025)</h3>
+        <h2>Financial Snapshot</h2>
+        <table style="width:100%;font-size:13px;border-collapse:collapse">
+          <tr style="border-bottom:1px solid var(--steel)">
+            <td style="padding:7px 0;color:var(--ink-light)">Total Assets</td>
+            <td style="padding:7px 0;text-align:right;font-family:'DM Mono',monospace">$478.7M</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--steel)">
+            <td style="padding:7px 0;color:var(--ink-light)">Equity</td>
+            <td style="padding:7px 0;text-align:right;font-family:'DM Mono',monospace">$180.0M</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--steel)">
+            <td style="padding:7px 0;color:var(--ink-light)">LT Debt (Bonds @ 13%, mat. 2031)</td>
+            <td style="padding:7px 0;text-align:right;font-family:'DM Mono',monospace">$110.0M</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--steel)">
+            <td style="padding:7px 0;color:var(--ink-light)">ST Debt</td>
+            <td style="padding:7px 0;text-align:right;font-family:'DM Mono',monospace">$173.3M</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--steel)">
+            <td style="padding:7px 0;color:var(--ink-light)">Inventory (Port + Mine)</td>
+            <td style="padding:7px 0;text-align:right;font-family:'DM Mono',monospace">$140.3M</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--steel)">
+            <td style="padding:7px 0;color:var(--ink-light)">Net Debt / Equity (current)</td>
+            <td style="padding:7px 0;text-align:right;font-family:'DM Mono',monospace;color:var(--amber)">1.57x</td>
+          </tr>
+          <tr>
+            <td style="padding:7px 0;color:var(--ink-light)">Net Debt / Equity (post-drawdown)</td>
+            <td style="padding:7px 0;text-align:right;font-family:'DM Mono',monospace;color:var(--red)">2.41x</td>
+          </tr>
+        </table>
+        <div class="footnote">ST Debt ($173M) likely comprises existing trade finance / working capital lines — to be confirmed during DD. Bond maturity 2031 = co-terminus with this facility.</div>
+      </div>
+
+      <!-- Reserve Analysis -->
+      <div class="card">
+        <h3>Reserve Base Analysis</h3>
+        <h2>Lending Base Coverage</h2>
+        <div style="font-size:13px;color:var(--ink-mid);margin-bottom:16px">
+          At bank price deck of <strong>$220/mt</strong>, production cost $125/mt, transport $20/mt — net margin $75/mt
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row">
+            <div class="bar-lbl">PDP (10 Mt)</div>
+            <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--green)"></div></div>
+            <div class="bar-val">$750M NPV</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-lbl">PDNP (20 Mt)</div>
+            <div class="bar-track"><div class="bar-fill" style="width:40%;background:var(--gold)"></div></div>
+            <div class="bar-val">$1,500M NPV</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-lbl">PUD (30 Mt)</div>
+            <div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--amber)"></div></div>
+            <div class="bar-val">$2,250M NPV</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-lbl">Probable (50 Mt)</div>
+            <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--steel-dark)"></div></div>
+            <div class="bar-val">$3,750M NPV</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding:12px;background:var(--green-light);border-radius:4px;font-size:13px">
+          <strong style="color:var(--green)">Facility / PDNP Value: 10.0%</strong> — extremely conservative. Even at $150/mt net (severe stress), PDNP alone covers 7.5x the facility.
+        </div>
+      </div>
+    </div>
+
+    <!-- Seb Trading Covenant Analysis -->
+    <div class="card" style="margin-bottom:24px">
+      <h3>Guarantor Assessment — Seb Trading Corp.</h3>
+      <h2>Credit Quality Review</h2>
+      <div class="grid-3" style="margin-top:16px">
+        <div style="font-size:13px">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:8px">Financial Strength</div>
+          <div style="margin-bottom:6px">TNW: <strong>USD 200M</strong></div>
+          <div style="margin-bottom:6px">Existing Facility: <strong>USD 500M</strong></div>
+          <div style="margin-bottom:6px">Facility / TNW: <strong>75%</strong> <span class="status-badge warn" style="font-size:10px"><span class="status-dot"></span>Monitor</span></div>
+          <div style="margin-bottom:6px">Track record: <strong>5 years clean</strong></div>
+          <div>Guarantee type: <strong>Unconditional</strong></div>
+        </div>
+        <div style="font-size:13px">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:8px">Operational Assessment</div>
+          <div style="margin-bottom:6px">Commodity: <strong>Crude oil & Met coal</strong></div>
+          <div style="margin-bottom:6px">Geographic reach: <strong>Global</strong></div>
+          <div style="margin-bottom:6px">Years in operation: <strong>5+ with RedStar</strong></div>
+          <div style="margin-bottom:6px">Payment record: <strong>Clean (15d B/L)</strong></div>
+          <div>ESG profile: <strong>Aggressive but within policy</strong></div>
+        </div>
+        <div style="font-size:13px">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:8px">Concentration Risk</div>
+          <div style="margin-bottom:6px">Total exposure post-close: <strong>$150M (+guarantee)</strong></div>
+          <div style="margin-bottom:6px">Existing facility: <strong>$500M</strong></div>
+          <div style="margin-bottom:6px">Total group exposure: <strong>≤ $650M</strong></div>
+          <div style="margin-bottom:6px">Limit vs TNW: <strong>325%</strong> <span class="status-badge warn" style="font-size:10px"><span class="status-dot"></span>High</span></div>
+          <div>Mitigation: <strong>Self-liquidating; security covers both</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Approval Checklist -->
+    <div class="grid-2">
+      <div class="card">
+        <h3>Credit Committee Checklist</h3>
+        <h2>Approval Requirements</h2>
+        <ul class="checklist">
+          <li><div class="check-icon check-pass">✓</div><div><strong>Commodity Policy:</strong> Met coal financing within RedStar policy. Thermal coal excluded from this transaction.</div></li>
+          <li><div class="check-icon check-pass">✓</div><div><strong>Relationship Quality:</strong> 5 years with Seb Trading; 3 years monitoring OCR. Clean performance history.</div></li>
+          <li><div class="check-icon check-pass">✓</div><div><strong>Security Package:</strong> First-ranking reserve charge + offtake assignment + equipment pledge + DSRA. Multi-layered.</div></li>
+          <li><div class="check-icon check-pass">✓</div><div><strong>Self-Liquidating Structure:</strong> Repayment from export cash flows via controlled collection account. Standard PXF structure.</div></li>
+          <li><div class="check-icon check-warn">!</div><div><strong>Leverage (Post-Drawdown):</strong> Net Debt/Equity rises to ~2.4x. Acceptable given reserve asset backing. Monitor closely.</div></li>
+          <li><div class="check-icon check-warn">!</div><div><strong>Guarantor Concentration:</strong> Combined Seb Trading exposure ≈ $650M vs. TNW $200M. Mitigated by self-liquidating nature and dual security.</div></li>
+          <li><div class="check-icon check-pass">✓</div><div><strong>Reserve Coverage:</strong> PDNP alone provides 7.5x+ coverage at bank price deck. Extremely conservative.</div></li>
+          <li><div class="check-icon check-warn">!</div><div><strong>Pari Passu / Intercreditor:</strong> Must confirm position vs. $110M existing bonds (same 2031 maturity). Intercreditor agreement required.</div></li>
+          <li><div class="check-icon check-pass">✓</div><div><strong>Pricing:</strong> SOFR+4.25% (all-in ~8.55%) well below OCR's 13% existing bonds. Competitive yet appropriate for risk.</div></li>
+          <li><div class="check-icon check-pass">✓</div><div><strong>ESG:</strong> Metallurgical coal (steel production) — distinct from thermal coal. Within current ESG framework. Document coal type explicitly.</div></li>
+        </ul>
+      </div>
+
+      <div>
+        <!-- Security Waterfall -->
+        <div class="card" style="margin-bottom:24px">
+          <h3>Enforcement Priority — Security Waterfall</h3>
+          <h2 style="margin-bottom:16px">Recovery Ranking</h2>
+          <div class="waterfall">
+            <div class="wf-layer wf-1"><div class="wf-rank">1</div><div class="wf-name">Collection Account Receipts (Ongoing)</div><div class="wf-amount">First Claim</div></div>
+            <div class="wf-layer wf-2"><div class="wf-rank">2</div><div class="wf-name">DSRA (6-month reserve)</div><div class="wf-amount">~$8–12M</div></div>
+            <div class="wf-layer wf-3"><div class="wf-rank">3</div><div class="wf-name">Port Stockpile Charge (~6 Panamax)</div><div class="wf-amount">~$100M</div></div>
+            <div class="wf-layer wf-4"><div class="wf-rank">4</div><div class="wf-name">Equipment Pledge (Longwall + Miners)</div><div class="wf-amount">~$40–60M</div></div>
+            <div class="wf-layer wf-5"><div class="wf-rank">5</div><div class="wf-name">PDNP Reserve Charge (20 Mt)</div><div class="wf-amount">$750M+ NPV</div></div>
+            <div class="wf-layer" style="background:var(--steel);color:var(--ink)"><div class="wf-rank">6</div><div class="wf-name">Corporate Guarantee — Seb Trading Corp.</div><div class="wf-amount">Backstop</div></div>
+          </div>
+        </div>
+
+        <!-- Recommended Decision -->
+        <div class="card card-dark">
+          <h3>Credit Committee Recommendation</h3>
+          <h2 style="color:#fff;margin-bottom:16px">Recommended: APPROVE</h2>
+          <div style="font-size:13px;opacity:0.85;line-height:1.8">
+            <p style="margin-bottom:10px">The USD 150M RPEF facility for Outback Creek Resources, guaranteed by Seb Trading Corp., is recommended for approval subject to:</p>
+            <ol style="padding-left:18px;line-height:2">
+              <li>Satisfactory independent reserve engineer report confirming PDNP classification</li>
+              <li>Execution of intercreditor agreement with existing AUD bond holders</li>
+              <li>Completion of ESRS confirming 100% metallurgical coal production</li>
+              <li>Legal opinion on enforceability of security under NSW law</li>
+              <li>Satisfactory review of OCR's full audited financial statements and consolidated group structure</li>
+            </ol>
+          </div>
+          <div style="margin-top:16px;padding:12px;background:rgba(200,16,46,0.2);border-radius:4px;font-size:13px;color:var(--red-light)">
+            ⚠ Concentration risk with Seb Trading requires sign-off from Country Risk (Switzerland) and Sector Head (Commodity Finance). Escalate to Executive Credit Committee given facility size.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PANEL 5: HEDGING — FULLY INTERACTIVE
+═══════════════════════════════════════════ -->
+<div id="panel-hedging" class="panel">
+  <div style="background:var(--ink);padding:24px 48px;border-bottom:2px solid var(--gold)">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">RedStar Bank · Treasury & Risk Solutions — Interactive Hedge Builder</div>
+    <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:#fff">Hedging Programme</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px">Fully amendable commodity price hedge (SGX U7 futures) &amp; FX forward hedge (AUD/USD) — adjust coverage by year and see real-time DSCR &amp; P&amp;L impact</div>
+  </div>
+
+  <div class="container">
+
+    <!-- QUICK PRESETS -->
+    <div class="grid-3" style="margin-bottom:24px">
+      <div class="card card-red" style="cursor:pointer" onclick="applyHedgePreset('base')">
+        <h3>Base Hedge (Excel Model)</h3>
+        <div style="font-size:15px;font-weight:700;margin-bottom:6px">20% / 10% Coal · 50% FX</div>
+        <div style="font-size:12px;opacity:0.9">As structured in the original Excel — conservative coal hedge, full FX forward programme</div>
+        <div style="margin-top:10px;font-size:11px;font-family:'DM Mono',monospace;opacity:0.8">Click to apply →</div>
+      </div>
+      <div class="card card-dark" style="cursor:pointer" onclick="applyHedgePreset('full')">
+        <h3>Aggressive Hedge</h3>
+        <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">50% / 30% Coal · 80% FX</div>
+        <div style="font-size:12px;opacity:0.8">Maximum protection — higher margin call risk but strongest DSCR floor under stress</div>
+        <div style="margin-top:10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--gold-light)">Click to apply →</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="applyHedgePreset('none')">
+        <h3>Unhedged (Reference)</h3>
+        <div style="font-size:15px;font-weight:700;color:var(--red);margin-bottom:6px">0% Coal · 0% FX</div>
+        <div style="font-size:13px;color:var(--ink-mid)">No hedging — full commodity and FX exposure. Shows downside risk to covenant compliance</div>
+        <div style="margin-top:10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--red)">Click to apply →</div>
+      </div>
+    </div>
+
+    <!-- MAIN HEDGE BUILDER -->
+    <div style="display:grid;grid-template-columns:420px 1fr;gap:24px;align-items:start">
+
+      <!-- LEFT: CONTROLS -->
+      <div>
+
+        <!-- PART A: COMMODITY -->
+        <div class="card" style="margin-bottom:20px">
+          <h3>Part A — Commodity Hedge</h3>
+          <h2 style="margin-bottom:4px">SGX U7 Futures — % of Production Hedged</h2>
+          <div style="font-size:12px;color:var(--ink-light);margin-bottom:16px">Short paper positions. Max 50% per covenant; beyond 2yr: thin liquidity + margin call risk.</div>
+
+          <div id="coal-controls"></div>
+
+          <div style="margin-top:12px;padding:10px;background:var(--amber-light);border-radius:4px;font-size:12px;border-left:3px solid var(--amber)">
+            <strong style="color:var(--amber)">⚠ Margin Call Gauge:</strong>
+            <div style="margin-top:6px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1;height:8px;background:var(--steel);border-radius:4px;overflow:hidden">
+                <div id="margin-bar" style="height:100%;border-radius:4px;transition:width 0.4s,background 0.4s;background:var(--green);width:10%"></div>
+              </div>
+              <span id="margin-label" style="font-family:'DM Mono',monospace;font-size:11px;width:80px;text-align:right;color:var(--green)">LOW</span>
+            </div>
+            <div id="margin-warning" style="font-size:11px;color:var(--amber);margin-top:4px;display:none">Position too large — consider reducing to avoid unmanageable variation margin calls in a rally.</div>
+          </div>
+        </div>
+
+        <!-- PART B: FX -->
+        <div class="card" style="margin-bottom:20px">
+          <h3>Part B — FX Forward Hedge</h3>
+          <h2 style="margin-bottom:4px">AUD/USD Forwards — % of AUD Cost Base Hedged</h2>
+          <div style="font-size:12px;color:var(--ink-light);margin-bottom:16px">Locks in USD-equivalent production costs. Current spot: 0.70. Forward rates negotiated per schedule.</div>
+
+          <div id="fx-controls"></div>
+
+          <div style="margin-top:12px;padding:10px;background:var(--cream);border-radius:4px;border:1px solid var(--steel);font-size:12px">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-light);margin-bottom:6px">AUD/USD Stress Rate (scenario)</div>
+            <div class="control-label">AUD rises to: <span class="val-display" id="hv-audstress">0.80</span></div>
+            <input type="range" id="hs-audstress" min="0.60" max="0.95" step="0.01" value="0.80" oninput="document.getElementById('hv-audstress').textContent=parseFloat(this.value).toFixed(2);calcAllHedges()">
+          </div>
+        </div>
+
+        <!-- MARKET INPUTS -->
+        <div class="card">
+          <h3>Market Assumptions</h3>
+          <h2 style="margin-bottom:16px">Spot Prices at Hedge Expiry</h2>
+          <div class="control-group">
+            <div class="control-label">Coal spot at Dec-26 expiry <span class="val-display" id="hv-spot26">$180</span></div>
+            <input type="range" id="hs-spot26" min="100" max="320" value="180" oninput="document.getElementById('hv-spot26').textContent='$'+this.value;calcAllHedges()">
+          </div>
+          <div class="control-group">
+            <div class="control-label">Coal spot at Dec-27 expiry <span class="val-display" id="hv-spot27">$200</span></div>
+            <input type="range" id="hs-spot27" min="100" max="320" value="200" oninput="document.getElementById('hv-spot27').textContent='$'+this.value;calcAllHedges()">
+          </div>
+          <div class="control-group">
+            <div class="control-label">Long-run coal price (Yr 3–5) <span class="val-display" id="hv-longprice">$220</span></div>
+            <input type="range" id="hs-longprice" min="140" max="300" value="220" oninput="document.getElementById('hv-longprice').textContent='$'+this.value;calcAllHedges()">
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div>
+
+        <!-- LIVE KPIs -->
+        <div class="metric-row" style="margin-bottom:20px">
+          <div class="metric" id="hm-hedgePL">
+            <span class="m-val" id="hmv-hedgePL">—</span>
+            <div class="m-lbl">Total Hedge P&amp;L (2yr)</div>
+          </div>
+          <div class="metric" id="hm-fxSaving">
+            <span class="m-val" id="hmv-fxSaving">—</span>
+            <div class="m-lbl">FX Saving (5yr, $M)</div>
+          </div>
+          <div class="metric" id="hm-dscr1">
+            <span class="m-val" id="hmv-dscr1">—</span>
+            <div class="m-lbl">Hedged DSCR Yr1</div>
+          </div>
+        </div>
+
+        <!-- YEAR-BY-YEAR RESULTS TABLE -->
+        <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px">
+          <div style="padding:14px 20px;background:var(--cream);border-bottom:1px solid var(--steel);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-weight:700;font-size:16px">Year-by-Year Hedge Summary</span>
+            <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-light);text-transform:uppercase;letter-spacing:0.08em">All values USD 000s</span>
+          </div>
+          <div style="overflow-x:auto">
+          <table class="cf-table" id="hedge-annual-table">
+            <thead>
+              <tr>
+                <th style="text-align:left">Line Item</th>
+                <th>2026</th><th>2027</th><th>2028</th><th>2029</th><th>2030</th><th>2031</th>
+              </tr>
+            </thead>
+            <tbody id="hedge-annual-body"></tbody>
+          </table>
+          </div>
+        </div>
+
+        <!-- COAL HEDGE VISUAL -->
+        <div class="card" style="margin-bottom:20px">
+          <h3>Commodity Hedge — Coverage vs. Production</h3>
+          <div id="coal-bars" style="margin-top:12px"></div>
+        </div>
+
+        <!-- FX HEDGE VISUAL -->
+        <div class="card" style="margin-bottom:20px">
+          <h3>FX Forward Schedule — Locked vs. Stress Rate</h3>
+          <div id="fx-bars" style="margin-top:12px"></div>
+        </div>
+
+        <!-- VERDICT -->
+        <div id="hedge-verdict-box" style="padding:20px 24px;border-radius:6px;border-left:4px solid var(--green);background:var(--green-light);transition:all 0.3s">
+          <div id="hedge-verdict-title" style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:6px"></div>
+          <div id="hedge-verdict-body" style="font-size:13px;color:var(--ink-mid)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW THE HEDGES WORK - MECHANICS -->
+    <div class="divider"></div>
+    <div class="section-title">Hedge Mechanics</div>
+    <div class="grid-2" style="margin-bottom:24px">
+      <div class="card">
+        <h3>Commodity Hedge — SGX U7 Short Futures</h3>
+        <div style="font-size:13px;color:var(--ink-mid);line-height:1.8">
+          <div style="display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:start;margin-bottom:8px"><div style="font-family:'DM Mono',monospace;color:var(--red);font-weight:700">1</div><div><strong>Sell futures</strong> — RedStar sells SGX U7 December contracts on OCR's behalf at current futures price (e.g. $251 for Dec-26).</div></div>
+          <div style="display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:start;margin-bottom:8px"><div style="font-family:'DM Mono',monospace;color:var(--red);font-weight:700">2</div><div><strong>Cash settlement</strong> — at expiry, position is cash-settled vs. TSI FOB Australia index. Gain = (Futures − Spot) × hedged MT if price falls; Loss if price rises (offset by physical).</div></div>
+          <div style="display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:start;margin-bottom:8px"><div style="font-family:'DM Mono',monospace;color:var(--red);font-weight:700">3</div><div><strong>Collection account routing</strong> — all hedge P&amp;L flows through RedStar-controlled collection account before release to OCR. Gain = directly services debt.</div></div>
+          <div style="display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:start"><div style="font-family:'DM Mono',monospace;color:var(--red);font-weight:700">4</div><div><strong>Margin calls</strong> — variation margin on upside moves funded from operating cash. Capped at 50% to avoid liquidity crunch. DSRA acts as buffer.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>FX Forward Hedge — AUD/USD Annual Forwards</h3>
+        <div style="font-size:13px;color:var(--ink-mid);line-height:1.8">
+          <div style="display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:start;margin-bottom:8px"><div style="font-family:'DM Mono',monospace;color:var(--gold);font-weight:700">1</div><div><strong>AUD cost exposure</strong> — OCR's prod ($125) + transport ($20) = $145/mt is AUD-denominated. A stronger AUD raises USD-equivalent costs.</div></div>
+          <div style="display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:start;margin-bottom:8px"><div style="font-family:'DM Mono',monospace;color:var(--gold);font-weight:700">2</div><div><strong>Buy AUD forward</strong> — RedStar sells AUD/buys USD forward at the negotiated schedule (0.72→0.82), locking in a predictable USD cost per tonne.</div></div>
+          <div style="display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:start;margin-bottom:8px"><div style="font-family:'DM Mono',monospace;color:var(--gold);font-weight:700">3</div><div><strong>Upward-sloping schedule</strong> — the forward curve assumes a modest AUD appreciation over 5 years (interest rate differential). Negotiated rates reflect RedStar's bid price.</div></div>
+          <div style="display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:start"><div style="font-family:'DM Mono',monospace;color:var(--gold);font-weight:700">4</div><div><strong>Bank revenue</strong> — RedStar earns bid/offer spread (~0.25% p.a.) plus potential mark-to-market gains on the ISDA book. Est. total: USD 1.5–2.5M over facility life.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TERM SHEET ADDITIONS — dynamic -->
+    <div class="divider"></div>
+    <div class="section-title">Live Term Sheet — Hedge Covenants</div>
+    <div class="section-sub">Updates automatically to reflect the coverage levels set above</div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="ts-table" id="live-termsheet">
+        <tr><td colspan="2" style="background:var(--ink);color:var(--gold-light);font-family:'Playfair Display',serif;font-size:14px;font-weight:700;padding:12px 16px">COMMODITY HEDGE — COVENANTED REQUIREMENTS (LIVE)</td></tr>
+        <tr><td>Instrument</td><td>Short SGX Australian Coking Coal (U7) futures, cash-settled vs. TSI FOB Australia index. Contract size: 100 MT/lot.</td></tr>
+        <tr id="ts-coal-min"><td>Minimum Cover</td><td>—</td></tr>
+        <tr id="ts-coal-max"><td>Maximum Cover</td><td>Commodity hedging shall not exceed <strong>50% of projected volumes</strong> in any period without Lender consent.</td></tr>
+        <tr id="ts-coal-notional"><td>Est. Hedge Notional</td><td>—</td></tr>
+        <tr><td>Margin Call Threshold</td><td>Lender notification within 3 business days if variation margin exceeds USD 5M in any rolling 30-day period.</td></tr>
+        <tr><td colspan="2" style="background:var(--ink);color:var(--gold-light);font-family:'Playfair Display',serif;font-size:14px;font-weight:700;padding:12px 16px">FX FORWARD HEDGE — COVENANTED REQUIREMENTS (LIVE)</td></tr>
+        <tr id="ts-fx-min"><td>Minimum Cover</td><td>—</td></tr>
+        <tr id="ts-fx-schedule"><td>Forward Rate Schedule</td><td>Indicative: 0.72 (2026) → 0.74 (2027) → 0.76 (2028) → 0.78 (2029) → 0.80 (2030) → 0.82 (2031).</td></tr>
+        <tr id="ts-fx-notional"><td>Est. FX Notional (AUD)</td><td>—</td></tr>
+        <tr><td>Counterparty</td><td>RedStar Bank (preferred). ISDA 2002 Master Agreement. All P&amp;L via Collection Account waterfall.</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── NAVIGATION ──
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── SCENARIO ENGINE ──
+function updateVal(id, val) {
+  document.getElementById(id).textContent = val;
+}
+
+const REPAYMENTS = [15000, 20000, 30000, 40000, 45000]; // USD 000s
+
+function calcScenario() {
+  const price = parseFloat(document.getElementById('s-price').value);
+  const prod1 = parseFloat(document.getElementById('s-prod1').value);
+  const prod2 = parseFloat(document.getElementById('s-prod2').value);
+  const prod3 = parseFloat(document.getElementById('s-prod3').value);
+  const cost = parseFloat(document.getElementById('s-cost').value);
+  const trans = parseFloat(document.getElementById('s-trans').value);
+  const sofr = parseFloat(document.getElementById('s-sofr').value);
+  const facAmt = parseFloat(document.getElementById('s-facility').value) * 1000; // in $000s
+
+  const spread = 4.25;
+  const allInRate = (sofr + spread) / 100;
+  const prodArr = [prod1, prod2, prod2, prod3, prod3]; // Mt/yr
+  const margin = price - cost - trans; // $/mt net margin
+
+  // Build annual P&L
+  let balance = facAmt;
+  const rows = [];
+  const dscrArr = [];
+  const allInArr = [];
+
+  for (let i = 0; i < 5; i++) {
+    const year = 2027 + i;
+    const prod = prodArr[i];
+    const revenue = prod * price * 1000; // $000s (Mt * $/mt * 1000 to get 000s)
+    // Wait: prod is in Mt = 1,000,000 mt. revenue in $000s = prod * 1e6 * price / 1000 = prod * price * 1000
+    const opCost = prod * (cost + trans) * 1000;
+    const ebitda = revenue - opCost;
+    const interest = balance * allInRate;
+    const repay = REPAYMENTS[i];
+    const debtService = interest + repay;
+    const dscr = ebitda / debtService;
+    const ebt = ebitda - interest;
+    const tax = Math.max(0, ebt * 0.30); // 30% notional tax
+    const fcf = ebt - tax - repay;
+
+    dscrArr.push(dscr);
+    balance -= repay;
+
+    rows.push({ year, revenue, opCost, ebitda, interest, repay, debtService, dscr, ebt, tax, fcf, balance: Math.max(0, balance) });
+  }
+
+  // Render CF table
+  const tbody = document.getElementById('cf-body');
+  const fmt = v => {
+    if (v < 0) return '<span class="neg">(' + Math.abs(Math.round(v)).toLocaleString() + ')</span>';
+    return Math.round(v).toLocaleString();
+  };
+  const fmtDscr = v => v.toFixed(2) + 'x';
+
+  tbody.innerHTML = `
+    <tr><td>Revenue (Exports)</td>${rows.map(r=>`<td>${fmt(r.revenue)}</td>`).join('')}</tr>
+    <tr><td>— Operating Costs</td>${rows.map(r=>`<td class="neg">(${Math.round(r.opCost).toLocaleString()})</td>`).join('')}</tr>
+    <tr class="subtotal"><td>EBITDA</td>${rows.map(r=>`<td class="${r.ebitda>0?'pos':'neg'}">${fmt(r.ebitda)}</td>`).join('')}</tr>
+    <tr><td>— Interest</td>${rows.map(r=>`<td class="neg">(${Math.round(r.interest).toLocaleString()})</td>`).join('')}</tr>
+    <tr><td>— Principal Repayment</td>${rows.map(r=>`<td class="neg">(${Math.round(r.repay).toLocaleString()})</td>`).join('')}</tr>
+    <tr><td>— Tax (est. 30%)</td>${rows.map(r=>`<td class="${r.tax>0?'neg':''}">${r.tax>0?'('+Math.round(r.tax).toLocaleString()+')':'-'}</td>`).join('')}</tr>
+    <tr class="subtotal"><td>Free Cash Flow</td>${rows.map(r=>`<td class="${r.fcf>0?'pos':'neg'}">${fmt(r.fcf)}</td>`).join('')}</tr>
+    <tr><td>Outstanding Balance (YE)</td>${rows.map(r=>`<td>${Math.round(r.balance).toLocaleString()}</td>`).join('')}</tr>
+    <tr class="total"><td>DSCR</td>${rows.map(r=>`<td style="color:${r.dscr>=1.2?'#6ee7a0':r.dscr>=1.0?'#fcd34d':'#f87171'}">${fmtDscr(r.dscr)}</td>`).join('')}</tr>
+  `;
+
+  // Avg DSCR
+  const avgDscr = dscrArr.reduce((a,b)=>a+b,0)/5;
+  const minDscr = Math.min(...dscrArr);
+
+  // Reserve coverage (static for simplicity — PDNP NPV)
+  const pdnpNPV = 20 * 1e6 * margin / 1000; // $000s
+  const cov = pdnpNPV / facAmt;
+
+  // IRR estimate (simple)
+  const fees = facAmt * 0.015 + facAmt * 0.0075 * 0.25; // arrangement + partial commitment
+  const totalInterest = rows.reduce((a,r)=>a+r.interest, 0);
+  const irr = ((fees + totalInterest) / facAmt / 3) * 2; // rough simplification
+
+  // Metrics
+  const dscrEl = document.getElementById('m-dscr');
+  const covEl = document.getElementById('m-cov');
+  const mvDscr = document.getElementById('mv-dscr');
+  const mvCov = document.getElementById('mv-cov');
+  const mvIrr = document.getElementById('mv-irr');
+
+  mvDscr.textContent = avgDscr.toFixed(2)+'x';
+  dscrEl.className = 'metric ' + (avgDscr >= 1.5 ? 'good' : avgDscr >= 1.2 ? 'warn' : 'bad');
+
+  mvCov.textContent = cov.toFixed(1)+'x';
+  covEl.className = 'metric ' + (cov >= 2.0 ? 'good' : cov >= 1.5 ? 'warn' : 'bad');
+
+  mvIrr.textContent = (irr*100).toFixed(1)+'%';
+  document.getElementById('m-irr').className = 'metric ' + (irr >= 0.07 ? 'good' : irr >= 0.05 ? 'warn' : 'bad');
+
+  // Covenant bars
+  const bars = document.getElementById('covenant-bars');
+  const minDscrPct = Math.min(100, (minDscr / 2.5) * 100);
+  const covPct = Math.min(100, (cov / 4) * 100);
+  const liqPct = Math.min(100, 80); // static simplified
+
+  bars.innerHTML = `
+    <div class="bar-row">
+      <div class="bar-lbl">Min DSCR (1.20x)</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${minDscrPct}%;background:${minDscr>=1.2?'var(--green)':minDscr>=1.0?'var(--amber)':'var(--red)'}"></div></div>
+      <div class="bar-val">${minDscr.toFixed(2)}x</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Reserve Cover (1.50x)</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${covPct}%;background:${cov>=1.5?'var(--green)':'var(--red)'}"></div></div>
+      <div class="bar-val">${cov.toFixed(1)}x</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Net Lev. (≤3.0x)</div>
+      <div class="bar-track"><div class="bar-fill" style="width:65%;background:var(--gold)"></div></div>
+      <div class="bar-val">2.4x post</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Liquidity ($10M min)</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${liqPct}%;background:var(--green)"></div></div>
+      <div class="bar-val">$16.5M</div>
+    </div>
+  `;
+
+  // Verdict
+  const vbox = document.getElementById('verdict-box');
+  const vtitle = document.getElementById('verdict-title');
+  const vbody = document.getElementById('verdict-body');
+
+  const allPass = minDscr >= 1.2 && cov >= 1.5 && avgDscr >= 1.3;
+  const borderline = minDscr >= 1.0 && cov >= 1.2;
+
+  if (allPass) {
+    vbox.className = '';
+    vbox.style.borderColor = 'var(--green)'; vbox.style.background = 'var(--green-light)';
+    vtitle.textContent = '✓ PASS — All Covenants Met';
+    vbody.textContent = `Avg DSCR ${avgDscr.toFixed(2)}x (min 1.20x threshold met). Reserve coverage ${cov.toFixed(1)}x (min 1.50x met). Facility recommended for approval at these assumptions.`;
+  } else if (borderline) {
+    vbox.style.borderColor = 'var(--amber)'; vbox.style.background = 'var(--amber-light)';
+    vtitle.textContent = '⚠ CAUTION — Borderline Compliance';
+    vbody.textContent = `Min DSCR of ${minDscr.toFixed(2)}x is below 1.20x threshold in at least one period. Consider reducing facility size, increasing amortisation speed, or requiring additional security. Present to credit committee with sensitivity noted.`;
+  } else {
+    vbox.style.borderColor = 'var(--red)'; vbox.style.background = '#FEE8EB';
+    vtitle.textContent = '✗ FAIL — Covenant Breach Under These Assumptions';
+    vbody.textContent = `DSCR and/or reserve coverage fall materially below covenant floors. At price $${price}/mt with ${prod1}Mt Year 1 production, the facility is not serviceable at these parameters. Restructure required — consider lower drawdown, longer tenor, or price floor hedging.`;
+  }
+}
+
+// ── PRESETS ──
+function applyPreset(preset) {
+  const sets = {
+    base:   { price:223, prod1:3.0, prod2:4.0, prod3:5.0, cost:125, trans:20, sofr:4.3, facility:150 },
+    bull:   { price:260, prod1:3.5, prod2:4.5, prod3:5.0, cost:120, trans:18, sofr:4.3, facility:150 },
+    bear:   { price:170, prod1:2.5, prod2:3.5, prod3:4.5, cost:130, trans:22, sofr:5.5, facility:150 },
+    stress: { price:145, prod1:2.0, prod2:3.0, prod3:4.0, cost:135, trans:25, sofr:6.0, facility:150 },
+    custom: null,
+  };
+  const s = sets[preset];
+  if (!s) return;
+  document.getElementById('s-price').value = s.price; updateVal('v-price','$'+s.price);
+  document.getElementById('s-prod1').value = s.prod1; updateVal('v-prod1',s.prod1.toFixed(1));
+  document.getElementById('s-prod2').value = s.prod2; updateVal('v-prod2',s.prod2.toFixed(1));
+  document.getElementById('s-prod3').value = s.prod3; updateVal('v-prod3',s.prod3.toFixed(1));
+  document.getElementById('s-cost').value = s.cost; updateVal('v-cost','$'+s.cost);
+  document.getElementById('s-trans').value = s.trans; updateVal('v-trans','$'+s.trans);
+  document.getElementById('s-sofr').value = s.sofr; updateVal('v-sofr',s.sofr.toFixed(2)+'%');
+  document.getElementById('s-facility').value = s.facility; updateVal('v-facility','$'+s.facility+'M');
+  calcScenario();
+}
+
+// Initial calc
+calcScenario();
+
+// ── HEDGE ENGINE ──
+// Futures curve data from Excel/Barchart
+const COAL_FUTURES = { 2026: 251, 2027: 265, 2028: 265, 2029: 265, 2030: 265 };
+const FX_FORWARDS  = { 2026: 0.72, 2027: 0.74, 2028: 0.76, 2029: 0.78, 2030: 0.80, 2031: 0.82 };
+const PROD_MT      = { 2026: 2.0, 2027: 3.0, 2028: 3.5, 2029: 4.0, 2030: 4.5, 2031: 5.0 };
+const REPAYMENTS_HEDGE = { 2027: 15000, 2028: 20000, 2029: 30000, 2030: 40000, 2031: 45000 };
+const AUD_COST_MT  = 145; // USD at base spot 0.70 — prod $125 + transport $20
+const AUD_COST_AUD = AUD_COST_MT / 0.70; // ~207 AUD/mt
+
+// State: hedge %s by year
+let coalHedge = { 2026: 20, 2027: 10, 2028: 0, 2029: 0, 2030: 0 };
+let fxHedge   = { 2026: 50, 2027: 50, 2028: 50, 2029: 50, 2030: 50, 2031: 50 };
+
+function buildControls() {
+  // Coal controls
+  const cc = document.getElementById('coal-controls');
+  cc.innerHTML = '';
+  [2026,2027,2028,2029,2030].forEach(yr => {
+    const futs = COAL_FUTURES[yr] || 265;
+    cc.innerHTML += `
+      <div class="control-group" style="margin-bottom:14px">
+        <div class="control-label" style="display:flex;justify-content:space-between;align-items:center">
+          <span>${yr} (U7-Dec-${String(yr).slice(2)}, $${futs}/mt)</span>
+          <span class="val-display" id="cv-${yr}">${coalHedge[yr]}%</span>
+        </div>
+        <input type="range" id="cs-${yr}" min="0" max="50" step="5" value="${coalHedge[yr]}"
+          style="accent-color:${yr<=2027?'var(--green)':'var(--steel-dark)'}"
+          oninput="coalHedge[${yr}]=parseInt(this.value);document.getElementById('cv-${yr}').textContent=this.value+'%';calcAllHedges()">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--ink-light);font-family:'DM Mono',monospace;margin-top:2px">
+          <span>0% (unhedged)</span><span style="color:var(--amber)">25% midpoint</span><span style="color:var(--red)">50% MAX</span>
+        </div>
+      </div>`;
+  });
+
+  // FX controls
+  const fc = document.getElementById('fx-controls');
+  fc.innerHTML = '';
+  [2026,2027,2028,2029,2030,2031].forEach(yr => {
+    const fwd = FX_FORWARDS[yr];
+    fc.innerHTML += `
+      <div class="control-group" style="margin-bottom:14px">
+        <div class="control-label" style="display:flex;justify-content:space-between;align-items:center">
+          <span>${yr} (Forward: ${fwd.toFixed(2)})</span>
+          <span class="val-display" id="fv-${yr}">${fxHedge[yr]}%</span>
+        </div>
+        <input type="range" id="fs-${yr}" min="0" max="100" step="10" value="${fxHedge[yr]}"
+          style="accent-color:var(--gold)"
+          oninput="fxHedge[${yr}]=parseInt(this.value);document.getElementById('fv-${yr}').textContent=this.value+'%';calcAllHedges()">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--ink-light);font-family:'DM Mono',monospace;margin-top:2px">
+          <span>0%</span><span>50%</span><span>100%</span>
+        </div>
+      </div>`;
+  });
+}
+
+function applyHedgePreset(preset) {
+  const presets = {
+    base:  { coal: {2026:20,2027:10,2028:0,2029:0,2030:0}, fx: {2026:50,2027:50,2028:50,2029:50,2030:50,2031:50} },
+    full:  { coal: {2026:50,2027:30,2028:10,2029:0,2030:0}, fx: {2026:80,2027:80,2028:80,2029:80,2030:80,2031:80} },
+    none:  { coal: {2026:0, 2027:0, 2028:0,2029:0,2030:0}, fx: {2026:0, 2027:0, 2028:0, 2029:0, 2030:0, 2031:0 } },
+  };
+  const p = presets[preset];
+  if (!p) return;
+  Object.assign(coalHedge, p.coal);
+  Object.assign(fxHedge, p.fx);
+  // Sync sliders
+  [2026,2027,2028,2029,2030].forEach(yr => {
+    const el = document.getElementById('cs-'+yr);
+    if (el) { el.value = coalHedge[yr]; document.getElementById('cv-'+yr).textContent = coalHedge[yr]+'%'; }
+  });
+  [2026,2027,2028,2029,2030,2031].forEach(yr => {
+    const el = document.getElementById('fs-'+yr);
+    if (el) { el.value = fxHedge[yr]; document.getElementById('fv-'+yr).textContent = fxHedge[yr]+'%'; }
+  });
+  calcAllHedges();
+}
+
+function calcAllHedges() {
+  const spot26 = parseFloat(document.getElementById('hs-spot26').value);
+  const spot27 = parseFloat(document.getElementById('hs-spot27').value);
+  const longPrice = parseFloat(document.getElementById('hs-longprice').value);
+  const audStress = parseFloat(document.getElementById('hs-audstress').value);
+  const audSpot = 0.70;
+
+  const spotByYear = { 2026: spot26, 2027: spot27, 2028: longPrice, 2029: longPrice, 2030: longPrice, 2031: longPrice };
+
+  // Per-year calculations
+  const years = [2026,2027,2028,2029,2030,2031];
+  let totalCoalPL = 0, totalFXSaving = 0;
+
+  const rows = {};
+  years.forEach(yr => {
+    const prod = PROD_MT[yr] * 1e6; // mt
+    const spot = spotByYear[yr];
+    const futuresPrice = COAL_FUTURES[yr] || 265;
+    const coalPct = (coalHedge[yr] || 0) / 100;
+    const fxPct   = (fxHedge[yr]   || 0) / 100;
+    const fwd = FX_FORWARDS[yr];
+
+    // Coal hedge P&L ($000s)
+    const hedgedVol = prod * coalPct;
+    const coalPL = (futuresPrice - spot) * hedgedVol / 1000; // $000s
+
+    // FX hedge — cost saving vs unhedged at stress rate
+    // Unhedged cost (AUD cost at stress rate): AUD_COST_AUD / audStress = USD cost
+    // Hedged portion: AUD_COST_AUD / fwd
+    // Unhedged portion: AUD_COST_AUD / audStress
+    const costUnhedged = AUD_COST_AUD / audStress; // USD/mt at stress
+    const costForward  = AUD_COST_AUD / fwd;       // USD/mt at forward
+    const fxSavingPerMT = (costUnhedged - costForward); // saving per hedged MT
+    const fxSaving = fxSavingPerMT * prod * fxPct / 1000; // $000s
+
+    // Revenue (physical + coal hedge)
+    const revenue = prod * spot / 1000; // $000s
+    const effectiveRevenue = revenue + coalPL;
+    // Costs (AUD costs: hedged portion at forward, rest at stress)
+    const audCostHedged = prod * fxPct * costForward / 1000;
+    const audCostUnhedged = prod * (1-fxPct) * costUnhedged / 1000;
+    const totalCost = audCostHedged + audCostUnhedged;
+    const queenslandRoyalty = prod * 44 / 1000; // $44/mt from Excel
+    const ebitda = effectiveRevenue - totalCost - queenslandRoyalty;
+
+    totalCoalPL += coalPL;
+    totalFXSaving += fxSaving;
+
+    rows[yr] = { coalPL, fxSaving, revenue, effectiveRevenue, totalCost, ebitda, coalPct, fxPct, prod, spot, futuresPrice, fwd, fxSavingPerMT };
+  });
+
+  // DSCR Year 1 (2027)
+  const sofr = 0.043, spread = 0.0425;
+  const debtSvc2027 = 15000 + 150000 * (sofr+spread); // repay + interest ($000s)
+  const dscr1 = rows[2027].ebitda / debtSvc2027;
+
+  // Update KPIs
+  const coalPLFmt = (totalCoalPL >= 0 ? '+' : '') + '$' + Math.abs(totalCoalPL/1000).toFixed(1) + 'M';
+  document.getElementById('hmv-hedgePL').textContent = coalPLFmt;
+  document.getElementById('hm-hedgePL').className = 'metric ' + (totalCoalPL >= 0 ? 'good' : 'bad');
+
+  document.getElementById('hmv-fxSaving').textContent = '+$' + (totalFXSaving/1000).toFixed(1) + 'M';
+  document.getElementById('hm-fxSaving').className = 'metric good';
+
+  document.getElementById('hmv-dscr1').textContent = dscr1.toFixed(2) + 'x';
+  document.getElementById('hm-dscr1').className = 'metric ' + (dscr1>=1.5?'good':dscr1>=1.2?'warn':'bad');
+
+  // Annual table
+  const fmtK = v => {
+    const abs = Math.abs(Math.round(v)).toLocaleString();
+    if (v < 0) return '<span class="neg">('+abs+')</span>';
+    if (v > 0) return '<span class="pos">'+abs+'</span>';
+    return '—';
+  };
+  const tbody = document.getElementById('hedge-annual-body');
+  tbody.innerHTML = `
+    <tr><td>Production (Mt)</td>${years.map(yr=>`<td style="font-family:'DM Mono',monospace">${PROD_MT[yr].toFixed(1)}</td>`).join('')}</tr>
+    <tr><td>Coal Hedge %</td>${years.map(yr=>`<td style="font-family:'DM Mono',monospace;color:${(coalHedge[yr]||0)>0?'var(--green)':'var(--ink-light)'}">${coalHedge[yr]||0}%</td>`).join('')}</tr>
+    <tr><td>FX Hedge %</td>${years.map(yr=>`<td style="font-family:'DM Mono',monospace;color:${(fxHedge[yr]||0)>0?'var(--gold)':'var(--ink-light)'}">${fxHedge[yr]||0}%</td>`).join('')}</tr>
+    <tr><td>Spot Price ($/mt)</td>${years.map(yr=>`<td style="font-family:'DM Mono',monospace">$${spotByYear[yr]}</td>`).join('')}</tr>
+    <tr><td>Futures / Fwd ($/mt or AUD)</td>${years.map(yr=>`<td style="font-family:'DM Mono',monospace">$${COAL_FUTURES[yr]||265} / ${FX_FORWARDS[yr].toFixed(2)}</td>`).join('')}</tr>
+    <tr class="subtotal"><td>Coal Hedge P&amp;L ($000s)</td>${years.map(yr=>fmtK(rows[yr].coalPL)).map(v=>`<td>${v}</td>`).join('')}</tr>
+    <tr class="subtotal"><td>FX Hedge Saving ($000s)</td>${years.map(yr=>fmtK(rows[yr].fxSaving)).map(v=>`<td>${v}</td>`).join('')}</tr>
+    <tr><td>Effective Revenue ($000s)</td>${years.map(yr=>`<td style="font-family:'DM Mono',monospace">${Math.round(rows[yr].effectiveRevenue).toLocaleString()}</td>`).join('')}</tr>
+    <tr><td>Total Costs incl. Royalties ($000s)</td>${years.map(yr=>`<td class="neg" style="font-family:'DM Mono',monospace">(${Math.round(rows[yr].totalCost+PROD_MT[yr]*1e6*44/1000).toLocaleString()})</td>`).join('')}</tr>
+    <tr class="total"><td>EBITDA ($000s)</td>${years.map(yr=>`<td style="font-family:'DM Mono',monospace;color:${rows[yr].ebitda>0?'#6ee7a0':'#f87171'}">${Math.round(rows[yr].ebitda).toLocaleString()}</td>`).join('')}</tr>
+  `;
+
+  // Coal coverage bars
+  const coalBarsEl = document.getElementById('coal-bars');
+  coalBarsEl.innerHTML = [2026,2027,2028,2029,2030].map(yr => {
+    const pct = coalHedge[yr] || 0;
+    const col = pct >= 30 ? 'var(--green)' : pct >= 10 ? 'var(--gold)' : pct > 0 ? 'var(--amber)' : 'var(--steel-dark)';
+    const futures = COAL_FUTURES[yr] || 265;
+    const spotHere = spotByYear[yr];
+    const plMT = (futures - spotHere) * pct / 100;
+    return `<div class="bar-row">
+      <div class="bar-lbl" style="width:130px">${yr} ($${futures}/mt)</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct*2}%;background:${col}"></div></div>
+      <div class="bar-val" style="width:90px">${pct}% hedged</div>
+      <div style="width:80px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;color:${plMT>=0?'var(--green)':'var(--red)'}">P&L: ${plMT>=0?'+':''}$${plMT.toFixed(1)}/mt</div>
+    </div>`;
+  }).join('');
+
+  // FX bars
+  const fxBarsEl = document.getElementById('fx-bars');
+  fxBarsEl.innerHTML = [2026,2027,2028,2029,2030,2031].map(yr => {
+    const pct = fxHedge[yr] || 0;
+    const fwd = FX_FORWARDS[yr];
+    const costAtFwd = AUD_COST_AUD / fwd;
+    const costAtStress = AUD_COST_AUD / audStress;
+    const saving = (costAtStress - costAtFwd).toFixed(1);
+    const col = pct >= 60 ? 'var(--green)' : pct >= 30 ? 'var(--gold)' : pct > 0 ? 'var(--amber)' : 'var(--steel-dark)';
+    return `<div class="bar-row">
+      <div class="bar-lbl" style="width:130px">${yr} (Fwd: ${fwd.toFixed(2)})</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="bar-val" style="width:90px">${pct}% covered</div>
+      <div style="width:100px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;color:${pct>0?'var(--green)':'var(--ink-light)'}">Save: $${saving}/mt</div>
+    </div>`;
+  }).join('');
+
+  // Margin call gauge
+  const avgCoalHedge = [2026,2027,2028,2029,2030].reduce((s,yr)=>s+(coalHedge[yr]||0),0)/5;
+  const marginRisk = avgCoalHedge / 50; // 0-1
+  const marginBar = document.getElementById('margin-bar');
+  const marginLabel = document.getElementById('margin-label');
+  const marginWarn = document.getElementById('margin-warning');
+  marginBar.style.width = (marginRisk*100) + '%';
+  if (marginRisk > 0.6) {
+    marginBar.style.background = 'var(--red)'; marginLabel.textContent = 'HIGH RISK'; marginLabel.style.color = 'var(--red)';
+    marginWarn.style.display = 'block';
+  } else if (marginRisk > 0.3) {
+    marginBar.style.background = 'var(--amber)'; marginLabel.textContent = 'MODERATE'; marginLabel.style.color = 'var(--amber)';
+    marginWarn.style.display = 'none';
+  } else {
+    marginBar.style.background = 'var(--green)'; marginLabel.textContent = 'LOW'; marginLabel.style.color = 'var(--green)';
+    marginWarn.style.display = 'none';
+  }
+
+  // Verdict
+  const vbox = document.getElementById('hedge-verdict-box');
+  const vtitle = document.getElementById('hedge-verdict-title');
+  const vbody  = document.getElementById('hedge-verdict-body');
+  const avgFXHedge = [2026,2027,2028,2029,2030,2031].reduce((s,yr)=>s+(fxHedge[yr]||0),0)/6;
+  const coalYr1Hedged = (coalHedge[2026]||0) >= 10;
+  const fxAdequate = avgFXHedge >= 30;
+  const marginsOK = avgCoalHedge <= 30;
+  const dscr1OK = dscr1 >= 1.2;
+
+  if (coalYr1Hedged && fxAdequate && marginsOK && dscr1OK) {
+    vbox.style.borderColor='var(--green)'; vbox.style.background='var(--green-light)';
+    vtitle.textContent = '✓ PASS — Hedge Programme Approved';
+    vbody.textContent = `Year-1 DSCR ${dscr1.toFixed(2)}x (≥1.20x ✓). Commodity hedge meets minimum (${coalHedge[2026]}% in 2026). FX average coverage ${avgFXHedge.toFixed(0)}% (≥30% ✓). Margin call risk: low. All covenants met.`;
+  } else if (!dscr1OK) {
+    vbox.style.borderColor='var(--red)'; vbox.style.background='#FEE8EB';
+    vtitle.textContent = '✗ FAIL — DSCR Covenant Breach in Year 1';
+    vbody.textContent = `DSCR of ${dscr1.toFixed(2)}x is below the 1.20x floor. ${!coalYr1Hedged?'Commodity hedge is zero — at least 10% required for Year 1. ':''}${!fxAdequate?'FX coverage too low — AUD appreciation is compressing margins.':''}`;
+  } else if (!coalYr1Hedged || !fxAdequate) {
+    vbox.style.borderColor='var(--amber)'; vbox.style.background='var(--amber-light)';
+    vtitle.textContent = '⚠ CAUTION — Below Minimum Covenant Levels';
+    vbody.textContent = `${!coalYr1Hedged?'Commodity hedge below the minimum 10% for Year 1 ('+coalHedge[2026]+'% set). ':''} ${!fxAdequate?'Average FX coverage '+avgFXHedge.toFixed(0)+'% is below the 30% minimum required. ':''}DSCR is ${dscr1.toFixed(2)}x.`;
+  } else if (!marginsOK) {
+    vbox.style.borderColor='var(--amber)'; vbox.style.background='var(--amber-light)';
+    vtitle.textContent = '⚠ CAUTION — High Margin Call Exposure';
+    vbody.textContent = `Coal hedge of ${avgCoalHedge.toFixed(0)}% average exceeds 30% — large short futures position creates significant variation margin risk in a coal price rally. Consider reducing to 20–25%.`;
+  } else {
+    vbox.style.borderColor='var(--green)'; vbox.style.background='var(--green-light)';
+    vtitle.textContent = '✓ PASS — Hedge Programme Acceptable';
+    vbody.textContent = `DSCR ${dscr1.toFixed(2)}x. Coal Year-1 coverage ${coalHedge[2026]}%. FX average ${avgFXHedge.toFixed(0)}%. All within covenant parameters.`;
+  }
+
+  // Live term sheet
+  const minCoalText = [2026,2027].map(yr => `${yr}: minimum <strong>${coalHedge[yr]||0}%</strong> of projected volumes`).join('; ') + '. Years 3–5: no minimum (liquidity constraint).';
+  document.getElementById('ts-coal-min').innerHTML = `<td>Minimum Cover (Covenanted)</td><td>${minCoalText}</td>`;
+  const notionalCoal = (PROD_MT[2026]*1e6*((coalHedge[2026]||0)/100)*COAL_FUTURES[2026]/1000 + PROD_MT[2027]*1e6*((coalHedge[2027]||0)/100)*COAL_FUTURES[2027]/1000);
+  document.getElementById('ts-coal-notional').innerHTML = `<td>Est. Hedge Notional (Yr 1–2)</td><td><strong>USD ${notionalCoal.toFixed(0)}k</strong> (${PROD_MT[2026]*1e6*((coalHedge[2026]||0)/100)/100|0} lots Dec-26 + ${PROD_MT[2027]*1e6*((coalHedge[2027]||0)/100)/100|0} lots Dec-27)</td>`;
+  document.getElementById('ts-fx-min').innerHTML = `<td>Minimum Cover (Covenanted)</td><td>Borrower shall maintain AUD/USD forward contracts covering at minimum <strong>${Math.min(...[2026,2027,2028,2029,2030,2031].map(yr=>fxHedge[yr]||0))}% – ${Math.max(...[2026,2027,2028,2029,2030,2031].map(yr=>fxHedge[yr]||0))}%</strong> of projected AUD production costs per year (average: <strong>${avgFXHedge.toFixed(0)}%</strong>).</td>`;
+  const fxNotionalAUD = [2026,2027,2028,2029,2030,2031].reduce((s,yr) => s + PROD_MT[yr]*1e6*((fxHedge[yr]||0)/100)*AUD_COST_AUD/1000, 0);
+  document.getElementById('ts-fx-notional').innerHTML = `<td>Est. FX Notional (AUD, 5yr)</td><td><strong>AUD ${(fxNotionalAUD/1000).toFixed(1)}M</strong> (equiv. USD ${(fxNotionalAUD*0.72/1000).toFixed(1)}M at fwd rate)</td>`;
+}
+
+// Init
+buildControls();
+calcAllHedges();
+</script>
+</body>
+</html>

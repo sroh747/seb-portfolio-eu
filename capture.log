@@ -1,0 +1,13 @@
+2026-03-31 23:51:15,039  WARNING  No Anthropic API key found. Set ANTHROPIC_API_KEY env var, use --api-key KEY, or run with --no-analyse.
+2026-03-31 23:51:15,039  INFO     === Lake Level Monitor started ===
+2026-03-31 23:51:15,040  INFO     URL      : https://webcam1.nant-de-drance.ch/cgi-bin/image.jpg?imgprof=4Web
+2026-03-31 23:51:15,040  INFO     Interval : 300s  (5.0 min)
+2026-03-31 23:51:15,042  INFO     Output   : C:\Users\sebas\GitHub\seb-portfolio-eu\lake_images
+2026-03-31 23:51:15,042  INFO     Analysis : disabled
+2026-03-31 23:51:15,042  INFO     Press Ctrl+C to stop.
+
+2026-03-31 23:51:15,043  INFO     Fetching image…
+2026-03-31 23:51:16,021  INFO     Sleeping 300s…
+
+2026-03-31 23:52:37,986  INFO     
+Stopped by user. Goodbye!
