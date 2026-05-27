@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaCargo Geneva — Trading Desk</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0A2E6E;
+    --blue-dark: #061D4A;
+    --blue-light: #1A4896;
+    --blue-mid: #2558A8;
+    --gold: #B8963E;
+    --gold-light: #D4AF6A;
+    --cream: #FAF8F4;
+    --ink: #0F1923;
+    --ink-mid: #2D3A48;
+    --ink-light: #5A6878;
+    --steel: #E4E8EE;
+    --steel-dark: #C4CBD8;
+    --green: #1A5C3A;
+    --green-light: #E6F5EE;
+    --amber: #B06010;
+    --amber-light: #FEF3E2;
+    --red: #C0201A;
+    --red-light: #FEE8E7;
+    --shadow: 0 4px 24px rgba(10,46,110,0.09);
+    --shadow-deep: 0 8px 40px rgba(10,46,110,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 56px;
+    border-bottom: 2px solid var(--blue-mid);
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px; font-weight: 900;
+    color: #fff; letter-spacing: 0.02em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-brand-mark {
+    width: 28px; height: 28px;
+    background: var(--blue-mid); border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    color: #fff; letter-spacing: 0;
+  }
+  .nav-brand span { color: var(--gold-light); }
+  .nav-brand-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--steel-dark); letter-spacing: 0.08em;
+    text-transform: uppercase; font-weight: 300; margin-left: 2px;
+    border-left: 1px solid rgba(255,255,255,0.15); padding-left: 10px;
+  }
+  .nav-tabs { display: flex; gap: 2px; }
+  .nav-tab {
+    padding: 6px 15px; border: none; background: transparent;
+    color: var(--steel-dark); font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase;
+    cursor: pointer; border-radius: 4px; transition: all 0.18s;
+  }
+  .nav-tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .nav-tab.active { color: var(--gold-light); background: rgba(184,150,62,0.15); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-badge {
+    background: var(--blue-mid); color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; padding: 3px 10px; border-radius: 3px; letter-spacing: 0.06em;
+  }
+  .nav-clock {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--steel-dark); letter-spacing: 0.06em;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-light); animation: pulse 2.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ── PANELS ── */
+  .panel { display: none; animation: fadeIn 0.25s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink); padding: 52px 48px 44px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: 0; right: 0; bottom: 0;
+    width: 45%;
+    background: linear-gradient(135deg, transparent 30%, rgba(10,46,110,0.18) 100%);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px; font-weight: 900; color: #fff;
+    line-height: 1.1; max-width: 680px; margin-bottom: 28px;
+  }
+  .hero h1 em { color: var(--gold-light); font-style: normal; }
+  .hero-meta { display: flex; gap: 28px; flex-wrap: wrap; }
+  .hero-kpi { border-left: 3px solid var(--blue-mid); padding-left: 14px; }
+  .hero-kpi .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; color: #fff;
+  }
+  .hero-kpi .lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .hero-kpi .val.green { color: #4BC888; }
+  .hero-kpi .val.amber { color: var(--gold-light); }
+  .hero-kpi .val.red { color: #F4706A; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1240px; margin: 0 auto; padding: 40px 32px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+  .grid-main { display: grid; grid-template-columns: 1fr 360px; gap: 24px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: #fff; border: 1px solid var(--steel);
+    border-radius: 6px; padding: 24px 28px; box-shadow: var(--shadow);
+  }
+  .card-blue { background: var(--blue); color: #fff; border-color: var(--blue-dark); }
+  .card-dark { background: var(--ink); color: #fff; border-color: var(--ink-mid); }
+  .card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700; margin-bottom: 14px;
+  }
+  .card h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--blue-mid); margin-bottom: 6px;
+  }
+  .card-blue h3 { color: var(--gold-light); }
+  .card-dark h3 { color: var(--gold-light); }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--ink); margin-bottom: 6px;
+  }
+  .section-sub { font-size: 14px; color: var(--ink-light); margin-bottom: 28px; max-width: 640px; }
+  .divider { height: 1px; background: var(--steel); margin: 32px 0; }
+
+  /* ── METRICS ── */
+  .metric {
+    background: #fff; border: 1px solid var(--steel);
+    border-radius: 6px; padding: 18px 20px; box-shadow: var(--shadow);
+  }
+  .metric .m-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--ink); display: block; line-height: 1.1;
+  }
+  .metric .m-lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-light); margin-top: 5px;
+  }
+  .metric .m-sub { font-size: 11px; color: var(--ink-light); margin-top: 3px; }
+  .metric.good .m-val { color: var(--green); }
+  .metric.warn .m-val { color: var(--amber); }
+  .metric.bad .m-val { color: var(--red); }
+
+  /* ── STATUS BADGES ── */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 3px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 500;
+  }
+  .status-badge.pass { background: var(--green-light); color: var(--green); }
+  .status-badge.warn { background: var(--amber-light); color: var(--amber); }
+  .status-badge.fail { background: var(--red-light); color: var(--red); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .pass .status-dot { background: var(--green); }
+  .warn .status-dot { background: var(--amber); }
+  .fail .status-dot { background: var(--red); }
+
+  /* ── TAGS ── */
+  .tag {
+    display: inline-block; padding: 2px 9px;
+    border: 1px solid currentColor; border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase;
+    margin-right: 5px; margin-bottom: 4px;
+  }
+  .tag-blue { color: var(--blue-mid); }
+  .tag-gold { color: var(--gold); }
+  .tag-green { color: var(--green); }
+  .tag-red { color: var(--red); }
+  .tag-amber { color: var(--amber); }
+
+  /* ── MARKET TABLE ── */
+  .mkt-table { width: 100%; border-collapse: collapse; }
+  .mkt-table th {
+    background: var(--ink); color: var(--gold-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 9px 14px; text-align: left;
+  }
+  .mkt-table th:not(:first-child) { text-align: right; }
+  .mkt-table td {
+    padding: 11px 14px; border-bottom: 1px solid var(--steel);
+    vertical-align: middle; font-size: 13px;
+  }
+  .mkt-table td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; }
+  .mkt-table tr:last-child td { border-bottom: none; }
+  .mkt-table tr:hover td { background: var(--cream); }
+  .mkt-product { font-weight: 500; }
+  .mkt-exchange { font-size: 11px; color: var(--ink-light); font-family: 'DM Mono', monospace; }
+
+  /* ── FREIGHT TABLE ── */
+  .fr-table { width: 100%; border-collapse: collapse; }
+  .fr-table th {
+    background: var(--cream); color: var(--ink-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 8px 14px; text-align: left; border-bottom: 2px solid var(--steel);
+  }
+  .fr-table td { padding: 10px 14px; border-bottom: 1px solid var(--steel); font-size: 13px; vertical-align: top; }
+  .fr-table td:not(:first-child) { font-family: 'DM Mono', monospace; white-space: nowrap; }
+  .fr-table tr:last-child td { border-bottom: none; }
+  .fr-route { font-weight: 500; }
+  .fr-note { font-size: 11px; color: var(--ink-light); margin-top: 2px; }
+
+  /* ── COUNTERPARTY PANELS ── */
+  .cp-panel {
+    border: 1px solid var(--steel); border-radius: 5px;
+    padding: 14px 16px; margin-bottom: 10px; background: var(--cream);
+  }
+  .cp-panel:last-child { margin-bottom: 0; }
+  .cp-name {
+    font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700;
+    color: var(--ink); margin-bottom: 2px;
+  }
+  .cp-role { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-light); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .cp-row { display: flex; justify-content: space-between; align-items: baseline; padding: 4px 0; border-top: 1px solid var(--steel); font-size: 12px; }
+  .cp-row .k { color: var(--ink-light); }
+  .cp-row .v { font-family: 'DM Mono', monospace; font-weight: 500; }
+  .cp-row .v.green { color: var(--green); }
+  .cp-row .v.amber { color: var(--amber); }
+  .cp-row .v.red { color: var(--red); }
+
+  /* ── PROGRESS BARS ── */
+  .bar-track { width: 100%; height: 7px; background: var(--steel); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+  .bar-blue { background: var(--blue-mid); }
+  .bar-green { background: var(--green); }
+  .bar-amber { background: var(--amber); }
+  .bar-red { background: var(--red); }
+
+  /* ── SCENARIO ENGINE ── */
+  .scenario-layout { display: grid; grid-template-columns: 380px 1fr; gap: 28px; align-items: start; }
+  .field-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--ink-light); margin-bottom: 5px;
+    display: flex; justify-content: space-between;
+  }
+  .field-input {
+    width: 100%; padding: 8px 12px;
+    border: 1px solid var(--steel-dark); border-radius: 4px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    background: #fff; color: var(--ink); outline: none;
+    transition: border-color 0.15s;
+  }
+  .field-input:focus { border-color: var(--blue-mid); }
+  .field-input::-webkit-inner-spin-button { opacity: 0.5; }
+  .field-group { margin-bottom: 14px; }
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* ── RESULTS TABLE ── */
+  .result-tbl { width: 100%; border-collapse: collapse; }
+  .result-tbl tr { border-bottom: 1px solid var(--steel); }
+  .result-tbl tr:last-child { border-bottom: none; }
+  .result-tbl td { padding: 9px 14px; font-size: 13px; vertical-align: middle; }
+  .result-tbl td:first-child { color: var(--ink-light); font-size: 12px; }
+  .result-tbl td:last-child { font-family: 'DM Mono', monospace; font-weight: 500; text-align: right; }
+  .result-tbl .total-row td { background: var(--ink); color: var(--gold-light); font-weight: 600; }
+  .result-tbl .total-row td:first-child { color: #fff; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ── VERDICT ── */
+  .verdict-box {
+    padding: 18px 22px; border-radius: 5px; margin-top: 18px;
+    border-left: 4px solid var(--green); background: var(--green-light);
+    transition: all 0.25s;
+  }
+  .verdict-box.warn { border-color: var(--amber); background: var(--amber-light); }
+  .verdict-box.bad { border-color: var(--red); background: var(--red-light); }
+  .verdict-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; font-weight: 700; margin-bottom: 4px;
+  }
+  .verdict-body { font-size: 13px; color: var(--ink-mid); }
+
+  /* ── PRESET BUTTONS ── */
+  .preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+  .preset-btn {
+    padding: 9px 12px; background: var(--cream); border: 1px solid var(--steel-dark);
+    border-radius: 4px; cursor: pointer; text-align: left;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+    color: var(--ink-mid); transition: all 0.15s;
+    white-space: nowrap; overflow: hidden;
+  }
+  .preset-btn:hover { background: #fff; border-color: var(--blue-mid); color: var(--blue-mid); }
+  .preset-btn span { display: block; font-size: 10px; color: var(--ink-light); font-weight: 400; margin-top: 2px; font-family: 'DM Mono', monospace; }
+
+  /* ── DEAL BOOK TABLE ── */
+  .deal-tbl { width: 100%; border-collapse: collapse; }
+  .deal-tbl th {
+    background: var(--ink); color: var(--gold-light);
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 9px 14px; text-align: left;
+  }
+  .deal-tbl th:not(:first-child) { text-align: right; }
+  .deal-tbl td { padding: 10px 14px; border-bottom: 1px solid var(--steel); font-size: 12px; vertical-align: middle; }
+  .deal-tbl td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; }
+  .deal-tbl tr:hover td { background: var(--cream); }
+  .deal-tbl .total-row td { background: var(--cream); font-weight: 600; border-top: 2px solid var(--steel-dark); }
+
+  /* ── CREDIT FACILITY ── */
+  .cred-bank {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 18px;
+  }
+  .cred-bank-card {
+    background: var(--cream); border: 1px solid var(--steel); border-radius: 5px; padding: 12px 14px;
+  }
+  .cred-bank-name { font-weight: 500; font-size: 13px; }
+  .cred-bank-amt { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--blue-mid); margin-top: 2px; }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 0; border-bottom: 1px solid var(--steel); font-size: 13px;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-icon {
+    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; margin-top: 1px;
+  }
+  .check-pass { background: var(--green-light); color: var(--green); }
+  .check-warn { background: var(--amber-light); color: var(--amber); }
+  .check-stop { background: var(--red-light); color: var(--red); }
+
+  /* ── BLENDING ── */
+  .blend-flow {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .blend-node {
+    flex: 1; min-width: 110px; border: 1px solid var(--steel);
+    border-radius: 5px; padding: 12px 14px; text-align: center; background: #fff;
+  }
+  .blend-node.feed { border-color: var(--amber); background: var(--amber-light); }
+  .blend-node.high { border-color: var(--blue-mid); background: #EDF3FC; }
+  .blend-node.out { border-color: var(--green); background: var(--green-light); }
+  .blend-node-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-light); margin-bottom: 5px; }
+  .blend-node-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
+  .blend-node.feed .blend-node-val { color: var(--amber); }
+  .blend-node.high .blend-node-val { color: var(--blue-mid); }
+  .blend-node.out .blend-node-val { color: var(--green); }
+  .blend-arrow { font-size: 20px; color: var(--steel-dark); flex-shrink: 0; }
+
+  /* ── PLAYBOOK ── */
+  .step-row {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 14px 0; border-bottom: 1px solid var(--steel);
+  }
+  .step-row:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900;
+    line-height: 1; flex-shrink: 0; width: 36px; text-align: center;
+  }
+  .step-num.c-blue { color: var(--blue-mid); }
+  .step-num.c-green { color: var(--green); }
+  .step-num.c-gold { color: var(--gold); }
+  .step-num.c-amber { color: var(--amber); }
+  .step-num.c-red { color: var(--red); }
+  .step-title { font-weight: 500; font-size: 14px; margin-bottom: 3px; }
+  .step-body { font-size: 13px; color: var(--ink-light); line-height: 1.6; }
+
+  .script-bubble {
+    padding: 10px 14px; border-radius: 4px; margin-bottom: 6px; font-size: 12px; line-height: 1.6;
+  }
+  .sb-you { background: #EDF3FC; border-left: 3px solid var(--blue-mid); }
+  .sb-them { background: var(--cream); border-left: 3px solid var(--steel-dark); color: var(--ink-mid); }
+  .sb-note { background: var(--amber-light); border-left: 3px solid var(--amber); color: var(--amber); }
+  .sb-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .sb-you .sb-label { color: var(--blue-mid); }
+  .sb-them .sb-label { color: var(--ink-light); }
+
+  /* ── PANIC BANNER ── */
+  .panic-banner {
+    display: none; background: var(--amber-light);
+    border: 1px solid var(--amber); border-radius: 5px;
+    padding: 12px 18px; margin-bottom: 20px;
+    font-size: 13px; color: var(--amber);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .panic-banner.hidden { display: none !important; }
+
+  /* ── BTN ── */
+  .btn-primary {
+    background: var(--blue); color: #fff; border: none;
+    padding: 10px 20px; border-radius: 5px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; font-weight: 500;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--blue-light); }
+  .btn-secondary {
+    background: #fff; color: var(--ink-mid);
+    border: 1px solid var(--steel-dark); padding: 10px 20px;
+    border-radius: 5px; font-size: 13px; font-family: 'DM Sans', sans-serif;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--blue-mid); color: var(--blue-mid); }
+  .btn-row { display: flex; gap: 10px; margin-top: 14px; }
+
+  /* ── SUB TABS ── */
+  .sub-tabs { display: flex; gap: 2px; margin-bottom: 20px; border-bottom: 2px solid var(--steel); }
+  .sub-tab {
+    padding: 8px 18px; background: transparent; border: none;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-light); cursor: pointer; transition: all 0.18s;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+  }
+  .sub-tab.active { color: var(--blue-mid); border-bottom-color: var(--blue-mid); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+
+  /* ── FOOTNOTE ── */
+  .footnote { font-size: 11px; color: var(--ink-light); font-style: italic; margin-top: 12px; }
+
+  @media (max-width: 900px) {
+    .grid-2, .grid-3, .grid-4, .grid-main, .scenario-layout { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 26px; }
+    nav { padding: 0 16px; }
+    .container { padding: 24px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-brand-mark">NC</div>
+    NOVA<span>CARGO</span>
+    <div class="nav-brand-sub">Geneva · Trader A · Turn 1</div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPanel('dashboard',this)">Dashboard</button>
+    <button class="nav-tab" onclick="showPanel('scenario',this)">Scenario Engine</button>
+    <button class="nav-tab" onclick="showPanel('blending',this)">Blending Desk</button>
+    <button class="nav-tab" onclick="showPanel('positions',this)">Positions</button>
+    <button class="nav-tab" onclick="showPanel('playbook',this)">Playbook</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-clock"><div class="pulse"></div><span id="live-clock">--:--:--</span></div>
+    <div class="nav-badge">TURN 1 LIVE</div>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════
+     PANEL 1: DASHBOARD
+═══════════════════════════════════════ -->
+<div id="panel-dashboard" class="panel active">
+
+  <div class="hero">
+    <div class="hero-eyebrow">NovaCargo SA · Geneva · Harvest Floor Simulation · Trader A</div>
+    <h1>Trading Desk<br><em>Turn 1 — Market Open</em></h1>
+    <div class="hero-meta">
+      <div class="hero-kpi"><div class="val amber" id="h-pnl">EUR 0</div><div class="lbl">Turn P&amp;L</div></div>
+      <div class="hero-kpi"><div class="val" id="h-credit">EUR 0</div><div class="lbl">Credit Used</div></div>
+      <div class="hero-kpi"><div class="val" id="h-open" style="color:#F4706A">0</div><div class="lbl">Open Positions</div></div>
+      <div class="hero-kpi"><div class="val" id="h-margin">—</div><div class="lbl">Avg Margin/t</div></div>
+      <div class="hero-kpi"><div class="val green">EUR 1.5B</div><div class="lbl">Credit Facility</div></div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- KPI TILES -->
+    <div class="grid-4" style="margin-bottom:28px">
+      <div class="metric">
+        <span class="m-val" id="kpi-pnl">EUR 0</span>
+        <div class="m-lbl">Turn P&amp;L</div>
+        <div class="m-sub">Target ≥ EUR 1,500,000</div>
+        <div class="bar-track" style="margin-top:8px"><div class="bar-fill bar-blue" id="pnl-bar" style="width:0%"></div></div>
+      </div>
+      <div class="metric">
+        <span class="m-val" id="kpi-credit">EUR 0</span>
+        <div class="m-lbl">Credit Utilisation</div>
+        <div class="m-sub">Hard cap EUR 1,050,000,000</div>
+        <div class="bar-track" style="margin-top:8px"><div class="bar-fill bar-blue" id="credit-bar" style="width:0%"></div></div>
+      </div>
+      <div class="metric">
+        <span class="m-val" id="kpi-open">0</span>
+        <div class="m-lbl">Open Positions</div>
+        <div class="m-sub">One-legged deals = risk</div>
+      </div>
+      <div class="metric">
+        <span class="m-val" id="kpi-margin">—</span>
+        <div class="m-lbl">Avg Margin / t</div>
+        <div class="m-sub">Target EUR 8/t grain · EUR 25/t eth.</div>
+      </div>
+    </div>
+
+    <div class="grid-main">
+
+      <!-- LEFT: MARKET BOARD -->
+      <div>
+        <div class="section-title">Opening Market Board</div>
+        <div class="section-sub">Prices valid at Turn 1 open. Update fields below after a Tension Card is played.</div>
+
+        <!-- Commodity prices -->
+        <div class="card" style="margin-bottom:20px;padding:0;overflow:hidden">
+          <table class="mkt-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Unit</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="mkt-product">Milling Wheat (Nov)</div><div class="mkt-exchange">Euronext MATIF · min 11.5% protein</div></td>
+                <td id="p-milling">228</td>
+                <td>EUR/t</td>
+                <td><span class="status-badge pass"><span class="status-dot"></span>Live</span></td>
+              </tr>
+              <tr>
+                <td><div class="mkt-product">Feed Wheat</div><div class="mkt-exchange">Euronext MATIF · below 11.5% protein</div></td>
+                <td id="p-feed">195</td>
+                <td>EUR/t</td>
+                <td><span class="status-badge pass"><span class="status-dot"></span>Live</span></td>
+              </tr>
+              <tr>
+                <td><div class="mkt-product">Feed Corn (Dec)</div><div class="mkt-exchange">CBOT Chicago · ISCC cert. +EUR 8–12/t</div></td>
+                <td id="p-corn">190</td>
+                <td>USD/t</td>
+                <td><span class="status-badge pass"><span class="status-dot"></span>Live</span></td>
+              </tr>
+              <tr>
+                <td><div class="mkt-product">Bioethanol (ISCC+)</div><div class="mkt-exchange">Rotterdam Spot · EN 15376 · ISCC Plus mandatory</div></td>
+                <td id="p-eth">572</td>
+                <td>EUR/t</td>
+                <td><span class="status-badge pass"><span class="status-dot"></span>Live</span></td>
+              </tr>
+              <tr style="background:var(--cream)">
+                <td><div class="mkt-product" style="color:var(--ink-light)">USD / EUR Rate</div><div class="mkt-exchange">ECB Mid-Rate</div></td>
+                <td id="p-fx" style="color:var(--ink-light)">1.08</td>
+                <td style="color:var(--ink-light)">USD = 1 EUR</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tension card update -->
+        <div class="card" style="margin-bottom:20px">
+          <h3>Update Prices — Post Tension Card</h3>
+          <div class="sc-grid">
+            <div class="field-group">
+              <div class="field-label">Milling Wheat (EUR/t)</div>
+              <input class="field-input" type="number" placeholder="228" id="upd-milling" oninput="updatePrice('milling',this.value)">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Feed Wheat (EUR/t)</div>
+              <input class="field-input" type="number" placeholder="195" id="upd-feed" oninput="updatePrice('feed',this.value)">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Bioethanol (EUR/t)</div>
+              <input class="field-input" type="number" placeholder="572" id="upd-eth" oninput="updatePrice('eth',this.value)">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Black Sea Freight ($/t)</div>
+              <input class="field-input" type="number" placeholder="22" id="upd-freight" oninput="updateFreight(this.value)">
+            </div>
+          </div>
+        </div>
+
+        <!-- Freight board -->
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="fr-table">
+            <thead>
+              <tr>
+                <th>Route</th>
+                <th>Cost</th>
+                <th>Transit</th>
+                <th>Vessel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="fr-route">Chornomorsk → Rotterdam</div><div class="fr-note">via Bosphorus · Geopolitical corridor risk</div></td>
+                <td id="fr-bsea">$22/t</td>
+                <td>9–12 days</td>
+                <td><span class="tag tag-blue">Panamax</span></td>
+              </tr>
+              <tr>
+                <td><div class="fr-route">Constanta → Rotterdam</div><div class="fr-note">Avoids Bosphorus · Alternative route</div></td>
+                <td>$28/t</td>
+                <td>8–10 days</td>
+                <td><span class="tag tag-blue">Panamax</span></td>
+              </tr>
+              <tr>
+                <td><div class="fr-route">Santos → Rotterdam (grain)</div><div class="fr-note">Port strike risk · Dec–Mar cyclone season</div></td>
+                <td>$28/t</td>
+                <td>18–22 days</td>
+                <td><span class="tag tag-blue">Panamax</span></td>
+              </tr>
+              <tr>
+                <td><div class="fr-route">Santos → Rotterdam (ethanol)</div><div class="fr-note">MR Tanker only · ISCC documentation required</div></td>
+                <td>EUR 45/t</td>
+                <td>20–24 days</td>
+                <td><span class="tag tag-green">MR Tanker</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIGHT: COUNTERPARTY INTEL -->
+      <div>
+        <div class="section-title">Counterparty Intel</div>
+        <div class="section-sub">Call destinations first — learn ceiling before approaching any originator.</div>
+
+        <div class="card" style="margin-bottom:16px">
+          <h3>Destinations — Call First</h3>
+          <h2>Ceiling Prices</h2>
+          <div class="cp-panel">
+            <div class="cp-name">EuroMill SA</div>
+            <div class="cp-role">Destination A · Milling Wheat</div>
+            <div class="cp-row"><span class="k">Ceiling CIF Rotterdam</span><span class="v green">$240/t</span></div>
+            <div class="cp-row"><span class="k">Min volume</span><span class="v">35,000 t / turn</span></div>
+            <div class="cp-row"><span class="k">Short penalty</span><span class="v red">EUR 3,000,000 flat</span></div>
+            <div class="cp-row"><span class="k">Spec</span><span class="v">≥ 11.5% protein, ≤ 14% moisture</span></div>
+          </div>
+          <div class="cp-panel">
+            <div class="cp-name">SunFuel Energy</div>
+            <div class="cp-role">Destination B · Bioethanol ISCC+</div>
+            <div class="cp-row"><span class="k">Ceiling CIF Rotterdam</span><span class="v green">EUR 620/t</span></div>
+            <div class="cp-row"><span class="k">Min volume</span><span class="v">8,000 t ISCC certified</span></div>
+            <div class="cp-row"><span class="k">Short penalty</span><span class="v red">EUR 150K / 1,000 t short</span></div>
+            <div class="cp-row"><span class="k">ISCC cert ref</span><span class="v" style="font-size:10px">ISCC-PLUS-2024-1738-BR</span></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <h3>Originators — Call Second</h3>
+          <h2>Floor Prices</h2>
+          <div class="cp-panel">
+            <div class="cp-name">GrainPath Ukraine</div>
+            <div class="cp-role">Originator A · Milling Wheat &amp; Corn</div>
+            <div class="cp-row"><span class="k">Milling wheat floor FOB</span><span class="v amber">$210/t</span></div>
+            <div class="cp-row"><span class="k">Feed corn floor FOB</span><span class="v amber">$195/t</span></div>
+            <div class="cp-row"><span class="k">Route</span><span class="v">Chornomorsk</span></div>
+            <div class="cp-row"><span class="k">Key risk</span><span class="v red">Bosphorus closure</span></div>
+          </div>
+          <div class="cp-panel">
+            <div class="cp-name">AgroSul Brasil</div>
+            <div class="cp-role">Originator B · Bioethanol &amp; Corn</div>
+            <div class="cp-row"><span class="k">Bioethanol floor FOB</span><span class="v amber">EUR 540/t</span></div>
+            <div class="cp-row"><span class="k">Corn ISCC floor FOB</span><span class="v amber">$215/t</span></div>
+            <div class="cp-row"><span class="k">Route</span><span class="v">Santos</span></div>
+          </div>
+        </div>
+
+        <div class="card card-dark">
+          <h3>NovaCargo Parameters</h3>
+          <h2 style="color:#fff">Trading Constraints</h2>
+          <div style="font-size:13px;line-height:1.9;opacity:0.85">
+            Credit facility: <strong style="color:var(--gold-light)">EUR 1,500,000,000</strong><br>
+            Max utilisation: <strong style="color:var(--gold-light)">70% = EUR 1,050,000,000</strong><br>
+            Grain margin target: <strong style="color:var(--gold-light)">EUR 8/t</strong> · floor EUR 5/t<br>
+            Ethanol margin target: <strong style="color:var(--gold-light)">EUR 25/t</strong> · floor EUR 15/t<br>
+            Turn P&amp;L target: <strong style="color:var(--gold-light)">EUR 1,500,000+</strong><br>
+            Blending cost: <strong style="color:var(--gold-light)">~$8–10/t</strong>
+          </div>
+          <div style="margin-top:14px">
+            <span class="tag" style="color:var(--gold-light);border-color:var(--gold-light)">8 Panamax 75K DWT</span>
+            <span class="tag" style="color:var(--gold-light);border-color:var(--gold-light)">3 MR Tankers 42K DWT</span>
+            <span class="tag" style="color:var(--gold-light);border-color:var(--gold-light)">Blending Capable</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     PANEL 2: SCENARIO ENGINE
+═══════════════════════════════════════ -->
+<div id="panel-scenario" class="panel">
+
+  <div style="background:var(--ink);padding:32px 48px;border-bottom:3px solid var(--gold)">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">NovaCargo · Margin Calculator · Turn 1</div>
+    <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#fff;margin-bottom:4px">Scenario Engine</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5)">Back-to-back margin calculator · no open positions · Finance Officer decision support</div>
+  </div>
+
+  <div class="container">
+    <div class="scenario-layout">
+
+      <!-- INPUTS -->
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3>Deal Type</h3>
+          <div class="sub-tabs">
+            <button class="sub-tab active" onclick="switchType('grain',this)">Grain / Wheat</button>
+            <button class="sub-tab" onclick="switchType('ethanol',this)">Bioethanol</button>
+            <button class="sub-tab" onclick="switchType('corn',this)">Feed Corn</button>
+          </div>
+          <div class="sc-grid">
+            <div class="field-group">
+              <div class="field-label">Sell Price — CIF Rotterdam</div>
+              <input class="field-input" type="number" id="sc-sell" value="237" step="0.5" oninput="calc()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Currency</div>
+              <select class="field-input" id="sc-cur" onchange="calc()">
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Freight Cost / t</div>
+              <input class="field-input" type="number" id="sc-freight" value="22" step="0.5" oninput="calc()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Freight Currency</div>
+              <select class="field-input" id="sc-fcur" onchange="calc()">
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Buy Price — FOB Origin</div>
+              <input class="field-input" type="number" id="sc-buy" value="210" step="0.5" oninput="calc()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Volume (tonnes)</div>
+              <input class="field-input" type="number" id="sc-vol" value="35000" step="1000" oninput="calc()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Blending Cost / t (0 = no blend)</div>
+              <input class="field-input" type="number" id="sc-blend" value="0" step="1" oninput="calc()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">USD / EUR Rate</div>
+              <input class="field-input" type="number" id="sc-fx" value="1.08" step="0.01" oninput="calc()">
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="bookDeal()">Book This Deal →</button>
+            <button class="btn-secondary" onclick="resetCalc()">Reset</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Quick Presets</h3>
+          <div class="preset-grid">
+            <button class="preset-btn" onclick="preset('wheat_base')">Wheat — Base Case<span>EuroMill $237 · GrainPath $210 · 35K t</span></button>
+            <button class="preset-btn" onclick="preset('eth_base')">Ethanol — Base Case<span>SunFuel €592 · AgroSul €540 · 8K t</span></button>
+            <button class="preset-btn" onclick="preset('wheat_ceil')">Wheat — Max Ceiling<span>EuroMill $240 · GrainPath $207 · 35K t</span></button>
+            <button class="preset-btn" onclick="preset('eth_ceil')">Ethanol — Max Ceiling<span>SunFuel €620 · AgroSul €540 · 8K t</span></button>
+            <button class="preset-btn" onclick="preset('blend')">Blending Deal<span>Feed $195 FOB + $9 blend → sell $237 CIF</span></button>
+            <button class="preset-btn" onclick="preset('constanta')">Constanta Route<span>Alt freight $28/t · Bosphorus avoided</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div>
+        <div class="card" style="margin-bottom:16px;padding:0;overflow:hidden">
+          <table class="result-tbl">
+            <thead style="background:var(--cream)">
+              <tr>
+                <th colspan="2" style="padding:14px 18px;font-family:'Playfair Display',serif;font-size:18px;font-weight:700;text-align:left;border-bottom:1px solid var(--steel)">Margin Breakdown</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Sell Price (CIF Rotterdam)</td><td id="r-sell">—</td></tr>
+              <tr><td>− Freight Cost</td><td id="r-fr">—</td></tr>
+              <tr><td>= Maximum FOB Buy Price</td><td id="r-maxbuy" style="color:var(--blue-mid)">—</td></tr>
+              <tr><td>− Buy Price Agreed (FOB)</td><td id="r-buy">—</td></tr>
+              <tr id="blend-tr" style="display:none"><td>− Blending Cost</td><td id="r-blend">—</td></tr>
+              <tr><td style="font-weight:500">= Margin per Tonne</td><td id="r-marg" style="font-weight:600">—</td></tr>
+              <tr><td>Volume</td><td id="r-vol">—</td></tr>
+              <tr class="total-row"><td>Total Margin (EUR)</td><td id="r-total" style="font-size:20px">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Target vs Actual -->
+        <div class="card" style="margin-bottom:16px">
+          <h3>Target vs Actual</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+            <div style="text-align:center;padding:10px;background:var(--cream);border-radius:4px">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-light);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Floor Min</div>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--red)" id="r-floor">EUR 5/t</div>
+            </div>
+            <div style="text-align:center;padding:10px;background:var(--cream);border-radius:4px">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-light);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Target</div>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--blue-mid)" id="r-target">EUR 8/t</div>
+            </div>
+            <div style="text-align:center;padding:10px;background:var(--cream);border-radius:4px">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-light);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Actual</div>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700" id="r-actual">—</div>
+            </div>
+          </div>
+          <div class="bar-track" style="height:8px"><div class="bar-fill bar-blue" id="margin-bar" style="width:0%"></div></div>
+        </div>
+
+        <!-- Credit impact -->
+        <div class="card" style="margin-bottom:16px">
+          <h3>Credit Impact</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+            <div>
+              <div style="font-size:11px;color:var(--ink-light);margin-bottom:3px">This deal (buy exposure)</div>
+              <div style="font-family:'DM Mono',monospace;font-weight:500" id="r-cred-deal">—</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--ink-light);margin-bottom:3px">Remaining headroom</div>
+              <div style="font-family:'DM Mono',monospace;font-weight:500;color:var(--green)" id="r-cred-remain">EUR 1,050,000,000</div>
+            </div>
+          </div>
+          <div class="bar-track" style="height:8px"><div class="bar-fill bar-blue" id="r-cred-bar" style="width:0%"></div></div>
+        </div>
+
+        <!-- Verdict -->
+        <div class="verdict-box" id="verdict-box">
+          <div class="verdict-title" id="verdict-title">—</div>
+          <div class="verdict-body" id="verdict-body">Enter deal parameters above to receive a Finance Officer decision.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     PANEL 3: BLENDING DESK
+═══════════════════════════════════════ -->
+<div id="panel-blending" class="panel">
+
+  <div style="background:var(--ink);padding:32px 48px;border-bottom:3px solid var(--gold)">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">NovaCargo Exclusive Capability</div>
+    <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#fff;margin-bottom:4px">Blending Desk</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5)">Feed wheat → milling specification via protein blending · unavailable to Originators or Destinations</div>
+  </div>
+
+  <div class="container">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom:20px">
+          <h3>Blending Process</h3>
+          <h2>Feed Wheat → Milling Spec</h2>
+          <div class="blend-flow">
+            <div class="blend-node feed">
+              <div class="blend-node-label">Feed Wheat</div>
+              <div class="blend-node-val">10.5%</div>
+              <div style="font-size:11px;color:var(--amber);margin-top:3px">protein</div>
+            </div>
+            <div class="blend-arrow">+</div>
+            <div class="blend-node high">
+              <div class="blend-node-label">High-Grade</div>
+              <div class="blend-node-val">13%+</div>
+              <div style="font-size:11px;color:var(--blue-mid);margin-top:3px">protein</div>
+            </div>
+            <div class="blend-arrow">→</div>
+            <div class="blend-node out">
+              <div class="blend-node-label">Milling Blend</div>
+              <div class="blend-node-val">11.5%</div>
+              <div style="font-size:11px;color:var(--green);margin-top:3px">protein ✓</div>
+            </div>
+          </div>
+          <div class="sc-grid">
+            <div class="field-group">
+              <div class="field-label">Feed Wheat FOB (USD/t)</div>
+              <input class="field-input" type="number" id="bl-feed" value="195" oninput="calcBlend()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Blending Cost (USD/t)</div>
+              <input class="field-input" type="number" id="bl-cost" value="9" oninput="calcBlend()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Freight (USD/t)</div>
+              <input class="field-input" type="number" id="bl-freight" value="22" oninput="calcBlend()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Sell Price Milling CIF (USD/t)</div>
+              <input class="field-input" type="number" id="bl-sell" value="237" oninput="calcBlend()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Volume (tonnes)</div>
+              <input class="field-input" type="number" id="bl-vol" value="20000" oninput="calcBlend()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">USD / EUR Rate</div>
+              <input class="field-input" type="number" id="bl-fx" value="1.08" step="0.01" oninput="calcBlend()">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px;padding:0;overflow:hidden">
+          <table class="result-tbl">
+            <thead style="background:var(--cream)">
+              <tr><th colspan="2" style="padding:14px 18px;font-family:'Playfair Display',serif;font-size:18px;font-weight:700;text-align:left;border-bottom:1px solid var(--steel)">Blending P&amp;L</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Feed wheat FOB</td><td id="bl-r-feed">—</td></tr>
+              <tr><td>+ Blending cost</td><td id="bl-r-blend">—</td></tr>
+              <tr><td>+ Freight cost</td><td id="bl-r-freight">—</td></tr>
+              <tr><td style="font-weight:500">= Effective CIF cost</td><td id="bl-r-cif" style="color:var(--blue-mid)">—</td></tr>
+              <tr><td>Sell price CIF</td><td id="bl-r-sell">—</td></tr>
+              <tr><td style="font-weight:500">= Margin per tonne</td><td id="bl-r-marg" style="font-weight:600">—</td></tr>
+              <tr class="total-row"><td>Total Blending P&amp;L (EUR)</td><td id="bl-r-total" style="font-size:18px">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <h3>Vs. Straight Milling Purchase</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="padding:12px;background:var(--cream);border-radius:4px;text-align:center">
+              <div style="font-size:11px;color:var(--ink-light);margin-bottom:4px">Milling wheat direct cost</div>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink)">EUR 228/t</div>
+            </div>
+            <div style="padding:12px;background:var(--green-light);border-radius:4px;text-align:center">
+              <div style="font-size:11px;color:var(--ink-light);margin-bottom:4px">Your effective cost saving</div>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--green)" id="bl-r-save">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="verdict-box" id="blend-verdict">
+          <div class="verdict-title" id="blend-verdict-title">—</div>
+          <div class="verdict-body" id="blend-verdict-body">Enter parameters to evaluate the blending opportunity.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     PANEL 4: POSITIONS
+═══════════════════════════════════════ -->
+<div id="panel-positions" class="panel">
+
+  <div style="background:var(--ink);padding:32px 48px;border-bottom:3px solid var(--gold)">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">NovaCargo · Open Position Monitor</div>
+    <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#fff;margin-bottom:4px">Position Tracker</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5)">Zero open positions policy · buy and sell sides must be locked simultaneously</div>
+  </div>
+
+  <div class="container">
+
+    <div class="panic-banner hidden" id="panic-banner">
+      ⚡ <strong>Open Position Detected</strong> — you have committed a buy without a confirmed sell. Call your destination immediately.
+    </div>
+
+    <!-- Deal book -->
+    <div class="card" style="margin-bottom:24px;padding:0;overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--steel)">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700">Deal Book</div>
+          <div style="font-size:12px;color:var(--ink-light);margin-top:2px">Turn 1 · submitted contracts</div>
+        </div>
+        <button class="btn-primary" onclick="toggleAddForm()">+ Add Deal</button>
+      </div>
+      <table class="deal-tbl" id="deal-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Deal</th>
+            <th>Buy Price FOB</th>
+            <th>Sell Price CIF</th>
+            <th>Freight</th>
+            <th>Volume</th>
+            <th>Margin / t</th>
+            <th>Total EUR</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="deal-body">
+          <tr><td colspan="8" style="text-align:center;color:var(--ink-light);padding:32px;font-style:italic">No deals booked. Use Scenario Engine → Book This Deal, or add manually below.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Add deal form -->
+    <div class="card" id="add-form" style="display:none;margin-bottom:24px">
+      <h3>Add Deal Manually</h3>
+      <h2>New Position Entry</h2>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="field-group">
+          <div class="field-label">Deal Label</div>
+          <input class="field-input" type="text" id="nd-label" placeholder="e.g. Wheat T1-01">
+        </div>
+        <div class="field-group">
+          <div class="field-label">Product</div>
+          <select class="field-input" id="nd-prod">
+            <option>Milling Wheat</option><option>Feed Wheat (Blend)</option>
+            <option>Bioethanol ISCC+</option><option>Feed Corn</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Buy Price (FOB)</div>
+          <input class="field-input" type="number" id="nd-buy" placeholder="210">
+        </div>
+        <div class="field-group">
+          <div class="field-label">Sell Price (CIF)</div>
+          <input class="field-input" type="number" id="nd-sell" placeholder="237">
+        </div>
+        <div class="field-group">
+          <div class="field-label">Freight / t</div>
+          <input class="field-input" type="number" id="nd-freight" placeholder="22">
+        </div>
+        <div class="field-group">
+          <div class="field-label">Volume (t)</div>
+          <input class="field-input" type="number" id="nd-vol" placeholder="35000">
+        </div>
+        <div class="field-group">
+          <div class="field-label">Currency</div>
+          <select class="field-input" id="nd-cur"><option value="USD">USD</option><option value="EUR">EUR</option></select>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Status</div>
+          <select class="field-input" id="nd-status">
+            <option value="open">Open (buy only)</option>
+            <option value="closed">Closed (both sides)</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn-primary" onclick="addDeal()">Add to Book →</button><button class="btn-secondary" onclick="toggleAddForm()">Cancel</button></div>
+    </div>
+
+    <!-- Credit facility -->
+    <div class="card">
+      <h3>Credit Facility — NovaCargo SA</h3>
+      <h2>Syndicated Revolving Credit</h2>
+      <div class="cred-bank">
+        <div class="cred-bank-card">
+          <div class="cred-bank-name">BNP Paribas</div>
+          <div class="cred-bank-amt">EUR 600,000,000</div>
+        </div>
+        <div class="cred-bank-card">
+          <div class="cred-bank-name">Rabobank</div>
+          <div class="cred-bank-amt">EUR 500,000,000</div>
+        </div>
+        <div class="cred-bank-card">
+          <div class="cred-bank-name">ING</div>
+          <div class="cred-bank-amt">EUR 400,000,000</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px">
+        <div class="metric" style="box-shadow:none">
+          <span class="m-val" style="font-size:20px">EUR 1.5B</span>
+          <div class="m-lbl">Total Facility</div>
+        </div>
+        <div class="metric warn" style="box-shadow:none">
+          <span class="m-val" style="font-size:20px">EUR 1.05B</span>
+          <div class="m-lbl">Hard Cap (70%)</div>
+        </div>
+        <div class="metric good" style="box-shadow:none">
+          <span class="m-val" style="font-size:20px" id="cred-avail">EUR 1.05B</span>
+          <div class="m-lbl">Available Headroom</div>
+        </div>
+      </div>
+      <div class="bar-track" style="height:10px">
+        <div class="bar-fill bar-blue" id="cred-bar-main" style="width:0%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:5px;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-light)">
+        <span>0%</span>
+        <span id="cred-pct-label">0% utilised</span>
+        <span style="color:var(--amber)">70% = hard cap</span>
+        <span>100%</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     PANEL 5: PLAYBOOK
+═══════════════════════════════════════ -->
+<div id="panel-playbook" class="panel">
+
+  <div style="background:var(--ink);padding:32px 48px;border-bottom:3px solid var(--gold)">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">NovaCargo · Turn 1 Strategy</div>
+    <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#fff;margin-bottom:4px">Playbook</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5)">Opening sequence · negotiation scripts · contract checklist · strategic objectives</div>
+  </div>
+
+  <div class="container">
+
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showSub('seq',this)">Opening Sequence</button>
+      <button class="sub-tab" onclick="showSub('scripts',this)">Scripts</button>
+      <button class="sub-tab" onclick="showSub('contract',this)">Contract Checklist</button>
+      <button class="sub-tab" onclick="showSub('objectives',this)">Objectives</button>
+    </div>
+
+    <!-- Opening Sequence -->
+    <div class="sub-panel active" id="sub-seq">
+      <div class="grid-2">
+        <div class="card">
+          <h3>Order Is Non-Negotiable</h3>
+          <h2>5-Step Opening Sequence</h2>
+          <div>
+            <div class="step-row">
+              <div class="step-num c-blue">1</div>
+              <div><div class="step-title">0–15 min · Role Brief</div><div class="step-body">Finance Officer writes margin target and credit limit on paper. Analyst starts the canvas. No negotiations begin until these are recorded.</div></div>
+            </div>
+            <div class="step-row">
+              <div class="step-num c-green">2</div>
+              <div><div class="step-title">15–22 min · Call BOTH Destinations</div><div class="step-body">"What volume do you need? What is your ceiling CIF Rotterdam?" Write the answer down. This is your ceiling. Never commit to a buy price before this step.</div></div>
+            </div>
+            <div class="step-row">
+              <div class="step-num c-gold">3</div>
+              <div><div class="step-title">22–25 min · Finance Officer Calculates Max Buy</div><div class="step-body">Formula: <strong>Max buy = Ceiling − Freight − Target margin</strong>. Example: $240 − $22 − $8 = $210/t FOB. This is the number you walk into the originator call with.</div></div>
+            </div>
+            <div class="step-row">
+              <div class="step-num c-amber">4</div>
+              <div><div class="step-title">25–38 min · Call Originators</div><div class="step-body">Armed with ceiling and max buy price. "We are looking at X tonnes. Where can you come in?" If their ask exceeds max buy: counter or walk.</div></div>
+            </div>
+            <div class="step-row">
+              <div class="step-num c-red">5</div>
+              <div><div class="step-title">38–44 min · Lock Both Sides Simultaneously</div><div class="step-body">Sign both term sheets within 60 seconds of each other. <strong>Do not sign the buy-side before verbal confirmation from the sell side.</strong> One-legged deals are the most expensive mistake in the simulation.</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <h3>Never Do This</h3>
+            <h2 style="color:var(--red)">Five Deadly Errors</h2>
+            <ul class="checklist">
+              <li><div class="check-icon check-stop">✕</div><span>Call the Originator before you know the Destination's ceiling. You will commit blind.</span></li>
+              <li><div class="check-icon check-stop">✕</div><span>Sign a buy-side term sheet before verbal confirmation from the sell side.</span></li>
+              <li><div class="check-icon check-stop">✕</div><span>Exceed credit limit of EUR 1,050,000,000. Finance Officer tracks this on every deal.</span></li>
+              <li><div class="check-icon check-stop">✕</div><span>Accept a margin below zero — even under time pressure. Walk and find a different deal.</span></li>
+              <li><div class="check-icon check-stop">✕</div><span>Lock a CIF sell price without simultaneously locking freight. A Tension Card can spike freight post-deal.</span></li>
+            </ul>
+          </div>
+          <div class="card card-dark">
+            <h3>Blending Opportunity — Look For This</h3>
+            <div style="font-size:13px;line-height:1.9;opacity:0.85">
+              If GrainPath has excess feed wheat at <strong style="color:var(--gold-light)">$195/t FOB</strong> and EuroMill needs milling grade at <strong style="color:var(--gold-light)">$240/t CIF</strong>:<br><br>
+              Buy $195 + $9 blending + $22 freight = <strong style="color:var(--gold-light)">$226 effective CIF</strong><br>
+              Sell at $237/t CIF = <strong style="color:#4BC888">EUR 11/t margin</strong> on a lower-cost input.
+              <br><br>
+              Neither Originator nor Destination can access this margin. It is NovaCargo's exclusive advantage — use it every turn.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <div class="sub-panel" id="sub-scripts">
+      <div class="grid-2">
+        <div class="card">
+          <h3>Phase A · Minutes 15–22</h3>
+          <h2>Call Destination First</h2>
+          <div class="script-bubble sb-you"><div class="sb-label">You →</div>"EuroMill — we are in the market for milling wheat this turn. What volume do you need and what is your ceiling price CIF Rotterdam?"</div>
+          <div class="script-bubble sb-them"><div class="sb-label">EuroMill →</div>"We need 35,000 tonnes. We can go to $238/t CIF if the spec is right."</div>
+          <div class="script-bubble sb-note"><div class="sb-label">Finance Officer Note →</div>Ceiling $238 CIF. Max buy = $238 − $22 freight − $8 margin = <strong>$208/t FOB</strong>. This is the number.</div>
+        </div>
+        <div class="card">
+          <h3>Phase B · Minutes 25–38</h3>
+          <h2>Call Originator Second</h2>
+          <div class="script-bubble sb-you"><div class="sb-label">You →</div>"GrainPath — we are looking at 35,000 tonnes of milling wheat, 11.5% protein minimum, FOB Chornomorsk. What is your best price today?"</div>
+          <div class="script-bubble sb-them"><div class="sb-label">GrainPath →</div>"We are at $218/t."</div>
+          <div class="script-bubble sb-you"><div class="sb-label">You →</div>"That is above where we can work. We have a buyer at $208/t net. If you can come to $207, we can lock it immediately — both sides today."</div>
+          <div class="script-bubble sb-them"><div class="sb-label">GrainPath →</div>"$210 — final."</div>
+          <div class="script-bubble sb-note"><div class="sb-label">Finance Check →</div>$210 buy + $22 freight = $232 CIF cost. Sell $238. Margin = $6/t. Below EUR 8 target but above floor. Proceed if volume compensates.</div>
+          <div class="script-bubble sb-you"><div class="sb-label">You →</div>"Deal at $210. Contract Manager — prepare both term sheets simultaneously. We sign with GrainPath and EuroMill in the next 10 minutes."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contract checklist -->
+    <div class="sub-panel" id="sub-contract">
+      <div class="grid-2">
+        <div class="card">
+          <h3>Pre-Signing Checklist</h3>
+          <h2>4 Mandatory Clauses</h2>
+          <ul class="checklist">
+            <li>
+              <div class="check-icon check-pass">1</div>
+              <div>
+                <strong>Clause 1 — Commodity &amp; Grade</strong>
+                <div style="font-size:12px;color:var(--ink-light);margin-top:3px">"Milling Wheat, minimum 11.5% protein, maximum 14% moisture, origin Ukraine, SGS analysis at discharge port Rotterdam." Never write just "Wheat."</div>
+              </div>
+            </li>
+            <li>
+              <div class="check-icon check-pass">2</div>
+              <div>
+                <strong>Clause 2 — Price &amp; Delivery Basis</strong>
+                <div style="font-size:12px;color:var(--ink-light);margin-top:3px">Price per tonne AND delivery basis (FOB or CIF). Without the basis, no one knows who pays the $22/t freight. On sell-side always offer CIF. On buy-side accept FOB.</div>
+              </div>
+            </li>
+            <li>
+              <div class="check-icon check-pass">3</div>
+              <div>
+                <strong>Clause 3 — Volume &amp; Payment</strong>
+                <div style="font-size:12px;color:var(--ink-light);margin-top:3px">"35,000 tonnes ±3% · Payment: 75 days sight LC from Bill of Lading date." Match buy and sell payment terms — mismatch means you fund the gap.</div>
+              </div>
+            </li>
+            <li>
+              <div class="check-icon check-pass">4</div>
+              <div>
+                <strong>Clause 4 — Force Majeure</strong>
+                <div style="font-size:12px;color:var(--ink-light);margin-top:3px">Must name: port strike, government export ban, Bosphorus corridor restriction, natural disaster at origin. Buy-side and sell-side FM clauses must mirror each other — if one side invokes FM and yours doesn't cover it, you are exposed.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Final Check Before Stamping</h3>
+          <h2>8 Non-Negotiable Boxes</h2>
+          <ul class="checklist" id="final-checklist">
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Clause 1: product name + quality spec written?</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Clause 2: price/tonne AND FOB or CIF written?</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Clause 3: volume, tolerance AND payment days written?</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Clause 4: force majeure — specific events listed?</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Both parties have signed (not just initialled)?</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Canvas Synthesis is complete?</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>If ISCC product: certificate number visible (ISCC-PLUS-2024-1738-BR)?</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Contract Manager is walking this to the Professor NOW?</span></label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Strategic objectives -->
+    <div class="sub-panel" id="sub-objectives">
+      <div class="grid-2">
+        <div class="card">
+          <h3>Must Achieve This Turn</h3>
+          <h2>Non-Negotiable Objectives</h2>
+          <ul class="checklist">
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--green)"> <span><strong>Generate EUR 1,500,000+ total margin</strong> across all deals this turn. Below EUR 1M is underperformance.</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--green)"> <span><strong>Maintain credit utilisation below EUR 1,050,000,000</strong> at all times — Finance Officer monitors this on every new deal.</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--green)"> <span><strong>Call BOTH Destinations first in ACT I</strong> — learn their ceiling price before approaching any Originator.</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--green)"> <span><strong>Execute at least one blending deal</strong> — buy feed wheat, blend to milling spec, sell as milling grade, earn quality premium.</span></label></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Should Aim For</h3>
+          <h2>Strategic Objectives</h2>
+          <ul class="checklist">
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Build a preferred-supplier relationship with one Originator for a 2-turn forward supply commitment.</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Monitor AgriNex — if they move fast on a deal, counter immediately or focus on larger volume.</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Complete Canvas Synthesis before every contract is submitted and digitally validated.</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Lock freight at the same moment as locking the deal — never leave freight open on a fixed CIF contract.</span></label></li>
+            <li><label style="display:flex;gap:10px;cursor:pointer;width:100%"><input type="checkbox" style="margin-top:2px;accent-color:var(--blue)"> <span>Adapt canvas and resume negotiations within 3 minutes of the Tension Card.</span></label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══ JAVASCRIPT ═══ -->
+<script>
+
+// ── Clock ──
+(function tick() {
+  const n = new Date();
+  document.getElementById('live-clock').textContent =
+    [n.getHours(),n.getMinutes(),n.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
+  setTimeout(tick, 1000);
+})();
+
+// ── Panel navigation ──
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Sub-tab navigation ──
+function showSub(id, btn) {
+  btn.closest('.container, .panel').querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+  btn.closest('.container, .panel').querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sub-'+id).classList.add('active');
+}
+
+// ── Live price store ──
+const prices = { milling:228, feed:195, corn:190, eth:572, fx:1.08 };
+
+function updatePrice(k, v) {
+  if (!v) return;
+  prices[k] = parseFloat(v);
+  document.getElementById('p-'+k).textContent = v;
+  calc(); calcBlend();
+}
+function updateFreight(v) {
+  if (!v) return;
+  document.getElementById('fr-bsea').textContent = '$'+v+'/t';
+  document.getElementById('sc-freight').value = v;
+  calc();
+}
+
+// ── Deal type ──
+let dealType = 'grain';
+const typeDefaults = {
+  grain:   { sell:237, cur:'USD', fr:22,  fcur:'USD', buy:210, vol:35000, floor:5,  target:8,  fLabel:'EUR 5/t',  tLabel:'EUR 8/t'  },
+  ethanol: { sell:592, cur:'EUR', fr:45,  fcur:'EUR', buy:540, vol:8000,  floor:15, target:25, fLabel:'EUR 15/t', tLabel:'EUR 25/t' },
+  corn:    { sell:190, cur:'USD', fr:28,  fcur:'USD', buy:180, vol:20000, floor:5,  target:8,  fLabel:'EUR 5/t',  tLabel:'EUR 8/t'  }
+};
+
+function switchType(t, btn) {
+  dealType = t;
+  btn.parentElement.querySelectorAll('.sub-tab').forEach(x => x.classList.remove('active'));
+  btn.classList.add('active');
+  const d = typeDefaults[t];
+  document.getElementById('sc-sell').value   = d.sell;
+  document.getElementById('sc-cur').value    = d.cur;
+  document.getElementById('sc-freight').value= d.fr;
+  document.getElementById('sc-fcur').value   = d.fcur;
+  document.getElementById('sc-buy').value    = d.buy;
+  document.getElementById('sc-vol').value    = d.vol;
+  document.getElementById('sc-blend').value  = 0;
+  calc();
+}
+
+// ── Scenario calculator ──
+let lastCalcResult = {};
+
+function calc() {
+  const sell    = +document.getElementById('sc-sell').value    || 0;
+  const freight = +document.getElementById('sc-freight').value || 0;
+  const buy     = +document.getElementById('sc-buy').value     || 0;
+  const vol     = +document.getElementById('sc-vol').value     || 0;
+  const blend   = +document.getElementById('sc-blend').value   || 0;
+  const fx      = +document.getElementById('sc-fx').value      || 1.08;
+  const cur     = document.getElementById('sc-cur').value;
+  const sym     = cur==='EUR' ? '€' : '$';
+  const d       = typeDefaults[dealType];
+
+  const maxBuy    = sell - freight;
+  const marginT   = sell - freight - buy - blend;
+  const marginEur = cur==='EUR' ? marginT : marginT/fx;
+  const totalEur  = marginEur * vol;
+  const creditEur = (cur==='EUR' ? buy : buy/fx) * vol;
+
+  lastCalcResult = { sell, freight, buy, vol, blend, cur, fx, dealType, marginT, marginEur, totalEur, creditEur };
+
+  // Fill table
+  document.getElementById('r-sell').textContent    = sym+sell.toFixed(2)+'/t';
+  document.getElementById('r-fr').textContent      = '−'+sym+freight.toFixed(2)+'/t';
+  document.getElementById('r-maxbuy').textContent  = sym+maxBuy.toFixed(2)+'/t';
+  document.getElementById('r-buy').textContent     = '−'+sym+buy.toFixed(2)+'/t';
+  document.getElementById('r-vol').textContent     = vol.toLocaleString()+' t';
+  if (blend > 0) {
+    document.getElementById('blend-tr').style.display = 'table-row';
+    document.getElementById('r-blend').textContent = '−'+sym+blend.toFixed(2)+'/t';
+  } else {
+    document.getElementById('blend-tr').style.display = 'none';
+  }
+
+  const mc = marginEur<0 ? 'var(--red)' : marginEur<d.floor ? 'var(--red)' : marginEur<d.target ? 'var(--amber)' : 'var(--green)';
+  document.getElementById('r-marg').style.color  = mc;
+  document.getElementById('r-marg').textContent  = sym+marginT.toFixed(2)+'/t (EUR '+marginEur.toFixed(2)+')';
+  document.getElementById('r-total').style.color = mc;
+  document.getElementById('r-total').textContent = 'EUR '+fmt(totalEur);
+
+  document.getElementById('r-floor').textContent  = d.fLabel;
+  document.getElementById('r-target').textContent = d.tLabel;
+  document.getElementById('r-actual').textContent = 'EUR '+marginEur.toFixed(2)+'/t';
+  document.getElementById('r-actual').style.color = mc;
+
+  const pct = Math.max(0, Math.min(100, (marginEur/(d.target*1.5))*100));
+  document.getElementById('margin-bar').style.width = pct+'%';
+  document.getElementById('margin-bar').className = 'bar-fill '+(marginEur<d.floor?'bar-red':marginEur<d.target?'bar-amber':'bar-green');
+
+  // Credit
+  const cap = 1050000000;
+  const used = globalCreditUsed + creditEur;
+  document.getElementById('r-cred-deal').textContent   = 'EUR '+fmt(creditEur);
+  document.getElementById('r-cred-remain').textContent = 'EUR '+fmt(Math.max(0,cap-used));
+  const cp = Math.min(100,(used/cap)*100);
+  document.getElementById('r-cred-bar').style.width     = cp+'%';
+  document.getElementById('r-cred-bar').className = 'bar-fill '+(cp>90?'bar-red':cp>70?'bar-amber':'bar-blue');
+
+  // Verdict
+  const vb = document.getElementById('verdict-box');
+  if (marginEur < 0) {
+    vb.className = 'verdict-box bad';
+    document.getElementById('verdict-title').textContent = '✗ Walk Away — Negative Margin';
+    document.getElementById('verdict-body').textContent  = 'Margin is EUR '+marginEur.toFixed(2)+'/t. This deal loses money. Lower the buy price, raise the sell price, or walk.';
+  } else if (marginEur < d.floor) {
+    vb.className = 'verdict-box bad';
+    document.getElementById('verdict-title').textContent = '✗ Walk Away — Below Minimum Floor';
+    document.getElementById('verdict-body').textContent  = 'EUR '+marginEur.toFixed(2)+'/t is below the minimum floor of '+d.fLabel+'. Finance Officer: No Go.';
+  } else if (marginEur < d.target) {
+    vb.className = 'verdict-box warn';
+    document.getElementById('verdict-title').textContent = '⚠ Below Target — Acceptable on Large Volume';
+    document.getElementById('verdict-body').textContent  = 'EUR '+marginEur.toFixed(2)+'/t is above floor but below target '+d.tLabel+'. Total EUR '+fmt(totalEur)+'. Proceed only if volume justifies. Push sell price or negotiate buy down.';
+  } else {
+    vb.className = 'verdict-box';
+    document.getElementById('verdict-title').textContent = '✓ Go — Finance Officer Approved';
+    document.getElementById('verdict-body').textContent  = 'Margin EUR '+marginEur.toFixed(2)+'/t meets target '+d.tLabel+'. Total deal margin: EUR '+fmt(totalEur)+'. Lock both sides simultaneously.';
+  }
+}
+
+// ── Presets ──
+const presets = {
+  wheat_base: { sell:237, cur:'USD', fr:22,  fcur:'USD', buy:210, vol:35000, blend:0,  type:'grain'   },
+  eth_base:   { sell:592, cur:'EUR', fr:45,  fcur:'EUR', buy:540, vol:8000,  blend:0,  type:'ethanol' },
+  wheat_ceil: { sell:240, cur:'USD', fr:22,  fcur:'USD', buy:207, vol:35000, blend:0,  type:'grain'   },
+  eth_ceil:   { sell:620, cur:'EUR', fr:45,  fcur:'EUR', buy:540, vol:8000,  blend:0,  type:'ethanol' },
+  blend:      { sell:237, cur:'USD', fr:22,  fcur:'USD', buy:195, vol:20000, blend:9,  type:'grain'   },
+  constanta:  { sell:237, cur:'USD', fr:28,  fcur:'USD', buy:210, vol:35000, blend:0,  type:'grain'   }
+};
+function preset(k) {
+  const p = presets[k];
+  dealType = p.type;
+  document.getElementById('sc-sell').value    = p.sell;
+  document.getElementById('sc-cur').value     = p.cur;
+  document.getElementById('sc-freight').value = p.fr;
+  document.getElementById('sc-fcur').value    = p.fcur;
+  document.getElementById('sc-buy').value     = p.buy;
+  document.getElementById('sc-vol').value     = p.vol;
+  document.getElementById('sc-blend').value   = p.blend;
+  document.querySelectorAll('#panel-scenario .sub-tab').forEach(t => t.classList.remove('active'));
+  const labels = ['grain','ethanol','corn'];
+  document.querySelectorAll('#panel-scenario .sub-tab')[labels.indexOf(p.type)].classList.add('active');
+  calc();
+  showPanel('scenario', document.querySelectorAll('.nav-tab')[1]);
+}
+
+function resetCalc() {
+  switchType('grain', document.querySelector('#panel-scenario .sub-tab'));
+}
+
+// ── Blending calculator ──
+function calcBlend() {
+  const feed    = +document.getElementById('bl-feed').value    || 0;
+  const cost    = +document.getElementById('bl-cost').value    || 0;
+  const freight = +document.getElementById('bl-freight').value || 0;
+  const sell    = +document.getElementById('bl-sell').value    || 0;
+  const vol     = +document.getElementById('bl-vol').value     || 0;
+  const fx      = +document.getElementById('bl-fx').value      || 1.08;
+  const cif     = feed + cost + freight;
+  const mT      = sell - cif;
+  const mEur    = mT / fx;
+  const total   = mEur * vol;
+  const saving  = prices.milling - (feed/fx);
+
+  document.getElementById('bl-r-feed').textContent    = '$'+feed.toFixed(2)+'/t';
+  document.getElementById('bl-r-blend').textContent   = '+ $'+cost.toFixed(2)+'/t';
+  document.getElementById('bl-r-freight').textContent = '+ $'+freight.toFixed(2)+'/t';
+  document.getElementById('bl-r-cif').textContent     = '$'+cif.toFixed(2)+'/t (≈ EUR '+(cif/fx).toFixed(2)+')';
+  document.getElementById('bl-r-sell').textContent    = '$'+sell.toFixed(2)+'/t';
+  document.getElementById('bl-r-marg').textContent    = '$'+mT.toFixed(2)+'/t (EUR '+mEur.toFixed(2)+')';
+  document.getElementById('bl-r-total').textContent   = 'EUR '+fmt(total);
+  document.getElementById('bl-r-save').textContent    = 'EUR '+saving.toFixed(2)+'/t';
+
+  const bv = document.getElementById('blend-verdict');
+  if (mEur < 0) {
+    bv.className = 'verdict-box bad';
+    document.getElementById('blend-verdict-title').textContent = '✗ Blend Loss-Making';
+    document.getElementById('blend-verdict-body').textContent  = 'Effective CIF cost exceeds sell price. Reduce feed purchase price or secure a higher milling sell price.';
+  } else if (mEur < 5) {
+    bv.className = 'verdict-box warn';
+    document.getElementById('blend-verdict-title').textContent = '⚠ Thin Blending Margin';
+    document.getElementById('blend-verdict-body').textContent  = 'EUR '+mEur.toFixed(2)+'/t margin is viable only on large volume. Total: EUR '+fmt(total)+'.';
+  } else {
+    bv.className = 'verdict-box';
+    document.getElementById('blend-verdict-title').textContent = '✓ Blending Creates Value';
+    document.getElementById('blend-verdict-body').textContent  = 'EUR '+mEur.toFixed(2)+'/t blending margin. Total EUR '+fmt(total)+'. This is genuine value creation — neither originator nor destination can access it.';
+  }
+}
+
+// ── Deal book ──
+let deals = [];
+let globalCreditUsed = 0;
+
+function toggleAddForm() {
+  const f = document.getElementById('add-form');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function addDeal() {
+  const label   = document.getElementById('nd-label').value   || ('Deal-'+(deals.length+1));
+  const product = document.getElementById('nd-prod').value;
+  const buy     = +document.getElementById('nd-buy').value     || 0;
+  const sell    = +document.getElementById('nd-sell').value    || 0;
+  const freight = +document.getElementById('nd-freight').value || 0;
+  const vol     = +document.getElementById('nd-vol').value     || 0;
+  const cur     = document.getElementById('nd-cur').value;
+  const status  = document.getElementById('nd-status').value;
+  const fx      = 1.08;
+  const mT      = sell - freight - buy;
+  const mEur    = cur==='EUR' ? mT : mT/fx;
+  const total   = mEur * vol;
+  const credit  = (cur==='EUR' ? buy : buy/fx) * vol;
+  deals.push({ label, product, buy, sell, freight, vol, cur, status, mT, mEur, total, credit });
+  renderDeals();
+  toggleAddForm();
+}
+
+function bookDeal() {
+  if (!lastCalcResult.sell) return;
+  const r = lastCalcResult;
+  const fx = r.fx || 1.08;
+  deals.push({
+    label:   'Deal-'+(deals.length+1)+(r.blend>0?' [BLEND]':''),
+    product: r.dealType==='ethanol' ? 'Bioethanol ISCC+' : r.dealType==='corn' ? 'Feed Corn' : 'Milling Wheat',
+    buy: r.buy, sell: r.sell, freight: r.freight, vol: r.vol,
+    cur: r.cur, status: 'open', mT: r.marginT, mEur: r.marginEur,
+    total: r.totalEur, credit: r.creditEur
+  });
+  renderDeals();
+  showPanel('positions', document.querySelectorAll('.nav-tab')[3]);
+}
+
+function renderDeals() {
+  const tbody = document.getElementById('deal-body');
+  if (!deals.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ink-light);padding:32px;font-style:italic">No deals booked.</td></tr>';
+    updateGlobals(0, 0, 0, 0);
+    return;
+  }
+  const sym = d => d.cur==='EUR' ? '€' : '$';
+  tbody.innerHTML = deals.map((d,i) => {
+    const mc = d.mEur<0?'var(--red)':d.mEur<5?'var(--amber)':'var(--green)';
+    const sb = d.status==='open'
+      ? '<span class="status-badge warn"><span class="status-dot"></span>Open</span>'
+      : '<span class="status-badge pass"><span class="status-dot"></span>Closed</span>';
+    return `<tr>
+      <td><strong>${d.label}</strong><br><span style="font-size:11px;color:var(--ink-light)">${d.product}</span></td>
+      <td>${sym(d)}${d.buy.toFixed(1)}/t FOB</td>
+      <td>${sym(d)}${d.sell.toFixed(1)}/t CIF</td>
+      <td>${sym(d)}${d.freight.toFixed(1)}/t</td>
+      <td>${d.vol.toLocaleString()} t</td>
+      <td style="color:${mc};font-weight:600">EUR ${d.mEur.toFixed(2)}/t</td>
+      <td style="color:${mc};font-weight:600">EUR ${fmt(d.total)}</td>
+      <td>${sb}</td>
+    </tr>`;
+  }).join('');
+
+  const totalM  = deals.reduce((s,d) => s+d.total,  0);
+  const totalC  = deals.reduce((s,d) => s+d.credit, 0);
+  const openN   = deals.filter(d => d.status==='open').length;
+  const closedN = deals.filter(d => d.status==='closed').length;
+
+  // Totals row
+  tbody.innerHTML += `<tr class="total-row">
+    <td colspan="5" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)">Turn Total</td>
+    <td></td>
+    <td style="color:${totalM>=1500000?'var(--green)':totalM>=1000000?'var(--amber)':'var(--red)'};font-size:16px">EUR ${fmt(totalM)}</td>
+    <td></td>
+  </tr>`;
+
+  updateGlobals(totalM, totalC, openN, closedN);
+}
+
+function updateGlobals(totalM, totalC, openN, closedN) {
+  globalCreditUsed = totalC;
+  const cap = 1050000000;
+  const pct = Math.min(100,(totalC/cap)*100);
+
+  // Dashboard KPIs
+  const pnlEl = document.getElementById('kpi-pnl');
+  pnlEl.textContent = 'EUR '+fmt(totalM);
+  pnlEl.closest('.metric').className = 'metric '+(totalM>=1500000?'good':totalM>=1000000?'warn':'bad');
+  document.getElementById('pnl-bar').style.width = Math.min(100,(totalM/1500000)*100)+'%';
+
+  const credEl = document.getElementById('kpi-credit');
+  credEl.textContent = 'EUR '+fmt(totalC);
+  document.getElementById('credit-bar').style.width = pct+'%';
+  document.getElementById('credit-bar').className = 'bar-fill '+(pct>90?'bar-red':pct>70?'bar-amber':'bar-blue');
+
+  const openEl = document.getElementById('kpi-open');
+  openEl.textContent = openN;
+  openEl.closest('.metric').className = 'metric '+(openN>0?'bad':'good');
+
+  const allM = deals.map(d=>d.mEur);
+  const avgM = allM.length ? allM.reduce((a,b)=>a+b,0)/allM.length : NaN;
+  const margEl = document.getElementById('kpi-margin');
+  margEl.textContent = isNaN(avgM) ? '—' : 'EUR '+avgM.toFixed(2)+'/t';
+  if (!isNaN(avgM)) margEl.closest('.metric').className = 'metric '+(avgM>=8?'good':avgM>=5?'warn':'bad');
+
+  // Hero
+  document.getElementById('h-pnl').textContent    = 'EUR '+fmt(totalM);
+  document.getElementById('h-credit').textContent = 'EUR '+fmt(totalC);
+  document.getElementById('h-open').textContent   = openN;
+  document.getElementById('h-margin').textContent = isNaN(avgM) ? '—' : 'EUR '+avgM.toFixed(2)+'/t';
+
+  // Credit panel
+  document.getElementById('cred-avail').textContent    = 'EUR '+fmt(Math.max(0,cap-totalC));
+  document.getElementById('cred-pct-label').textContent= pct.toFixed(1)+'% utilised';
+  document.getElementById('cred-bar-main').style.width = pct+'%';
+  document.getElementById('cred-bar-main').className = 'bar-fill '+(pct>90?'bar-red':pct>70?'bar-amber':'bar-blue');
+
+  // Panic banner
+  const pb = document.getElementById('panic-banner');
+  pb.className = openN > 0 ? 'panic-banner' : 'panic-banner hidden';
+}
+
+// ── Number formatter ──
+function fmt(n) {
+  const s = n<0?'-':''; const a=Math.abs(n);
+  if (a>=1e9)  return s+(a/1e9).toFixed(2)+'B';
+  if (a>=1e6)  return s+(a/1e6).toFixed(3)+'M';
+  if (a>=1e3)  return s+(a/1e3).toFixed(1)+'K';
+  return s+a.toFixed(0);
+}
+
+// ── Init ──
+calc();
+calcBlend();
+renderDeals();
+</script>
+</body>
+</html>
